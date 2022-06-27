@@ -448,7 +448,12 @@ namespace System_Information.MVVM.View
                     if (saveFileDialog.ShowDialog() == true)
                     {
                         File.WriteAllText(saveFileDialog.FileName, htmlString);
-                        Process.Start(saveFileDialog.FileName);
+                        var process = new Process();
+                        process.StartInfo = new ProcessStartInfo(saveFileDialog.FileName)
+                        {
+                            UseShellExecute = true
+                        };
+                        process.Start();
                         Log.Info("html data file exported : " + saveFileDialog.FileName);
                     }
 

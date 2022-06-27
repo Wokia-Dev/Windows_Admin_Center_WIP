@@ -151,7 +151,7 @@ namespace System_Information
 
             var lCurrentScreen = MonitorFromPoint(lMousePosition, MonitorOptions.MonitorDefaulttonearest);
 
-            var lMmi = (Minmaxinfo)Marshal.PtrToStructure(lParam, typeof(Minmaxinfo));
+            var lMmi = (Minmaxinfo)Marshal.PtrToStructure(lParam, typeof(Minmaxinfo))!;
 
             if (lPrimaryScreen.Equals(lCurrentScreen))
             {
