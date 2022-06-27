@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <RootNamespace>Windows_Admin_Center</RootNamespace>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <StartupObject>Windows_Admin_Center.App</StartupObject>
+    </PropertyGroup>
+
+
+
+    <ItemGroup>
+      <PackageReference Include="Syncfusion.Licensing" Version="20.1.0.61" />
+      <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="20.1.0.61" />
+      <PackageReference Include="Syncfusion.Themes.FluentLight.WPF" Version="20.1.0.61" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="MVVM\Model" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="Resources\Fonts\Manrope.ttf" />
+      <Resource Include="Resources\Images\cancel.png" />
+      <Resource Include="Resources\Images\display.png" />
+      <Resource Include="Resources\Images\ellipsis.png" />
+      <Resource Include="Resources\Images\GeneralIcon.png" />
+      <Resource Include="Resources\Images\global-network.png" />
+      <Resource Include="Resources\Images\home.png" />
+      <Resource Include="Resources\Images\logo.png" />
+      <Resource Include="Resources\Images\minimize-sign.png" />
+      <Resource Include="Resources\Images\optimization.png" />
+      <Resource Include="Resources\Images\setting.png" />
+      <Resource Include="Resources\Images\share.png" />
+      <Resource Include="Resources\Images\sketch.png" />
+      <Resource Include="Resources\Images\SystemInfoIcon.png" />
+      <Resource Include="Resources\Theme\Images\CustomizationIcon.png" />
+      <Resource Include="Resources\Theme\Images\GeneralIcon.png" />
+      <Resource Include="Resources\Theme\Images\NetworkIcon.png" />
+      <Resource Include="Resources\Theme\Images\OptimizationIcon.png" />
+      <Resource Include="Resources\Theme\Images\OtherIcon.png" />
+      <Resource Include="Resources\Theme\Images\SecurityIcon.png" />
+    </ItemGroup>
+
+</Project>

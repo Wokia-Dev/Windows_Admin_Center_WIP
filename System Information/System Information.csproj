@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <RootNamespace>System_Information</RootNamespace>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+        <StartupObject>System_Information.App</StartupObject>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <SignAssembly>False</SignAssembly>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="log4net" Version="2.0.14" />
+      <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="20.1.0.61" />
+      <PackageReference Include="Syncfusion.SfTreeView.WPF" Version="20.1.0.61" />
+      <PackageReference Include="Syncfusion.Themes.FluentLight.WPF" Version="20.1.0.61" />
+      <PackageReference Include="Syncfusion.Themes.MaterialLight.WPF" Version="20.1.0.61" />
+      <PackageReference Include="System.Management" Version="6.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Resources\Fonts\Manrope.ttf" />
+      <Resource Include="Resources\Fonts\Manrope.ttf" />
+      <None Remove="Resources\Images\cancel.png" />
+      <Resource Include="Resources\Images\cancel.png" />
+      <None Remove="Resources\Images\minimize-sign.png" />
+      <Resource Include="Resources\Images\minimize-sign.png" />
+      <None Remove="Resources\Images\share.png" />
+      <Resource Include="Resources\Images\share.png" />
+      <None Remove="Resources\Images\SystemInfoIcon.png" />
+      <Resource Include="Resources\Images\SystemInfoIcon.png" />
+      <None Update="log4net.config">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+</Project>
