@@ -30,7 +30,7 @@ namespace System_Information.MVVM.View
             SfSkinManager.SetTheme(this, new Theme("MaterialLight"));
             
             var convertorUtils = new ConvertorUtils();
-            var wmIqueyManager = new WmIqueryManagement();
+            var wmiQueryManager = new WmIqueryManagement();
 
             // Set all list to new list
             MemoryList = new List<string>();
@@ -48,7 +48,7 @@ namespace System_Information.MVVM.View
                 {
                     Log.Info("Get Chassis Types with WMI");
                     // Query return
-                    var returnValue = wmIqueyManager.WmIquery("Win32_SystemEnclosure", new[] { "ChassisTypes" });
+                    var returnValue = wmiQueryManager.WmIquery("Win32_SystemEnclosure", new[] { "ChassisTypes" });
 
                     // Get Properties values
                     var result = (ushort[])returnValue.PropertiesResultList[0, 0];
@@ -159,7 +159,7 @@ namespace System_Information.MVVM.View
                 {
                     Log.Info("Get MotherBoard Model with WMI");
                     // Query return
-                    var returnValue = wmIqueyManager.WmIquery("Win32_BaseBoard", new[] { "Product" });
+                    var returnValue = wmiQueryManager.WmIquery("Win32_BaseBoard", new[] { "Product" });
 
                     // Set final string of MotherBoard Model
                     MotherBoardModel = (string)returnValue.PropertiesResultList[0, 0];
@@ -170,7 +170,7 @@ namespace System_Information.MVVM.View
                 {
                     Log.Info("Get Bios Name with WMI");
                     // Query return
-                    var returnValue = wmIqueyManager.WmIquery("Win32_BIOS", new[] { "Name" });
+                    var returnValue = wmiQueryManager.WmIquery("Win32_BIOS", new[] { "Name" });
 
                     // Set final string of Bios Name
                     BiosName = (string)returnValue.PropertiesResultList[0, 0];
@@ -181,7 +181,7 @@ namespace System_Information.MVVM.View
                 {
                     Log.Info("Get UUID with WMI");
                     // Query return
-                    var returnValue = wmIqueyManager.WmIquery("Win32_ComputerSystemProduct", new[] { "UUID" });
+                    var returnValue = wmiQueryManager.WmIquery("Win32_ComputerSystemProduct", new[] { "UUID" });
 
                     // Set final string of UUID
                     Uuid = (string)returnValue.PropertiesResultList[0, 0];
@@ -192,7 +192,7 @@ namespace System_Information.MVVM.View
                 {
                     Log.Info("Get Processor Info with WMI");
                     // Query return
-                    var returnValue = wmIqueyManager.WmIquery("Win32_Processor",
+                    var returnValue = wmiQueryManager.WmIquery("Win32_Processor",
                         new[] { "Name", "Manufacturer", "Architecture" });
 
                     // Set finals string of cpu info
@@ -203,33 +203,18 @@ namespace System_Information.MVVM.View
                     var result = (ushort)returnValue.PropertiesResultList[0, 2];
 
                     // Set CPU Architecture string 
-                    switch (result)
+                    CpuArchitecture = result switch
                     {
-                        case 0:
-                            CpuArchitecture = "x86";
-                            break;
-                        case 1:
-                            CpuArchitecture = "MIPS";
-                            break;
-                        case 2:
-                            CpuArchitecture = "Alpha";
-                            break;
-                        case 3:
-                            CpuArchitecture = "PowerPC";
-                            break;
-                        case 5:
-                            CpuArchitecture = "ARM";
-                            break;
-                        case 6:
-                            CpuArchitecture = "ia64";
-                            break;
-                        case 9:
-                            CpuArchitecture = "x64";
-                            break;
-                        case 12:
-                            CpuArchitecture = "ARM64";
-                            break;
-                    }
+                        0 => "x86",
+                        1 => "MIPS",
+                        2 => "Alpha",
+                        3 => "PowerPC",
+                        5 => "ARM",
+                        6 => "ia64",
+                        9 => "x64",
+                        12 => "ARM64",
+                        _ => CpuArchitecture
+                    };
                 }),
 
                 // Get Memory Info
@@ -237,7 +222,7 @@ namespace System_Information.MVVM.View
                 {
                     Log.Info("Get Memory Info with WMI");
                     // Query return
-                    var returnValue = wmIqueyManager.WmIquery("Win32_PhysicalMemory",
+                    var returnValue = wmiQueryManager.WmIquery("Win32_PhysicalMemory",
                         new[] { "Capacity", "ConfiguredClockSpeed" });
 
                     // Set final string of memory Nb
@@ -267,7 +252,7 @@ namespace System_Information.MVVM.View
                 {
                     Log.Info("Get Disk Drive Info with WMI");
                     // Query return
-                    var returnValue = wmIqueyManager.WmIquery("Win32_DiskDrive", new[] { "Caption", "Size" });
+                    var returnValue = wmiQueryManager.WmIquery("Win32_DiskDrive", new[] { "Caption", "Size" });
 
                     // Set final string of disk drive Nb
                     DiskNb = "X" + returnValue.NbResult;
@@ -288,7 +273,7 @@ namespace System_Information.MVVM.View
                 {
                     Log.Info("Get GPU Info with WMI");
                     // Query return
-                    var returnValue = wmIqueyManager.WmIquery("Win32_VideoController", new[] { "Caption" });
+                    var returnValue = wmiQueryManager.WmIquery("Win32_VideoController", new[] { "Caption" });
 
                     // set final string of GPU Nb
                     GpuNb = "X" + returnValue.NbResult;
@@ -303,7 +288,7 @@ namespace System_Information.MVVM.View
                 {
                     Log.Info("Get Audio Devices Info with WMI");
                     // Query return
-                    var returnValue = wmIqueyManager.WmIquery("Win32_SoundDevice", new[] { "Caption" });
+                    var returnValue = wmiQueryManager.WmIquery("Win32_SoundDevice", new[] { "Caption" });
 
                     // set final string to audi device Nb
                     AudioDeviceNb = "X" + returnValue.NbResult;
@@ -318,7 +303,7 @@ namespace System_Information.MVVM.View
                 {
                     Log.Info("Get Network Adapter Info with WMI");
                     // Query return
-                    var returnValue = wmIqueyManager.WmIquery("Win32_NetworkAdapter",
+                    var returnValue = wmiQueryManager.WmIquery("Win32_NetworkAdapter",
                         new[] { "Description", "NetConnectionStatus" }, "NetConnectionStatus");
 
                     // set final string to network adapter Nb
@@ -330,50 +315,24 @@ namespace System_Information.MVVM.View
                         // format return value to string
                         var description = (string)returnValue.PropertiesResultList[i, 0];
                         var result = (ushort)returnValue.PropertiesResultList[i, 1];
-                        var status = "";
 
-                        switch (result)
+                        var status = result switch
                         {
-                            case 0:
-                                status = "Disconnected";
-                                break;
-                            case 1:
-                                status = "Connecting";
-                                break;
-                            case 2:
-                                status = "Connected";
-                                break;
-                            case 3:
-                                status = "Disconnecting";
-                                break;
-                            case 4:
-                                status = "Hardware not present";
-                                break;
-                            case 5:
-                                status = "Hardware disabled";
-                                break;
-                            case 6:
-                                status = "Hardware malfunction";
-                                break;
-                            case 7:
-                                status = "Media disconnected";
-                                break;
-                            case 8:
-                                status = "Authenticating";
-                                break;
-                            case 9:
-                                status = "Authentication succeeded";
-                                break;
-                            case 10:
-                                status = "Authentication failed";
-                                break;
-                            case 11:
-                                status = "Invalid address";
-                                break;
-                            case 12:
-                                status = "Credentials required";
-                                break;
-                        }
+                            0 => "Disconnected",
+                            1 => "Connecting",
+                            2 => "Connected",
+                            3 => "Disconnecting",
+                            4 => "Hardware not present",
+                            5 => "Hardware disabled",
+                            6 => "Hardware malfunction",
+                            7 => "Media disconnected",
+                            8 => "Authenticating",
+                            9 => "Authentication succeeded",
+                            10 => "Authentication failed",
+                            11 => "Invalid address",
+                            12 => "Credentials required",
+                            _ => ""
+                        };
 
                         NetworkAdapterList.Add(description + " (" + status + ")");
                     }
@@ -384,7 +343,7 @@ namespace System_Information.MVVM.View
                 {
                     Log.Info("Get Keyboard Info with WMI");
                     // Query return
-                    var returnValue = wmIqueyManager.WmIquery("Win32_Keyboard", new[] { "Description" });
+                    var returnValue = wmiQueryManager.WmIquery("Win32_Keyboard", new[] { "Description" });
 
                     // set final string to keyboard Nb
                     KeyboardNb = "X" + returnValue.NbResult;
@@ -399,7 +358,7 @@ namespace System_Information.MVVM.View
                 {
                     Log.Info("Get Mouse Info with WMI");
                     // Query return
-                    var returnValue = wmIqueyManager.WmIquery("Win32_PointingDevice", new[] { "Description" });
+                    var returnValue = wmiQueryManager.WmIquery("Win32_PointingDevice", new[] { "Description" });
 
                     // set final string to mouse Nb
                     MouseNb = "X" + returnValue.NbResult;

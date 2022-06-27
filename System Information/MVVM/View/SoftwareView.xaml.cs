@@ -27,7 +27,7 @@ namespace System_Information.MVVM.View
             InitializeComponent();
             SfSkinManager.SetTheme(this, new Theme("MaterialLight"));
 
-            var wmIqueryManager = new WmIqueryManagement();
+            var wmiQueryManager = new WmIqueryManagement();
 
             var wmiTasks = new List<Task>
             {
@@ -36,7 +36,7 @@ namespace System_Information.MVVM.View
                 {
                     // Query return
                     var returnValue =
-                        wmIqueryManager.WmIquery("Win32_ComputerSystem", new[] { "Manufacturer", "Model" });
+                        wmiQueryManager.WmIquery("Win32_ComputerSystem", new[] { "Manufacturer", "Model" });
 
                     // Set final string of Computer System
                     ComputerSystem = (string)returnValue.PropertiesResultList[0, 0] + " " +
@@ -49,7 +49,7 @@ namespace System_Information.MVVM.View
                     Log.Info("Get System Type with WMI");
                     // Query return
                     var returnValue =
-                        wmIqueryManager.WmIquery("Win32_ComputerSystem", new[] { "SystemType", "PCSystemType" });
+                        wmiQueryManager.WmIquery("Win32_ComputerSystem", new[] { "SystemType", "PCSystemType" });
 
                     // Get Properties Values
                     var result = (ushort)returnValue.PropertiesResultList[0, 1];
@@ -78,7 +78,7 @@ namespace System_Information.MVVM.View
                 {
                     Log.Info("Get System Name with WMI");
                     // Query return
-                    var returnValue = wmIqueryManager.WmIquery("Win32_ComputerSystem", new[] { "Caption" });
+                    var returnValue = wmiQueryManager.WmIquery("Win32_ComputerSystem", new[] { "Caption" });
 
                     // Set final string of System Name
                     SystemName = (string)returnValue.PropertiesResultList[0, 0];
@@ -89,7 +89,7 @@ namespace System_Information.MVVM.View
                 {
                     Log.Info("Get Current User with WMI");
                     // Query return
-                    var returnValue = wmIqueryManager.WmIquery("Win32_ComputerSystem", new[] { "UserName" });
+                    var returnValue = wmiQueryManager.WmIquery("Win32_ComputerSystem", new[] { "UserName" });
 
                     // Set final string of Current User
                     CurrentUser = returnValue.PropertiesResultList[0, 0].ToString()?.Split('\\')[1];
@@ -100,7 +100,7 @@ namespace System_Information.MVVM.View
                 {
                     Log.Info("Get OS Name with WMI");
                     // Query return
-                    var returnValue = wmIqueryManager.WmIquery("Win32_OperatingSystem", new[] { "Caption" });
+                    var returnValue = wmiQueryManager.WmIquery("Win32_OperatingSystem", new[] { "Caption" });
 
                     // Set final string of OS Name
                     OsName = (string)returnValue.PropertiesResultList[0, 0];
@@ -112,7 +112,7 @@ namespace System_Information.MVVM.View
                     Log.Info("Get OS Version with WMI");
                     // Query return
                     var returnValue =
-                        wmIqueryManager.WmIquery("Win32_OperatingSystem", new[] { "Version", "BuildNumber" });
+                        wmiQueryManager.WmIquery("Win32_OperatingSystem", new[] { "Version", "BuildNumber" });
 
                     // Set final string of OS Version
                     OsVersion = (string)returnValue.PropertiesResultList[0, 0] + " (build " +
@@ -124,7 +124,7 @@ namespace System_Information.MVVM.View
                 {
                     Log.Info("Get OS Install Date with WMI");
                     // Query return
-                    var returnValue = wmIqueryManager.WmIquery("Win32_OperatingSystem", new[] { "InstallDate" });
+                    var returnValue = wmiQueryManager.WmIquery("Win32_OperatingSystem", new[] { "InstallDate" });
 
                     var date = (string)returnValue.PropertiesResultList[0, 0];
 
@@ -139,7 +139,7 @@ namespace System_Information.MVVM.View
                 {
                     Log.Info("Get Time Zone with WMI");
                     // Query return
-                    var returnValue = wmIqueryManager.WmIquery("Win32_TimeZone", new[] { "Caption" });
+                    var returnValue = wmiQueryManager.WmIquery("Win32_TimeZone", new[] { "Caption" });
 
                     // Set final string of Time Zone
                     TimeZone = (string)returnValue.PropertiesResultList[0, 0];

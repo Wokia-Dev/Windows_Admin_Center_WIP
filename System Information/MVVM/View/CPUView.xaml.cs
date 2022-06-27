@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Management;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using log4net;
 using Syncfusion.SfSkinManager;
@@ -21,11 +18,11 @@ namespace System_Information.MVVM.View
     /// <summary>
     /// Logique d'interaction pour CPUView.xaml
     /// </summary>
-    public partial class CpuView : UserControl
+    public partial class CpuView
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-        WmIqueryManagement _wmIqueyManager = new WmIqueryManagement();
+        private readonly WmIqueryManagement _wmiQueryManager = new WmIqueryManagement();
         private bool _canUpdateMetrics = true;
         public CpuView()
         {
@@ -40,7 +37,7 @@ namespace System_Information.MVVM.View
                 {
                     Log.Info("Get Basic CPU Information");
                     // Query return
-                    var returnValue = _wmIqueyManager.WmIquery("Win32_Processor", new []{ "Name", 
+                    var returnValue = _wmiQueryManager.WmIquery("Win32_Processor", new []{ "Name", 
                         "Manufacturer", "Family", "Architecture", "Description", "SocketDesignation", 
                         "VirtualizationFirmwareEnabled", "AddressWidth", "DataWidth", "PowerManagementSupported",
                         "Version", "ProcessorId", "Status"
@@ -55,817 +52,217 @@ namespace System_Information.MVVM.View
                     // Family property
                     var family = (ushort)returnValue.PropertiesResultList[0, 2];
 
-                    switch (family)
+                    ProcessorFamily = family switch
                     {
-                        case 1:
-							ProcessorFamily = "Other";
-							break;
+	                    1 => "Other",
+	                    2 => "Unknown",
+	                    3 => "8086",
+	                    4 => "80286",
+	                    5 => "80386",
+	                    6 => "8048",
+	                    7 => "808",
+	                    8 => "027",
+	                    9 => "80387",
+	                    10 => "80487",
+	                    11 => "Pentium(R) brand",
+	                    12 => "Pentium(R) Pro",
+	                    13 => "Pentium(R) II",
+	                    14 => "Pentium(R) processor with MMX(TM) technology",
+	                    15 => "Celeron(TM)",
+	                    16 => "Pentium(R) II Xeon(TM)",
+	                    17 => "Pentium(R) III",
+	                    18 => "M1 Family",
+	                    19 => "M2 Family",
+	                    20 => "Intel(R) Celeron(R) M processor",
+	                    21 => "Intel(R) Pentium(R) 4 HT processor",
+	                    24 => "K5 Family",
+	                    25 => "K6 Family",
+	                    26 => "K6-2",
+	                    27 => "K6-3",
+	                    28 => "AMD Athlon(TM) Processor Family",
+	                    29 => "AMD(R) Duron(TM) Processor",
+	                    30 => "AMD29000 Family",
+	                    31 => "K6-2+",
+	                    32 => "Power PC Family",
+	                    33 => "Power PC 601",
+	                    34 => "Power PC 603",
+	                    35 => "Power PC 603+",
+	                    36 => "Power PC 604",
+	                    37 => "Power PC 620",
+	                    38 => "Power PC X704",
+	                    39 => "Power PC 750",
+	                    40 => "Intel(R) Core(TM) Duo processor",
+	                    41 => "Intel(R) Core(TM) Duo mobile processor",
+	                    42 => "Intel(R) Core(TM) Solo mobile processor",
+	                    43 => "Intel(R) Atom(TM) processor",
+	                    48 => "Alpha Family",
+	                    49 => "Alpha 21064",
+	                    50 => "Alpha 21066",
+	                    51 => "Alpha 21164",
+	                    52 => "Alpha 21164PC",
+	                    53 => "Alpha 21164a",
+	                    54 => "Alpha 21264",
+	                    55 => "Alpha 21364",
+	                    56 => "AMD Turion(TM) II Ultra Dual-Core Mobile M Processor Family",
+	                    57 => "AMD Turion(TM) II Dual-Core Mobile M Processor Family",
+	                    58 => "AMD Athlon(TM) II Dual-Core Mobile M Processor Family",
+	                    59 => "AMD Opteron(TM) 6100 Series Processor",
+	                    63 => "Available for assignment",
+	                    60 => "AMD Opteron(TM) 4100 Series Processor",
+	                    64 => "MIPS Family",
+	                    65 => "MIPS R4000",
+	                    66 => "MIPS R4200",
+	                    67 => "MIPS R4400",
+	                    68 => "MIPS R4600",
+	                    69 => "MIPS R10000",
+	                    80 => "SPARC Family",
+	                    81 => "SuperSPARC",
+	                    82 => "microSPARC II",
+	                    83 => "microSPARC IIep",
+	                    84 => "UltraSPARC",
+	                    85 => "UltraSPARC II",
+	                    86 => "UltraSPARC IIi",
+	                    87 => "UltraSPARC III",
+	                    88 => "UltraSPARC IIIi",
+	                    96 => "68040",
+	                    97 => "68xxx Family",
+	                    98 => "68000",
+	                    99 => "68010",
+	                    100 => "68020",
+	                    101 => "68030",
+	                    112 => "Hobbit Family",
+	                    120 => "Crusoe(TM) TM5000 Family",
+	                    121 => "Crusoe(TM) TM3000 Family",
+	                    122 => "Efficeon(TM) TM8000 Family",
+	                    128 => "Weitek",
+	                    130 => "Itanium(TM) Processor",
+	                    131 => "AMD Athlon(TM) 64 Processor Family",
+	                    132 => "AMD Opteron(TM) Processor Family",
+	                    133 => "AMD Sempron(TM) Processor Family",
+	                    134 => "AMD Turion(TM) 64 Mobile Technology",
+	                    135 => "Dual-Core AMD Opteron(TM) Processor Family",
+	                    136 => "AMD Athlon(TM) 64 X2 Dual-Core Processor Family",
+	                    137 => "AMD Turion(TM) 64 X2 Mobile Technology",
+	                    138 => "Quad-Core AMD Opteron(TM) Processor Family",
+	                    139 => "Third-Generation AMD Opteron(TM) Processor Family",
+	                    140 => "AMD Phenom(TM) FX Quad-Core Processor Family",
+	                    141 => "AMD Phenom(TM) X4 Quad-Core Processor Family",
+	                    142 => "AMD Phenom(TM) X2 Dual-Core Processor Family",
+	                    143 => "AMD Athlon(TM) X2 Dual-Core Processor Family",
+	                    144 => "PA-RISC Family",
+	                    145 => "PA-RISC 8500",
+	                    146 => "PA-RISC 8000",
+	                    147 => "PA-RISC 7300LC",
+	                    148 => "PA-RISC 7200",
+	                    149 => "PA-RISC 7100LC",
+	                    150 => "PA-RISC 7100",
+	                    160 => "V30 Family",
+	                    161 => "Quad-Core Intel(R) Xeon(R) processor 3200 Series",
+	                    162 => "Dual-Core Intel(R) Xeon(R) processor 3000 Series",
+	                    163 => "Quad-Core Intel(R) Xeon(R) processor 5300 Series",
+	                    164 => "Dual-Core Intel(R) Xeon(R) processor 5100 Series",
+	                    165 => "Dual-Core Intel(R) Xeon(R) processor 5000 Series",
+	                    166 => "Dual-Core Intel(R) Xeon(R) processor LV",
+	                    167 => "Dual-Core Intel(R) Xeon(R) processor ULV",
+	                    168 => "Dual-Core Intel(R) Xeon(R) processor 7100 Series",
+	                    169 => "Quad-Core Intel(R) Xeon(R) processor 5400 Series",
+	                    170 => "Quad-Core Intel(R) Xeon(R) processor",
+	                    171 => "Dual-Core Intel(R) Xeon(R) processor 5200 Series",
+	                    172 => "Dual-Core Intel(R) Xeon(R) processor 7200 Series",
+	                    173 => "Quad-Core Intel(R) Xeon(R) processor 7300 Series",
+	                    174 => "Quad-Core Intel(R) Xeon(R) processor 7400 Series",
+	                    175 => "Multi-Core Intel(R) Xeon(R) processor 7400 Series",
+	                    176 => "Pentium(R) III Xeon(TM)",
+	                    177 => "Pentium(R) III Processor with Intel(R) SpeedStep(TM) Technology",
+	                    178 => "Pentium(R) 4",
+	                    179 => "Intel(R) Xeon(TM)",
+	                    180 => "AS400 Family",
+	                    181 => "Intel(R) Xeon(TM) processor MP",
+	                    182 => "AMD Athlon(TM) XP Family",
+	                    183 => "AMD Athlon(TM) MP Family",
+	                    184 => "Intel(R) Itanium(R) 2",
+	                    185 => "Intel(R) Pentium(R) M processor",
+	                    186 => "Intel(R) Celeron(R) D processor",
+	                    187 => "Intel(R) Pentium(R) D processor",
+	                    188 => "Intel(R) Pentium(R) Processor Extreme Edition",
+	                    189 => "Intel(R) Core(TM) Solo Processor",
+	                    190 => "K7",
+	                    191 => "Intel(R) Core(TM)2 Duo Processor",
+	                    192 => "Intel(R) Core(TM)2 Solo processor",
+	                    193 => "Intel(R) Core(TM)2 Extreme processor",
+	                    194 => "Intel(R) Core(TM)2 Quad processor",
+	                    195 => "Intel(R) Core(TM)2 Extreme mobile processor",
+	                    196 => "Intel(R) Core(TM)2 Duo mobile processor",
+	                    197 => "Intel(R) Core(TM)2 Solo mobile processor",
+	                    198 => "Intel(R) Core(TM) i7 processor",
+	                    199 => "Dual-Core Intel(R) Celeron(R) Processor",
+	                    200 => "S/390 and zSeries Family",
+	                    201 => "ESA/390 G4",
+	                    202 => "ESA/390 G5",
+	                    203 => "ESA/390 G6",
+	                    204 => "z/Architectur base",
+	                    205 => "Intel(R) Core(TM) i5 processor",
+	                    206 => "Intel(R) Core(TM) i3 processor",
+	                    207 => "Intel(R) Core(TM) i9 processor",
+	                    210 => "VIA C7(TM)-M Processor Family",
+	                    211 => "VIA C7(TM)-D Processor Family",
+	                    212 => "VIA C7(TM) Processor Family",
+	                    213 => "VIA Eden(TM) Processor Family",
+	                    214 => "Multi-Core Intel(R) Xeon(R) processor",
+	                    215 => "Dual-Core Intel(R) Xeon(R) processor 3xxx Series",
+	                    216 => "Quad-Core Intel(R) Xeon(R) processor 3xxx Series",
+	                    217 => "VIA Nano(TM) Processor Family",
+	                    218 => "Dual-Core Intel(R) Xeon(R) processor 5xxx Series",
+	                    219 => "Quad-Core Intel(R) Xeon(R) processor 5xxx Series",
+	                    221 => "Dual-Core Intel(R) Xeon(R) processor 7xxx Series",
+	                    222 => "Quad-Core Intel(R) Xeon(R) processor 7xxx Series",
+	                    223 => "Multi-Core Intel(R) Xeon(R) processor 7xxx Series",
+	                    224 => "Multi-Core Intel(R) Xeon(R) processor 3400 Series",
+	                    230 => "Embedded AMD Opteron(TM) Quad-Core Processor Family",
+	                    231 => "AMD Phenom(TM) Triple-Core Processor Family",
+	                    232 => "AMD Turion(TM) Ultra Dual-Core Mobile Processor Family",
+	                    233 => "AMD Turion(TM) Dual-Core Mobile Processor Family",
+	                    234 => "AMD Athlon(TM) Dual-Core Processor Family",
+	                    235 => "AMD Sempron(TM) SI Processor Family",
+	                    236 => "AMD Phenom(TM) II Processor Family",
+	                    237 => "AMD Athlon(TM) II Processor Family",
+	                    238 => "Six-Core AMD Opteron(TM) Processor Family",
+	                    239 => "AMD Sempron(TM) M Processor Family",
+	                    250 => "i860",
+	                    251 => "i960",
+	                    254 => "Reserved (SMBIOS Extension)",
+	                    255 => "Reserved (Un-initialized Flash Content - Lo)",
+	                    260 => "SH-3",
+	                    261 => "SH-4",
+	                    280 => "ARM",
+	                    281 => "StrongARM",
+	                    300 => "6x86",
+	                    301 => "MediaGX",
+	                    302 => "MII",
+	                    320 => "WinChip",
+	                    350 => "DSP",
+	                    500 => "Video Processor",
+	                    65534 => "Reserved (For Future Special Purpose Assignment)",
+	                    65535 => "Reserved (Un-initialized Flash Content - Hi",
+	                    _ => "Unknown"
+                    };
 
-						case 2:
-							ProcessorFamily = "Unknown";
-							break;
-
-						case 3:
-							ProcessorFamily = "8086";
-							break;
-
-						case 4:
-							ProcessorFamily = "80286";
-							break;
-
-						case 5:
-							ProcessorFamily = "80386";
-							break;
-
-						case 6:
-							ProcessorFamily = "8048";
-							break;
-
-						case 7:
-							ProcessorFamily = "808";
-							break;
-
-						case 8:
-							ProcessorFamily = "027";
-							break;
-
-						case 9:
-							ProcessorFamily = "80387";
-							break;
-
-						case 10:
-							ProcessorFamily = "80487";
-							break;
-
-						case 11:
-							ProcessorFamily = "Pentium(R) brand";
-							break;
-
-						case 12:
-							ProcessorFamily = "Pentium(R) Pro";
-							break;
-
-						case 13:
-							ProcessorFamily = "Pentium(R) II";
-							break;
-
-						case 14:
-							ProcessorFamily = "Pentium(R) processor with MMX(TM) technology";
-							break;
-
-						case 15:
-							ProcessorFamily = "Celeron(TM)";
-							break;
-
-						case 16:
-							ProcessorFamily = "Pentium(R) II Xeon(TM)";
-							break;
-
-						case 17:
-							ProcessorFamily = "Pentium(R) III";
-							break;
-
-						case 18:
-							ProcessorFamily = "M1 Family";
-							break;
-
-						case 19:
-							ProcessorFamily = "M2 Family";
-							break;
-
-						case 20:
-							ProcessorFamily = "Intel(R) Celeron(R) M processor";
-							break;
-
-						case 21:
-							ProcessorFamily = "Intel(R) Pentium(R) 4 HT processor";
-							break;
-
-                        case 24:
-							ProcessorFamily = "K5 Family";
-							break;
-
-						case 25:
-							ProcessorFamily = "K6 Family";
-							break;
-
-						case 26:
-							ProcessorFamily = "K6-2";
-							break;
-
-						case 27:
-							ProcessorFamily = "K6-3";
-							break;
-
-						case 28:
-							ProcessorFamily = "AMD Athlon(TM) Processor Family";
-							break;
-
-						case 29:
-							ProcessorFamily = "AMD(R) Duron(TM) Processor";
-							break;
-
-						case 30:
-							ProcessorFamily = "AMD29000 Family";
-							break;
-
-						case 31:
-							ProcessorFamily = "K6-2+";
-							break;
-
-						case 32:
-							ProcessorFamily = "Power PC Family";
-							break;
-
-						case 33:
-							ProcessorFamily = "Power PC 601";
-							break;
-
-						case 34:
-							ProcessorFamily = "Power PC 603";
-							break;
-
-						case 35:
-							ProcessorFamily = "Power PC 603+";
-							break;
-
-						case 36:
-							ProcessorFamily = "Power PC 604";
-							break;
-
-						case 37:
-							ProcessorFamily = "Power PC 620";
-							break;
-
-						case 38:
-							ProcessorFamily = "Power PC X704";
-							break;
-
-						case 39:
-							ProcessorFamily = "Power PC 750";
-							break;
-
-						case 40:
-							ProcessorFamily = "Intel(R) Core(TM) Duo processor";
-							break;
-
-						case 41:
-							ProcessorFamily = "Intel(R) Core(TM) Duo mobile processor";
-							break;
-
-						case 42:
-							ProcessorFamily = "Intel(R) Core(TM) Solo mobile processor";
-							break;
-
-						case 43:
-							ProcessorFamily = "Intel(R) Atom(TM) processor";
-							break;
-
-                        case 48:
-							ProcessorFamily = "Alpha Family";
-							break;
-
-						case 49:
-							ProcessorFamily = "Alpha 21064";
-							break;
-
-						case 50:
-							ProcessorFamily = "Alpha 21066";
-							break;
-
-						case 51:
-							ProcessorFamily = "Alpha 21164";
-							break;
-
-						case 52:
-							ProcessorFamily = "Alpha 21164PC";
-							break;
-
-						case 53:
-							ProcessorFamily = "Alpha 21164a";
-							break;
-
-						case 54:
-							ProcessorFamily = "Alpha 21264";
-							break;
-
-						case 55:
-							ProcessorFamily = "Alpha 21364";
-							break;
-
-						case 56:
-							ProcessorFamily = "AMD Turion(TM) II Ultra Dual-Core Mobile M Processor Family";
-							break;
-
-						case 57:
-							ProcessorFamily = "AMD Turion(TM) II Dual-Core Mobile M Processor Family";
-							break;
-
-						case 58:
-							ProcessorFamily = "AMD Athlon(TM) II Dual-Core Mobile M Processor Family";
-							break;
-
-						case 59:
-							ProcessorFamily = "AMD Opteron(TM) 6100 Series Processor";
-							break;
-						
-						case 63:
-							ProcessorFamily = "Available for assignment";
-							break;
-
-						case 60:
-							ProcessorFamily = "AMD Opteron(TM) 4100 Series Processor";
-							break;
-
-						case 64:
-							ProcessorFamily = "MIPS Family";
-							break;
-
-						case 65:
-							ProcessorFamily = "MIPS R4000";
-							break;
-
-						case 66:
-							ProcessorFamily = "MIPS R4200";
-							break;
-
-						case 67:
-							ProcessorFamily = "MIPS R4400";
-							break;
-
-						case 68:
-							ProcessorFamily = "MIPS R4600";
-							break;
-
-						case 69:
-							ProcessorFamily = "MIPS R10000";
-							break;
-
-						case 80:
-							ProcessorFamily = "SPARC Family";
-							break;
-
-						case 81:
-							ProcessorFamily = "SuperSPARC";
-							break;
-
-						case 82:
-							ProcessorFamily = "microSPARC II";
-							break;
-
-						case 83:
-							ProcessorFamily = "microSPARC IIep";
-							break;
-
-						case 84:
-							ProcessorFamily = "UltraSPARC";
-							break;
-
-						case 85:
-							ProcessorFamily = "UltraSPARC II";
-							break;
-
-						case 86:
-							ProcessorFamily = "UltraSPARC IIi";
-							break;
-
-						case 87:
-							ProcessorFamily = "UltraSPARC III";
-							break;
-
-						case 88:
-							ProcessorFamily = "UltraSPARC IIIi";
-							break;
-
-						case 96:
-							ProcessorFamily = "68040";
-							break;
-
-						case 97:
-							ProcessorFamily = "68xxx Family";
-							break;
-
-						case 98:
-							ProcessorFamily = "68000";
-							break;
-
-						case 99:
-							ProcessorFamily = "68010";
-							break;
-
-						case 100:
-							ProcessorFamily = "68020";
-							break;
-
-						case 101:
-							ProcessorFamily = "68030";
-							break;
-
-						case 112:
-							ProcessorFamily = "Hobbit Family";
-							break;
-
-						case 120:
-							ProcessorFamily = "Crusoe(TM) TM5000 Family";
-							break;
-
-						case 121:
-							ProcessorFamily = "Crusoe(TM) TM3000 Family";
-							break;
-
-						case 122:
-							ProcessorFamily = "Efficeon(TM) TM8000 Family";
-							break;
-
-						case 128:
-							ProcessorFamily = "Weitek";
-							break;
-
-						case 130:
-							ProcessorFamily = "Itanium(TM) Processor";
-							break;
-
-						case 131:
-							ProcessorFamily = "AMD Athlon(TM) 64 Processor Family";
-							break;
-
-						case 132:
-							ProcessorFamily = "AMD Opteron(TM) Processor Family";
-							break;
-
-						case 133:
-							ProcessorFamily = "AMD Sempron(TM) Processor Family";
-							break;
-
-						case 134:
-							ProcessorFamily = "AMD Turion(TM) 64 Mobile Technology";
-							break;
-
-						case 135:
-							ProcessorFamily = "Dual-Core AMD Opteron(TM) Processor Family";
-							break;
-
-						case 136:
-							ProcessorFamily = "AMD Athlon(TM) 64 X2 Dual-Core Processor Family";
-							break;
-
-						case 137:
-							ProcessorFamily = "AMD Turion(TM) 64 X2 Mobile Technology";
-							break;
-
-						case 138:
-							ProcessorFamily = "Quad-Core AMD Opteron(TM) Processor Family";
-							break;
-
-						case 139:
-							ProcessorFamily = "Third-Generation AMD Opteron(TM) Processor Family";
-							break;
-
-						case 140:
-							ProcessorFamily = "AMD Phenom(TM) FX Quad-Core Processor Family";
-							break;
-
-						case 141:
-							ProcessorFamily = "AMD Phenom(TM) X4 Quad-Core Processor Family";
-							break;
-
-						case 142:
-							ProcessorFamily = "AMD Phenom(TM) X2 Dual-Core Processor Family";
-							break;
-
-						case 143:
-							ProcessorFamily = "AMD Athlon(TM) X2 Dual-Core Processor Family";
-							break;
-
-						case 144:
-							ProcessorFamily = "PA-RISC Family";
-							break;
-
-						case 145:
-							ProcessorFamily = "PA-RISC 8500";
-							break;
-
-						case 146:
-							ProcessorFamily = "PA-RISC 8000";
-							break;
-
-						case 147:
-							ProcessorFamily = "PA-RISC 7300LC";
-							break;
-
-						case 148:
-							ProcessorFamily = "PA-RISC 7200";
-							break;
-
-						case 149:
-							ProcessorFamily = "PA-RISC 7100LC";
-							break;
-
-						case 150:
-							ProcessorFamily = "PA-RISC 7100";
-							break;
-
-						case 160:
-							ProcessorFamily = "V30 Family";
-							break;
-
-						case 161:
-							ProcessorFamily = "Quad-Core Intel(R) Xeon(R) processor 3200 Series";
-							break;
-
-						case 162:
-							ProcessorFamily = "Dual-Core Intel(R) Xeon(R) processor 3000 Series";
-							break;
-
-						case 163:
-							ProcessorFamily = "Quad-Core Intel(R) Xeon(R) processor 5300 Series";
-							break;
-
-						case 164:
-							ProcessorFamily = "Dual-Core Intel(R) Xeon(R) processor 5100 Series";
-							break;
-
-						case 165:
-							ProcessorFamily = "Dual-Core Intel(R) Xeon(R) processor 5000 Series";
-							break;
-
-						case 166:
-							ProcessorFamily = "Dual-Core Intel(R) Xeon(R) processor LV";
-							break;
-
-						case 167:
-							ProcessorFamily = "Dual-Core Intel(R) Xeon(R) processor ULV";
-							break;
-
-						case 168:
-							ProcessorFamily = "Dual-Core Intel(R) Xeon(R) processor 7100 Series";
-							break;
-
-						case 169:
-							ProcessorFamily = "Quad-Core Intel(R) Xeon(R) processor 5400 Series";
-							break;
-
-						case 170:
-							ProcessorFamily = "Quad-Core Intel(R) Xeon(R) processor";
-							break;
-
-						case 171:
-							ProcessorFamily = "Dual-Core Intel(R) Xeon(R) processor 5200 Series";
-							break;
-
-						case 172:
-							ProcessorFamily = "Dual-Core Intel(R) Xeon(R) processor 7200 Series";
-							break;
-
-						case 173:
-							ProcessorFamily = "Quad-Core Intel(R) Xeon(R) processor 7300 Series";
-							break;
-
-						case 174:
-							ProcessorFamily = "Quad-Core Intel(R) Xeon(R) processor 7400 Series";
-							break;
-
-						case 175:
-							ProcessorFamily = "Multi-Core Intel(R) Xeon(R) processor 7400 Series";
-							break;
-
-						case 176:
-							ProcessorFamily = "Pentium(R) III Xeon(TM)";
-							break;
-
-						case 177:
-							ProcessorFamily = "Pentium(R) III Processor with Intel(R) SpeedStep(TM) Technology";
-							break;
-
-						case 178:
-							ProcessorFamily = "Pentium(R) 4";
-							break;
-
-						case 179:
-							ProcessorFamily = "Intel(R) Xeon(TM)";
-							break;
-
-						case 180:
-							ProcessorFamily = "AS400 Family";
-							break;
-
-						case 181:
-							ProcessorFamily = "Intel(R) Xeon(TM) processor MP";
-							break;
-
-						case 182:
-							ProcessorFamily = "AMD Athlon(TM) XP Family";
-							break;
-
-						case 183:
-							ProcessorFamily = "AMD Athlon(TM) MP Family";
-							break;
-
-						case 184:
-							ProcessorFamily = "Intel(R) Itanium(R) 2";
-							break;
-
-						case 185:
-							ProcessorFamily = "Intel(R) Pentium(R) M processor";
-							break;
-
-						case 186:
-							ProcessorFamily = "Intel(R) Celeron(R) D processor";
-							break;
-
-						case 187:
-							ProcessorFamily = "Intel(R) Pentium(R) D processor";
-							break;
-
-						case 188:
-							ProcessorFamily = "Intel(R) Pentium(R) Processor Extreme Edition";
-							break;
-
-						case 189:
-							ProcessorFamily = "Intel(R) Core(TM) Solo Processor";
-							break;
-
-						case 190:
-							ProcessorFamily = "K7";
-							break;
-
-						case 191:
-							ProcessorFamily = "Intel(R) Core(TM)2 Duo Processor";
-							break;
-
-						case 192:
-							ProcessorFamily = "Intel(R) Core(TM)2 Solo processor";
-							break;
-
-						case 193:
-							ProcessorFamily = "Intel(R) Core(TM)2 Extreme processor";
-							break;
-
-						case 194:
-							ProcessorFamily = "Intel(R) Core(TM)2 Quad processor";
-							break;
-
-						case 195:
-							ProcessorFamily = "Intel(R) Core(TM)2 Extreme mobile processor";
-							break;
-
-						case 196:
-							ProcessorFamily = "Intel(R) Core(TM)2 Duo mobile processor";
-							break;
-
-						case 197:
-							ProcessorFamily = "Intel(R) Core(TM)2 Solo mobile processor";
-							break;
-
-						case 198:
-							ProcessorFamily = "Intel(R) Core(TM) i7 processor";
-							break;
-
-						case 199:
-							ProcessorFamily = "Dual-Core Intel(R) Celeron(R) Processor";
-							break;
-
-						case 200:
-							ProcessorFamily = "S/390 and zSeries Family";
-							break;
-
-						case 201:
-							ProcessorFamily = "ESA/390 G4";
-							break;
-
-						case 202:
-							ProcessorFamily = "ESA/390 G5";
-							break;
-
-						case 203:
-							ProcessorFamily = "ESA/390 G6";
-							break;
-
-						case 204:
-							ProcessorFamily = "z/Architectur base";
-							break;
-
-						case 205:
-							ProcessorFamily = "Intel(R) Core(TM) i5 processor";
-							break;
-
-						case 206:
-							ProcessorFamily = "Intel(R) Core(TM) i3 processor";
-							break;
-
-						case 207:
-							ProcessorFamily = "Intel(R) Core(TM) i9 processor";
-							break;
-
-						case 210:
-							ProcessorFamily = "VIA C7(TM)-M Processor Family";
-							break;
-
-						case 211:
-							ProcessorFamily = "VIA C7(TM)-D Processor Family";
-							break;
-
-						case 212:
-							ProcessorFamily = "VIA C7(TM) Processor Family";
-							break;
-
-						case 213:
-							ProcessorFamily = "VIA Eden(TM) Processor Family";
-							break;
-
-						case 214:
-							ProcessorFamily = "Multi-Core Intel(R) Xeon(R) processor";
-							break;
-
-						case 215:
-							ProcessorFamily = "Dual-Core Intel(R) Xeon(R) processor 3xxx Series";
-							break;
-
-						case 216:
-							ProcessorFamily = "Quad-Core Intel(R) Xeon(R) processor 3xxx Series";
-							break;
-
-						case 217:
-							ProcessorFamily = "VIA Nano(TM) Processor Family";
-							break;
-
-						case 218:
-							ProcessorFamily = "Dual-Core Intel(R) Xeon(R) processor 5xxx Series";
-							break;
-
-						case 219:
-							ProcessorFamily = "Quad-Core Intel(R) Xeon(R) processor 5xxx Series";
-							break;
-
-						case 221:
-							ProcessorFamily = "Dual-Core Intel(R) Xeon(R) processor 7xxx Series";
-							break;
-
-						case 222:
-							ProcessorFamily = "Quad-Core Intel(R) Xeon(R) processor 7xxx Series";
-							break;
-
-						case 223:
-							ProcessorFamily = "Multi-Core Intel(R) Xeon(R) processor 7xxx Series";
-							break;
-
-						case 224:
-							ProcessorFamily = "Multi-Core Intel(R) Xeon(R) processor 3400 Series";
-							break;
-
-						case 230:
-							ProcessorFamily = "Embedded AMD Opteron(TM) Quad-Core Processor Family";
-							break;
-
-						case 231:
-							ProcessorFamily = "AMD Phenom(TM) Triple-Core Processor Family";
-							break;
-
-						case 232:
-							ProcessorFamily = "AMD Turion(TM) Ultra Dual-Core Mobile Processor Family";
-							break;
-
-						case 233:
-							ProcessorFamily = "AMD Turion(TM) Dual-Core Mobile Processor Family";
-							break;
-
-						case 234:
-							ProcessorFamily = "AMD Athlon(TM) Dual-Core Processor Family";
-							break;
-
-						case 235:
-							ProcessorFamily = "AMD Sempron(TM) SI Processor Family";
-							break;
-
-						case 236:
-							ProcessorFamily = "AMD Phenom(TM) II Processor Family";
-							break;
-
-						case 237:
-							ProcessorFamily = "AMD Athlon(TM) II Processor Family";
-							break;
-
-						case 238:
-							ProcessorFamily = "Six-Core AMD Opteron(TM) Processor Family";
-							break;
-
-						case 239:
-							ProcessorFamily = "AMD Sempron(TM) M Processor Family";
-							break;
-
-						case 250:
-							ProcessorFamily = "i860";
-							break;
-
-						case 251:
-							ProcessorFamily = "i960";
-							break;
-
-						case 254:
-							ProcessorFamily = "Reserved (SMBIOS Extension)";
-							break;
-
-						case 255:
-							ProcessorFamily = "Reserved (Un-initialized Flash Content - Lo)";
-							break;
-
-						case 260:
-							ProcessorFamily = "SH-3";
-							break;
-
-						case 261:
-							ProcessorFamily = "SH-4";
-							break;
-
-						case 280:
-							ProcessorFamily = "ARM";
-							break;
-
-						case 281:
-							ProcessorFamily = "StrongARM";
-							break;
-
-						case 300:
-							ProcessorFamily = "6x86";
-							break;
-
-						case 301:
-							ProcessorFamily = "MediaGX";
-							break;
-
-						case 302:
-							ProcessorFamily = "MII";
-							break;
-
-						case 320:
-							ProcessorFamily = "WinChip";
-							break;
-
-						case 350:
-							ProcessorFamily = "DSP";
-							break;
-
-						case 500:
-							ProcessorFamily = "Video Processor";
-							break;
-
-						case 65534:
-							ProcessorFamily = "Reserved (For Future Special Purpose Assignment)";
-							break;
-
-						case 65535:
-							ProcessorFamily = "Reserved (Un-initialized Flash Content - Hi";
-							break;
-						
-						default: 
-							ProcessorFamily = "Unknown";
-							break;
-
-                    }
-                    
                     // Architecture
                     var architecture = (ushort)returnValue.PropertiesResultList[0, 3];
 
-                    switch (architecture)
+                    ProcessorArchitecture = architecture switch
                     {
-	                    case 0:
-		                    ProcessorArchitecture = "x86";
-		                    break;
+	                    0 => "x86",
+	                    1 => "MIPS",
+	                    2 => "Alpha",
+	                    3 => "PowerPC",
+	                    5 => "ARM",
+	                    6 => "ia4",
+	                    9 => "x64",
+	                    12 => "ARM6",
+	                    _ => "Unknown"
+                    };
 
-	                    case 1:
-		                    ProcessorArchitecture = "MIPS";
-		                    break;
-
-	                    case 2:
-		                    ProcessorArchitecture = "Alpha";
-		                    break;
-
-	                    case 3:
-		                    ProcessorArchitecture = "PowerPC";
-		                    break;
-
-	                    case 5:
-		                    ProcessorArchitecture = "ARM";
-		                    break;
-
-	                    case 6:
-		                    ProcessorArchitecture = "ia4";
-		                    break;
-
-	                    case 9:
-		                    ProcessorArchitecture = "x64";
-		                    break;
-
-	                    case 12:
-		                    ProcessorArchitecture = "ARM6";
-		                    break;
-	                    
-	                    default:
-		                    ProcessorArchitecture = "Unknown";
-		                    break;
-
-                    }
-                    
                     // Description
                     ProcessorDescription = (string)returnValue.PropertiesResultList[0, 4];
                     
@@ -875,68 +272,41 @@ namespace System_Information.MVVM.View
                     // Virtualization Firmware
                     var virtualizationFirmware = (bool)returnValue.PropertiesResultList[0, 6];
 
-                    switch (virtualizationFirmware)
+                    Virtualization = virtualizationFirmware switch
                     {
-	                    case true:
-		                    Virtualization = "Yes";
-		                    break;
+	                    true => "Yes",
+	                    false => "No"
+                    };
 
-	                    case false:
-		                    Virtualization = "No";
-		                    break;
-	                    
-                    }
-                    
                     // Address Width
                     var addressWidth = (ushort)returnValue.PropertiesResultList[0, 7];
 
-                    switch (addressWidth)
+                    AddressWidth = addressWidth switch
                     {
-	                    case 32:
-		                    AddressWidth = "32-bit";
-		                    break;
-	                    
-	                    case 64:
-		                    AddressWidth = "64-bit";
-		                    break;
-	                    
-	                    default:						
-		                    AddressWidth = "Unknown";
-		                    break;
-                    }
-                    
+	                    32 => "32-bit",
+	                    64 => "64-bit",
+	                    _ => "Unknown"
+                    };
+
                     // Data Width
                     var dataWidth = (ushort)returnValue.PropertiesResultList[0, 8];
 
-                    switch (dataWidth)
+                    DataWidth = dataWidth switch
                     {
-	                    case 32:
-		                    DataWidth = "32-bit";
-		                    break;
-	                    
-	                    case 64:
-		                    DataWidth = "64-bit";
-		                    break;
-	                    
-	                    default:
-		                    DataWidth = "Unknown";
-		                    break;
-                    }
-                    
+	                    32 => "32-bit",
+	                    64 => "64-bit",
+	                    _ => "Unknown"
+                    };
+
                     // Power Management Supported
                     var powerManagementSupported = (bool)returnValue.PropertiesResultList[0, 9];
 
-                    switch (powerManagementSupported)
+                    PowerManagementSupported = powerManagementSupported switch
                     {
-	                    case true:
-		                    PowerManagementSupported = "True";
-		                    break;
-	                    
-	                    case false:
-		                    PowerManagementSupported = "False";
-		                    break;
-                    }
-                    
+	                    true => "True",
+	                    false => "False"
+                    };
+
                     // Version
                     Version = (string)returnValue.PropertiesResultList[0, 10];
                     
@@ -952,7 +322,7 @@ namespace System_Information.MVVM.View
                 {
                     Log.Info("Get CPU Characteristics");
                     // Query return
-                    var returnValue = _wmIqueyManager.WmIquery("Win32_Processor", new[] { "Characteristics" });
+                    var returnValue = _wmiQueryManager.WmIquery("Win32_Processor", new[] { "Characteristics" });
                     
                     // Get uint value from return
                     var uintValue = (uint)returnValue.PropertiesResultList[0, 0];
@@ -971,84 +341,47 @@ namespace System_Information.MVVM.View
                     
                     // Get bits value and set the CPU Characteristics
                     // 64-bit Capable
-                    switch (bitsString[2])
+                    X64BitCapable = bitsString[2] switch
                     {
-	                    case '0':
-		                    X64BitCapable = "False";
-		                    break;
-	                    case '1':
-		                    X64BitCapable = "True";
-		                    break;
-	                    default:
-		                    X64BitCapable = "Unknown";
-		                    break;
-                    }
+	                    '0' => "False",
+	                    '1' => "True",
+	                    _ => "Unknown"
+                    };
                     // Multi-Core Processor
-                    switch (bitsString[3])
-					{
-	                    case '0':
-		                    MultiCore = "False";
-		                    break;
-	                    case '1':
-		                    MultiCore = "True";
-		                    break;
-	                    default:
-		                    MultiCore = "Unknown";
-		                    break;
-					}
+                    MultiCore = bitsString[3] switch
+                    {
+	                    '0' => "False",
+	                    '1' => "True",
+	                    _ => "Unknown"
+                    };
                     // Hardware Thread
-                    switch (bitsString[4])
+                    HardwareThread = bitsString[4] switch
                     {
-	                    case '0':
-		                    HardwareThread = "False";
-		                    break;
-	                    case '1':
-		                    HardwareThread = "True";
-		                    break;
-	                    default:
-		                    HardwareThread = "Unknown";
-		                    break;
-                    }
+	                    '0' => "False",
+	                    '1' => "True",
+	                    _ => "Unknown"
+                    };
                     // Execute Protection
-                    switch (bitsString[5])
-					{
-	                    case '0':
-		                    ExecuteProtection = "False";
-		                    break;
-	                    case '1':
-		                    ExecuteProtection = "True";
-		                    break;
-	                    default:
-		                    ExecuteProtection = "Unknown";
-		                    break;
-					}
-                    // Enhanced Virtualization
-                    switch (bitsString[6])
+                    ExecuteProtection = bitsString[5] switch
                     {
-	                    case '0':
-		                    EnhancedVirtualization = "False";
-		                    break;
-	                    case '1':
-		                    EnhancedVirtualization = "True";
-		                    break;
-	                    default:
-		                    EnhancedVirtualization = "Unknown";
-		                    break;
-                    }
+	                    '0' => "False",
+	                    '1' => "True",
+	                    _ => "Unknown"
+                    };
+                    // Enhanced Virtualization
+                    EnhancedVirtualization = bitsString[6] switch
+                    {
+	                    '0' => "False",
+	                    '1' => "True",
+	                    _ => "Unknown"
+                    };
                     // Power/Performance Control
-                    switch (bitsString[7])
-					{
-	                    case '0':
-		                    PowerPerformanceControl = "False";
-		                    break;
-	                    case '1':
-		                    PowerPerformanceControl = "True";
-		                    break;
-	                    default:
-		                    PowerPerformanceControl = "Unknown";
-		                    break;
-					}
-                    
+                    PowerPerformanceControl = bitsString[7] switch
+                    {
+	                    '0' => "False",
+	                    '1' => "True",
+	                    _ => "Unknown"
+                    };
                 }),
                 
                 // Get CPU Metrics
@@ -1056,7 +389,7 @@ namespace System_Information.MVVM.View
                 {
 	                Log.Info("Get CPU Metrics");
                     // Query return
-                    var returnValue = _wmIqueyManager.WmIquery("Win32_Processor", new[]
+                    var returnValue = _wmiQueryManager.WmIquery("Win32_Processor", new[]
                     {
 	                    "CurrentClockSpeed", "MaxClockSpeed", "ExtClock", "CurrentVoltage", "NumberOfCores", 
 	                    "NumberOfEnabledCore", "NumberOfLogicalProcessors", "ThreadCount", "LoadPercentage",
@@ -1283,30 +616,30 @@ namespace System_Information.MVVM.View
         }
         
 
-        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        private void dispatcherTimer_Tick(object? sender, EventArgs e)
         {
 	        if (_canUpdateMetrics)
 	        {
 		        _canUpdateMetrics = false;
 		        Trace.WriteLine("Update...");
 	        
-		        var currentClockSpeedString = "N/A";
-		        var maxClockSpeedString = "N/A";
-		        var externalClockSpeedString = "N/A";
-		        var currentVoltageString = "N/A";
-		        var numberOfCoresString = "N/A";
-		        var numberOfLogicalProcessorsString = "N/A";
-		        var numberOfThreadsString = "N/A";
-		        var loadPercentageString = "N/A";
-		        var l2CacheSizeString = "N/A";
-		        var l3CacheSizeString = "N/A";
+		        string currentClockSpeedString;
+		        string maxClockSpeedString;
+		        string externalClockSpeedString;
+		        string currentVoltageString;
+		        string numberOfCoresString;
+		        string numberOfLogicalProcessorsString;
+		        string numberOfThreadsString;
+		        string loadPercentageString;
+		        string l2CacheSizeString;
+		        string l3CacheSizeString;
 		        
 		        Task.Run(() =>
 		        {
 					Log.Info("Get CPU Metrics For Update");
 
 					// Query Return
-					var returnValue = _wmIqueyManager.WmIquery("Win32_Processor", new[]
+					var returnValue = _wmiQueryManager.WmIquery("Win32_Processor", new[]
 					{
 						"CurrentClockSpeed", "MaxClockSpeed", "ExtClock", "CurrentVoltage", "NumberOfCores", 
 						"NumberOfEnabledCore", "NumberOfLogicalProcessors", "ThreadCount", "LoadPercentage",
@@ -1431,42 +764,42 @@ namespace System_Information.MVVM.View
             if (e.Key == Key.C && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 var selectedItem = (TreeViewNode)MainTreeView.SelectedItem;
-                Clipboard.SetText(selectedItem.Content.ToString());
+                Clipboard.SetText(selectedItem.Content.ToString() ?? string.Empty);
                 Log.Info("Copied to clipboard : " + selectedItem.Content);
             }
         }
 
         #region Values
 
-        private string ProcessorName { get; set; }
-        private string ProcessorManufacturer { get; set; }
-        private string ProcessorFamily { get; set; }
-        private string ProcessorArchitecture { get; set; }
-        private string ProcessorDescription { get; set; }
-        private string SocketDesignation { get; set; }
-        private string Virtualization { get; set; }
-        private string AddressWidth { get; set; }
-        private string DataWidth { get; set; }
-        private string PowerManagementSupported { get; set; }
-        private string Version { get; set; }
-        private string ProcessorId { get; set; }
-        private string Status { get; set; }
-        private string X64BitCapable { get; set; }
-        private string MultiCore { get; set; }
-        private string HardwareThread { get; set; }
-        private string ExecuteProtection { get; set; }
-        private string EnhancedVirtualization { get; set; }
-        private string PowerPerformanceControl { get; set; }
-        private string CurrentClockSpeed { get; set; }
-        private string MaxClockSpeed { get; set; }
-        private string ExternalClockSpeed { get; set; }
-        private string CurrentVoltage { get; set; }
-        private string NumberOfCores { get; set; }
-        private string NumberOfLogicalProcessors { get; set; }
-        private string NumberOfThreads { get; set; }
-        private string LoadPercentage { get; set; }
-        private string L2CacheSize { get; set; }
-        private string L3CacheSize { get; set; }
+        private string ProcessorName { get; set; } = "";
+        private string ProcessorManufacturer { get; set; } = "";
+        private string ProcessorFamily { get; set; } = "";
+        private string ProcessorArchitecture { get; set; } = "";
+        private string ProcessorDescription { get; set; } = "";
+        private string SocketDesignation { get; set; } = "";
+        private string Virtualization { get; set; } = "";
+        private string AddressWidth { get; set; } = "";
+        private string DataWidth { get; set; } = ""; 
+        private string PowerManagementSupported { get; set; } = "";
+        private string Version { get; set; } = "";
+        private string ProcessorId { get; set; } = "";
+        private string Status { get; set; } = "";
+        private string X64BitCapable { get; set; } = "";
+        private string MultiCore { get; set; } = "";
+        private string HardwareThread { get; set; } = "";
+        private string ExecuteProtection { get; set; } = "";
+        private string EnhancedVirtualization { get; set; } = "";
+        private string PowerPerformanceControl { get; set; } = "";
+        private string CurrentClockSpeed { get; set; } = "";
+        private string MaxClockSpeed { get; set; } = "";
+        private string ExternalClockSpeed { get; set; } = "";
+        private string CurrentVoltage { get; set; } = "";
+        private string NumberOfCores { get; set; } = "";
+        private string NumberOfLogicalProcessors { get; set; } = "";
+        private string NumberOfThreads { get; set; } = "";
+        private string LoadPercentage { get; set; } = "";
+        private string L2CacheSize { get; set; } = "";
+        private string L3CacheSize { get; set; } = "";
         
         // Metrics Nodes
         private TreeViewNode CurrentClockSpeedNode { get; set; }
