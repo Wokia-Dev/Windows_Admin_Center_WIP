@@ -162,7 +162,7 @@ namespace System_Information.MVVM.View
                     var returnValue = wmiQueryManager.WmIquery("Win32_BaseBoard", new[] { "Product" });
 
                     // Set final string of MotherBoard Model
-                    MotherBoardModel = (string)returnValue.PropertiesResultList[0, 0];
+                    MotherBoardModel = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
                 }),
 
                 // Get Bios Name
@@ -173,7 +173,7 @@ namespace System_Information.MVVM.View
                     var returnValue = wmiQueryManager.WmIquery("Win32_BIOS", new[] { "Name" });
 
                     // Set final string of Bios Name
-                    BiosName = (string)returnValue.PropertiesResultList[0, 0];
+                    BiosName = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
                 }),
 
                 // Get UUID
@@ -184,7 +184,7 @@ namespace System_Information.MVVM.View
                     var returnValue = wmiQueryManager.WmIquery("Win32_ComputerSystemProduct", new[] { "UUID" });
 
                     // Set final string of UUID
-                    Uuid = (string)returnValue.PropertiesResultList[0, 0];
+                    Uuid = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
                 }),
 
                 // Get Processor Info
@@ -196,8 +196,8 @@ namespace System_Information.MVVM.View
                         new[] { "Name", "Manufacturer", "Architecture" });
 
                     // Set finals string of cpu info
-                    CpuName = (string)returnValue.PropertiesResultList[0, 0];
-                    CpuManufacturer = (string)returnValue.PropertiesResultList[0, 1];
+                    CpuName = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
+                    CpuManufacturer = (string)returnValue.PropertiesResultList[0, 1] ?? "N/A";
 
                     // get property value
                     var result = (ushort)returnValue.PropertiesResultList[0, 2];
@@ -236,11 +236,11 @@ namespace System_Information.MVVM.View
                         var bytes = (ulong)returnValue.PropertiesResultList[i, 0];
                         if (bytes > 1000000000)
                             capacity = convertorUtils.BytsToGigaBytes((ulong)returnValue.PropertiesResultList[i, 0]) +
-                                       "GB";
+                                       "GB" ?? "N/A";
                         else
                             capacity = convertorUtils.BytesToMegaBytes((ulong)returnValue.PropertiesResultList[i, 0]) +
-                                       "MB";
-                        var speed = returnValue.PropertiesResultList[i, 1] + "MHz";
+                                       "MB" ?? "N/A";
+                        var speed = returnValue.PropertiesResultList[i, 1] + "MHz" ?? "N/A";
 
                         // add final string
                         MemoryList.Add(capacity + " " + speed);
@@ -261,8 +261,9 @@ namespace System_Information.MVVM.View
                     for (var i = 0; i < returnValue.NbResult; i++)
                     {
                         // format return value to string
-                        var size = convertorUtils.BytsToGigaBytes((ulong)returnValue.PropertiesResultList[i, 1]) + "GB";
-                        var caption = (string)returnValue.PropertiesResultList[i, 0];
+                        var size = convertorUtils.BytsToGigaBytes((ulong)returnValue.PropertiesResultList[i, 1]) + "GB" ??
+                                   "N/A";
+                        var caption = (string)returnValue.PropertiesResultList[i, 0] ?? "N/A";
 
                         DiskList.Add(caption + " (" + size + ")");
                     }
@@ -280,7 +281,7 @@ namespace System_Information.MVVM.View
 
                     // Add to gpu List each gpu
                     for (var i = 0; i < returnValue.NbResult; i++)
-                        GpuList.Add((string)returnValue.PropertiesResultList[i, 0]);
+                        GpuList.Add((string)returnValue.PropertiesResultList[i, 0] ?? "N/A");
                 }),
 
                 // Get Audio Devices Info
@@ -295,7 +296,7 @@ namespace System_Information.MVVM.View
 
                     // Add to audio device List each audio device
                     for (var i = 0; i < returnValue.NbResult; i++)
-                        AudioDeviceList.Add((string)returnValue.PropertiesResultList[i, 0]);
+                        AudioDeviceList.Add((string)returnValue.PropertiesResultList[i, 0] ?? "N/A");
                 }),
 
                 // Get Network Adapter Info
@@ -313,8 +314,8 @@ namespace System_Information.MVVM.View
                     for (var i = 0; i < returnValue.NbResult; i++)
                     {
                         // format return value to string
-                        var description = (string)returnValue.PropertiesResultList[i, 0];
-                        var result = (ushort)returnValue.PropertiesResultList[i, 1];
+                        var description = (string)returnValue.PropertiesResultList[i, 0] ?? "N/A";
+                        var result = returnValue.PropertiesResultList[i, 1] ?? null;
 
                         var status = result switch
                         {
@@ -331,6 +332,7 @@ namespace System_Information.MVVM.View
                             10 => "Authentication failed",
                             11 => "Invalid address",
                             12 => "Credentials required",
+                            null => "N/A",
                             _ => ""
                         };
 
@@ -350,7 +352,7 @@ namespace System_Information.MVVM.View
 
                     // Add to keyboard List each keyboard
                     for (var i = 0; i < returnValue.NbResult; i++)
-                        KeyboardList.Add((string)returnValue.PropertiesResultList[i, 0]);
+                        KeyboardList.Add((string)returnValue.PropertiesResultList[i, 0] ?? "N/A");
                 }),
 
                 // Get Mouse Info
@@ -365,7 +367,7 @@ namespace System_Information.MVVM.View
 
                     // Add to mouse List each mouse device
                     for (var i = 0; i < returnValue.NbResult; i++)
-                        MouseList.Add((string)returnValue.PropertiesResultList[i, 0]);
+                        MouseList.Add((string)returnValue.PropertiesResultList[i, 0] ?? "N/A");
                 }),
 
                 // Get Win SAT Info

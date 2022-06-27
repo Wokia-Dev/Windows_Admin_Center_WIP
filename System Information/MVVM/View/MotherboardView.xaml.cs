@@ -48,7 +48,7 @@ public partial class MotherboardView
                 var returnValue = wmiQueryManager.WmIquery("Win32_BaseBoard", new[] { "Product" });
 
                 // Set final string of MbProductName
-                MbProductName = (string)returnValue.PropertiesResultList[0, 0];
+                MbProductName = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
             }),
 
             // Get MbManufacturer
@@ -59,7 +59,7 @@ public partial class MotherboardView
                 var returnValue = wmiQueryManager.WmIquery("Win32_BaseBoard", new[] { "Manufacturer" });
 
                 // Set final string of MbManufacturer
-                MbManufacturer = (string)returnValue.PropertiesResultList[0, 0];
+                MbManufacturer = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
             }),
 
             // Get MbSerialNumber
@@ -70,7 +70,7 @@ public partial class MotherboardView
                 var returnValue = wmiQueryManager.WmIquery("Win32_BaseBoard", new[] { "SerialNumber" });
 
                 // Set final string of MbSerialNumber
-                MbSerialNumber = (string)returnValue.PropertiesResultList[0, 0];
+                MbSerialNumber = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
             }),
 
             // Get MbStatus
@@ -81,7 +81,7 @@ public partial class MotherboardView
                 var returnValue = wmiQueryManager.WmIquery("Win32_BaseBoard", new[] { "Status" });
 
                 // Set final string of MbStatus
-                MbStatus = (string)returnValue.PropertiesResultList[0, 0];
+                MbStatus = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
             }),
 
             // Get MbBusType
@@ -94,7 +94,7 @@ public partial class MotherboardView
 
                 // Set final string of MbBusType
                 MbBusType = (string)returnValue.PropertiesResultList[0, 0] + ", " +
-                            (string)returnValue.PropertiesResultList[0, 1];
+                            (string)returnValue.PropertiesResultList[0, 1] ?? "N/A";
             }),
 
             // Get OnBoardDevices Info
@@ -146,7 +146,6 @@ public partial class MotherboardView
                 // Add each element of returnValue to IdeControllerCaption list
                 for (var i = 0; i < returnValue.NbResult; i++)
                 {
-                    string protocolSupported;
                     var caption = (string)returnValue.PropertiesResultList[i, 0] != ""
                         ? (string)returnValue.PropertiesResultList[i, 0]
                         : "N/A";
@@ -158,7 +157,7 @@ public partial class MotherboardView
                         : "N/A";
                     var result = (ushort)returnValue.PropertiesResultList[i, 2];
 
-                    protocolSupported = result switch
+                    var protocolSupported = result switch
                     {
                         1 => "Other",
                         2 => "Unknown",
@@ -234,7 +233,6 @@ public partial class MotherboardView
                 {
                     var connectorTypeList = new List<string>();
                     var connectorType = "";
-                    string portType;
                     var connectorTypeResult = (ushort[])returnValue.PropertiesResultList[i, 1];
                     var portTypeResult = (ushort)returnValue.PropertiesResultList[i, 2];
 
@@ -613,7 +611,7 @@ public partial class MotherboardView
                     // Get the connector type string
                     foreach (var str in connectorTypeList) connectorType += str + " ";
 
-                    portType = portTypeResult switch
+                    var portType = portTypeResult switch
                     {
                         0 => "None",
                         1 => "Parallel Port XT/AT Compatible",

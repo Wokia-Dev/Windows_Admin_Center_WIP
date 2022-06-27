@@ -48,13 +48,13 @@ public partial class CpuView
                 });
 
                 // Name property
-                ProcessorName = (string)returnValue.PropertiesResultList[0, 0];
+                ProcessorName = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
 
                 // Manufacturer property
-                ProcessorManufacturer = (string)returnValue.PropertiesResultList[0, 1];
+                ProcessorManufacturer = (string)returnValue.PropertiesResultList[0, 1] ?? "N/A";
 
                 // Family property
-                var family = (ushort)returnValue.PropertiesResultList[0, 2];
+                var family = returnValue.PropertiesResultList[0, 2] ?? 0;
 
                 ProcessorFamily = family switch
                 {
@@ -252,7 +252,7 @@ public partial class CpuView
                 };
 
                 // Architecture
-                var architecture = (ushort)returnValue.PropertiesResultList[0, 3];
+                var architecture = returnValue.PropertiesResultList[0, 3] ?? 100;
 
                 ProcessorArchitecture = architecture switch
                 {
@@ -268,22 +268,24 @@ public partial class CpuView
                 };
 
                 // Description
-                ProcessorDescription = (string)returnValue.PropertiesResultList[0, 4];
+                ProcessorDescription = (string)returnValue.PropertiesResultList[0, 4] ?? "N/A";
 
                 // Socket Designation
-                SocketDesignation = (string)returnValue.PropertiesResultList[0, 5];
+                SocketDesignation = (string)returnValue.PropertiesResultList[0, 5] ?? "N/A";
 
                 // Virtualization Firmware
-                var virtualizationFirmware = (bool)returnValue.PropertiesResultList[0, 6];
+                var virtualizationFirmware = returnValue.PropertiesResultList[0, 6] ?? null;
 
                 Virtualization = virtualizationFirmware switch
                 {
                     true => "Yes",
-                    false => "No"
+                    false => "No",
+                    null => "N/A",
+                    _ => ""
                 };
 
                 // Address Width
-                var addressWidth = (ushort)returnValue.PropertiesResultList[0, 7];
+                var addressWidth = returnValue.PropertiesResultList[0, 7] ?? 0;
 
                 AddressWidth = addressWidth switch
                 {
@@ -293,7 +295,7 @@ public partial class CpuView
                 };
 
                 // Data Width
-                var dataWidth = (ushort)returnValue.PropertiesResultList[0, 8];
+                var dataWidth = returnValue.PropertiesResultList[0, 8] ?? 0;
 
                 DataWidth = dataWidth switch
                 {
@@ -303,22 +305,24 @@ public partial class CpuView
                 };
 
                 // Power Management Supported
-                var powerManagementSupported = (bool)returnValue.PropertiesResultList[0, 9];
+                var powerManagementSupported = returnValue.PropertiesResultList[0, 9] ?? null;
 
                 PowerManagementSupported = powerManagementSupported switch
                 {
                     true => "True",
-                    false => "False"
+                    false => "False",
+                    null => "N/A",
+                    _ => ""
                 };
 
                 // Version
-                Version = (string)returnValue.PropertiesResultList[0, 10];
+                Version = (string)returnValue.PropertiesResultList[0, 10] ?? "N/A";
 
                 // ProcessorId
-                ProcessorId = (string)returnValue.PropertiesResultList[0, 11];
+                ProcessorId = (string)returnValue.PropertiesResultList[0, 11] ?? "N/A";
 
                 // Status
-                Status = (string)returnValue.PropertiesResultList[0, 12];
+                Status = (string)returnValue.PropertiesResultList[0, 12] ?? "N/A";
             }),
 
             // Get CPU Characteristics
@@ -329,12 +333,12 @@ public partial class CpuView
                 var returnValue = _wmiQueryManager.WmIquery("Win32_Processor", new[] { "Characteristics" });
 
                 // Get uint value from return
-                var uintValue = (uint)returnValue.PropertiesResultList[0, 0];
+                var uintValue = returnValue.PropertiesResultList[0, 0] ?? 0;
 
                 // Get bits from uint value and convert to string
                 var bitsString = "";
                 var bits = new uint[32];
-                for (var i = 0; i < 32; i++) bits[i] = (uintValue >> i) & 1;
+                for (var i = 0; i < 32; i++) bits[i] = ((uint)uintValue >> i) & 1;
                 for (var i = 0; i < 32; i++) bitsString += bits[i];
 
                 // Get bits value and set the CPU Characteristics
@@ -395,45 +399,45 @@ public partial class CpuView
                 });
 
                 // CurrentClockSpeed
-                var currentClockSpeed = (uint)returnValue.PropertiesResultList[0, 0];
+                var currentClockSpeed = returnValue.PropertiesResultList[0, 0] ?? "N/A";
                 CurrentClockSpeed = currentClockSpeed + " MHz";
 
                 // MaxClockSpeed
-                var maxClockSpeed = (uint)returnValue.PropertiesResultList[0, 1];
+                var maxClockSpeed = returnValue.PropertiesResultList[0, 1] ?? "N/A";
                 MaxClockSpeed = maxClockSpeed + " MHz";
-
+                
                 // ExtClock
-                var extClock = (uint)returnValue.PropertiesResultList[0, 2];
+                var extClock = returnValue.PropertiesResultList[0, 2] ?? "N/A";
                 ExternalClockSpeed = extClock + " MHz";
 
                 // CurrentVoltage
-                var currentVoltage = (ushort)returnValue.PropertiesResultList[0, 3];
-                CurrentVoltage = currentVoltage / 10.0 + " Volts";
+                var currentVoltage = returnValue.PropertiesResultList[0, 3] ?? "N/A";
+                CurrentVoltage = (ushort)currentVoltage / 10.0 + " Volts";
 
                 // NumberOfCores and NumberOfEnabledCore
-                var numberOfCores = (uint)returnValue.PropertiesResultList[0, 4];
-                var numberOfEnabledCores = (uint)returnValue.PropertiesResultList[0, 5];
+                var numberOfCores = returnValue.PropertiesResultList[0, 4] ?? "N/A";
+                var numberOfEnabledCores = returnValue.PropertiesResultList[0, 5] ?? "N/A";
                 NumberOfCores = numberOfCores + " (" + numberOfEnabledCores + " enabled)";
 
                 // NumberOfLogicalProcessors
-                var numberOfLogicalProcessors = (uint)returnValue.PropertiesResultList[0, 6];
-                NumberOfLogicalProcessors = numberOfLogicalProcessors.ToString();
+                var numberOfLogicalProcessors = returnValue.PropertiesResultList[0, 6] ?? "N/A";
+                NumberOfLogicalProcessors = numberOfLogicalProcessors.ToString() ?? "N/A";
 
                 // ThreadCount
-                var threadCount = (uint)returnValue.PropertiesResultList[0, 7];
-                NumberOfThreads = threadCount.ToString();
+                var threadCount = returnValue.PropertiesResultList[0, 7] ?? "N/A";
+                NumberOfThreads = threadCount.ToString() ?? "N/A";
 
                 // LoadPercentage
-                var loadPercentage = (ushort)returnValue.PropertiesResultList[0, 8];
+                var loadPercentage = returnValue.PropertiesResultList[0, 8] ?? "N/A";
                 LoadPercentage = loadPercentage + " %";
 
                 // L2CacheSize KB and MB
-                var l2CacheSize = (uint)returnValue.PropertiesResultList[0, 9];
-                L2CacheSize = l2CacheSize + " KB" + " (" + l2CacheSize / 1024 + "MB)";
+                var l2CacheSize = returnValue.PropertiesResultList[0, 9] ?? "N/A";
+                L2CacheSize = l2CacheSize + " KB" + " (" + (uint)l2CacheSize / 1024 + "MB)";
 
                 // L3CacheSize
-                var l3CacheSize = (uint)returnValue.PropertiesResultList[0, 10];
-                L3CacheSize = l3CacheSize + " KB" + " (" + l3CacheSize / 1024 + "MB)";
+                var l3CacheSize = returnValue.PropertiesResultList[0, 10] ?? "N/A";
+                L3CacheSize = l3CacheSize + " KB" + " (" + (uint)l3CacheSize / 1024 + "MB)";
             })
         };
 
@@ -643,45 +647,45 @@ public partial class CpuView
                     "L2CacheSize", "L3CacheSize"
                 });
 
-                var currentClockSpeed = (uint)returnValue.PropertiesResultList[0, 0];
+                var currentClockSpeed = returnValue.PropertiesResultList[0, 0] ?? "N/A";
                 currentClockSpeedString = currentClockSpeed + " MHz";
 
                 // MaxClockSpeed
-                var maxClockSpeed = (uint)returnValue.PropertiesResultList[0, 1];
+                var maxClockSpeed = returnValue.PropertiesResultList[0, 1] ?? "N/A";
                 maxClockSpeedString = maxClockSpeed + " MHz";
 
                 // ExtClock
-                var extClock = (uint)returnValue.PropertiesResultList[0, 2];
+                var extClock = returnValue.PropertiesResultList[0, 2] ?? "N/A";
                 externalClockSpeedString = extClock + " MHz";
-
+                
                 // CurrentVoltage
-                var currentVoltage = (ushort)returnValue.PropertiesResultList[0, 3];
-                currentVoltageString = currentVoltage / 10.0 + " Volts";
+                var currentVoltage = returnValue.PropertiesResultList[0, 3] ?? "N/A";
+                currentVoltageString = (ushort)currentVoltage / 10.0 + " Volts";
 
                 // NumberOfCores and NumberOfEnabledCore
-                var numberOfCores = (uint)returnValue.PropertiesResultList[0, 4];
-                var numberOfEnabledCores = (uint)returnValue.PropertiesResultList[0, 5];
+                var numberOfCores = returnValue.PropertiesResultList[0, 4] ?? "N/A";
+                var numberOfEnabledCores = returnValue.PropertiesResultList[0, 5] ?? "N/A";
                 numberOfCoresString = numberOfCores + " (" + numberOfEnabledCores + " enabled)";
 
                 // NumberOfLogicalProcessors
-                var numberOfLogicalProcessors = (uint)returnValue.PropertiesResultList[0, 6];
-                numberOfLogicalProcessorsString = numberOfLogicalProcessors.ToString();
+                var numberOfLogicalProcessors = returnValue.PropertiesResultList[0, 6] ?? "N/A";
+                numberOfLogicalProcessorsString = numberOfLogicalProcessors.ToString() ?? "N/A";
 
                 // ThreadCount
-                var threadCount = (uint)returnValue.PropertiesResultList[0, 7];
-                numberOfThreadsString = threadCount.ToString();
+                var threadCount = returnValue.PropertiesResultList[0, 7] ?? "N/A";
+                numberOfThreadsString = threadCount.ToString() ?? "N/A";
 
                 // LoadPercentage
-                var loadPercentage = (ushort)returnValue.PropertiesResultList[0, 8];
+                var loadPercentage = returnValue.PropertiesResultList[0, 8] ?? "N/A";
                 loadPercentageString = loadPercentage + " %";
 
                 // L2CacheSize KB and MB
-                var l2CacheSize = (uint)returnValue.PropertiesResultList[0, 9];
-                l2CacheSizeString = l2CacheSize + " KB" + " (" + l2CacheSize / 1024 + "MB)";
+                var l2CacheSize = returnValue.PropertiesResultList[0, 9] ?? "N/A";
+                l2CacheSizeString = l2CacheSize + " KB" + " (" + (uint)l2CacheSize / 1024 + "MB)";
 
                 // L3CacheSize
-                var l3CacheSize = (uint)returnValue.PropertiesResultList[0, 10];
-                l3CacheSizeString = l3CacheSize + " KB" + " (" + l3CacheSize / 1024 + "MB)";
+                var l3CacheSize = returnValue.PropertiesResultList[0, 10] ?? "N/A";
+                l3CacheSizeString = l3CacheSize + " KB" + " (" + (uint)l3CacheSize / 1024 + "MB)";
 
 
                 Dispatcher.Invoke(() =>
@@ -691,7 +695,7 @@ public partial class CpuView
 
                     // Add MaxClockSpeed to Metrics node
                     MaxClockSpeedNode.Content = "Max Clock Speed : " + maxClockSpeedString;
-
+                    
                     // Add ExternalClockSpeed to Metrics node
                     ExternalClockSpeedNode.Content = "External Clock Speed : " + externalClockSpeedString;
 

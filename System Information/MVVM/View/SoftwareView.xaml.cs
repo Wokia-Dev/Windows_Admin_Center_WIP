@@ -40,7 +40,7 @@ namespace System_Information.MVVM.View
 
                     // Set final string of Computer System
                     ComputerSystem = (string)returnValue.PropertiesResultList[0, 0] + " " +
-                                     (string)returnValue.PropertiesResultList[0, 1];
+                                     (string)returnValue.PropertiesResultList[0, 1] ?? "N/A";
                 }),
 
                 // Get System Type
@@ -70,7 +70,7 @@ namespace System_Information.MVVM.View
                     };
 
                     // Set final string of System Type
-                    SystemType = (string)returnValue.PropertiesResultList[0, 0] + " (" + pcSystemType + ")";
+                    SystemType = (string)returnValue.PropertiesResultList[0, 0] + " (" + pcSystemType + ")" ?? "N/A";
                 }),
 
                 // Get System Name
@@ -81,7 +81,7 @@ namespace System_Information.MVVM.View
                     var returnValue = wmiQueryManager.WmIquery("Win32_ComputerSystem", new[] { "Caption" });
 
                     // Set final string of System Name
-                    SystemName = (string)returnValue.PropertiesResultList[0, 0];
+                    SystemName = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
                 }),
 
                 // Get Current User
@@ -92,7 +92,7 @@ namespace System_Information.MVVM.View
                     var returnValue = wmiQueryManager.WmIquery("Win32_ComputerSystem", new[] { "UserName" });
 
                     // Set final string of Current User
-                    CurrentUser = returnValue.PropertiesResultList[0, 0].ToString()?.Split('\\')[1];
+                    CurrentUser = returnValue.PropertiesResultList[0, 0].ToString()?.Split('\\')[1] ?? "N/A";
                 }),
 
                 // Get OS Name
@@ -103,7 +103,7 @@ namespace System_Information.MVVM.View
                     var returnValue = wmiQueryManager.WmIquery("Win32_OperatingSystem", new[] { "Caption" });
 
                     // Set final string of OS Name
-                    OsName = (string)returnValue.PropertiesResultList[0, 0];
+                    OsName = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
                 }),
 
                 // Get OS Version
@@ -116,7 +116,7 @@ namespace System_Information.MVVM.View
 
                     // Set final string of OS Version
                     OsVersion = (string)returnValue.PropertiesResultList[0, 0] + " (build " +
-                                (string)returnValue.PropertiesResultList[0, 1] + ")";
+                                (string)returnValue.PropertiesResultList[0, 1] + ")" ?? "N/A";
                 }),
 
                 // Get OS Install Date
@@ -131,7 +131,8 @@ namespace System_Information.MVVM.View
                     // Set final string of OS Install Date (date format : yyyy-MM-dd-HH-mm-ss.000000+000)
                     OsInstallDate = date.Substring(0, 4) + "-" + date.Substring(4, 2) +
                                     "-" + date.Substring(6, 2) + " " + date.Substring(8, 2) +
-                                    ":" + date.Substring(10, 2) + ":" + date.Substring(12, 2);
+                                    ":" + date.Substring(10, 2) + ":" + date.Substring(12, 2)
+                                    ?? "N/A";
                 }),
 
                 // Get Time Zone
@@ -142,7 +143,7 @@ namespace System_Information.MVVM.View
                     var returnValue = wmiQueryManager.WmIquery("Win32_TimeZone", new[] { "Caption" });
 
                     // Set final string of Time Zone
-                    TimeZone = (string)returnValue.PropertiesResultList[0, 0];
+                    TimeZone = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
                 })
             };
 

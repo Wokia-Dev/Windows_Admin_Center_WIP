@@ -43,7 +43,7 @@ namespace System_Information.MVVM.View
                     var returnValue = wmiQueryManager.WmIquery("Win32_BIOS", new[] { "Name" });
 
                     // Set final string of BIOS Name
-                    BiosName = (string)returnValue.PropertiesResultList[0, 0];
+                    BiosName = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
                 }),
 
                 // Get Bios Manufacturer
@@ -54,7 +54,7 @@ namespace System_Information.MVVM.View
                     var returnValue = wmiQueryManager.WmIquery("Win32_BIOS", new[] { "Manufacturer" });
 
                     // Set final string of BIOS Manufacturer
-                    BiosManufacturer = (string)returnValue.PropertiesResultList[0, 0];
+                    BiosManufacturer = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
                 }),
 
                 // Get Primary Bios Bool
@@ -65,11 +65,13 @@ namespace System_Information.MVVM.View
                     var returnValue = wmiQueryManager.WmIquery("Win32_BIOS", new[] { "PrimaryBIOS" });
 
                     // Set final string of Primary Bios
-                    var result = (bool)returnValue.PropertiesResultList[0, 0];
+                    var result = returnValue.PropertiesResultList[0, 0] ?? null;
                     BiosPrimaryBios = result switch
                     {
                         true => "Yes",
-                        false => "No"
+                        false => "No",
+                        null => "N/A",
+                        _ => "N/A"
                     };
                 }),
 
@@ -80,7 +82,7 @@ namespace System_Information.MVVM.View
                     // Query return
                     var returnValue = wmiQueryManager.WmIquery("Win32_BIOS", new[] { "ReleaseDate" });
 
-                    var date = (string)returnValue.PropertiesResultList[0, 0];
+                    var date = (string)returnValue.PropertiesResultList[0, 0] ?? "yyyy-MM-dd";
 
                     // Set final string of BIOS Release Date (date format : yyyy-MM-dd)
                     BiosReleaseDate = date.Substring(0, 4) + "-" + date.Substring(4, 2) + "-" + date.Substring(6, 2);
@@ -94,7 +96,7 @@ namespace System_Information.MVVM.View
                     var returnValue = wmiQueryManager.WmIquery("Win32_BIOS", new[] { "CurrentLanguage" });
 
                     // Set final string of Current Language
-                    BiosCurrentLanguage = (string)returnValue.PropertiesResultList[0, 0];
+                    BiosCurrentLanguage = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
                 }),
 
                 // Get Bios Serial Number
@@ -105,7 +107,7 @@ namespace System_Information.MVVM.View
                     var returnValue = wmiQueryManager.WmIquery("Win32_BIOS", new[] { "SerialNumber" });
 
                     // Set final string of BIOS Serial Number
-                    BiosSerialNumber = (string)returnValue.PropertiesResultList[0, 0];
+                    BiosSerialNumber = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
                 }),
 
                 // Get Bios Version
@@ -116,7 +118,7 @@ namespace System_Information.MVVM.View
                     var returnValue = wmiQueryManager.WmIquery("Win32_BIOS", new[] { "Version" });
 
                     // Set final string of BIOS Version
-                    BiosVersion = (string)returnValue.PropertiesResultList[0, 0];
+                    BiosVersion = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
                 }),
 
                 // Get Bios Mode
@@ -151,7 +153,7 @@ namespace System_Information.MVVM.View
                     // Query return
                     var returnValue = wmiQueryManager.WmIquery("Win32_BIOS", new[] { "SoftwareElementState" });
 
-                    var result = (ushort)returnValue.PropertiesResultList[0, 0];
+                    var result = returnValue.PropertiesResultList[0, 0] ?? null;
 
                     // Set final string of Software Element State
                     BiosSoftwareElementState = result switch
@@ -160,6 +162,7 @@ namespace System_Information.MVVM.View
                         1 => "Installable",
                         2 => "Executable",
                         3 => "Running",
+                        null => "N/A",
                         _ => BiosSoftwareElementState
                     };
                 }),
@@ -172,7 +175,7 @@ namespace System_Information.MVVM.View
                     var returnValue = wmiQueryManager.WmIquery("Win32_BIOS", new[] { "Status" });
 
                     // Set final string of BIOS Status
-                    BiosStatus = (string)returnValue.PropertiesResultList[0, 0];
+                    BiosStatus = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
                 }),
 
                 // Get Bios Characteristics
