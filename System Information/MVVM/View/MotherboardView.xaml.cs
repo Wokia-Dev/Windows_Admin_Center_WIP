@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
@@ -44,93 +45,149 @@ public partial class MotherboardView
             Task.Run(() =>
             {
                 Log.Info("Get Motherboard ProductName with WMI");
-                // Query return
-                var returnValue = wmiQueryManager.WmIquery("Win32_BaseBoard", new[] { "Product" });
+                try
+                {
+                    // Query return
+                    var returnValue = wmiQueryManager.WmIquery("Win32_BaseBoard", new[] { "Product" });
 
-                // Set final string of MbProductName
-                MbProductName = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
+                    // Set final string of MbProductName
+                    MbProductName = (string)returnValue.PropertiesResultList[0, 0];
+                    Log.Info("Successfully get Motherboard ProductName");
+                }
+                catch (Exception e)
+                {
+                    Log.Error("Failed to get Motherboard ProductName", e);
+                    MbProductName = "N/A";
+                }
             }),
 
             // Get MbManufacturer
             Task.Run(() =>
             {
                 Log.Info("Get Motherboard Manufacturer with WMI");
-                // Query return
-                var returnValue = wmiQueryManager.WmIquery("Win32_BaseBoard", new[] { "Manufacturer" });
+                try
+                {
+                    // Query return
+                    var returnValue = wmiQueryManager.WmIquery("Win32_BaseBoard", new[] { "Manufacturer" });
 
-                // Set final string of MbManufacturer
-                MbManufacturer = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
+                    // Set final string of MbManufacturer
+                    MbManufacturer = (string)returnValue.PropertiesResultList[0, 0];
+                    Log.Info("Successfully get Motherboard Manufacturer");
+                }
+                catch (Exception e)
+                {
+                    Log.Error("Failed to get Motherboard Manufacturer", e);
+                    MbManufacturer = "N/A";
+                }
             }),
 
             // Get MbSerialNumber
             Task.Run(() =>
             {
                 Log.Info("Get Motherboard SerialNumber with WMI");
-                // Query return
-                var returnValue = wmiQueryManager.WmIquery("Win32_BaseBoard", new[] { "SerialNumber" });
+                try
+                {
+                    // Query return
+                    var returnValue = wmiQueryManager.WmIquery("Win32_BaseBoard", new[] { "SerialNumber" });
 
-                // Set final string of MbSerialNumber
-                MbSerialNumber = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
+                    // Set final string of MbSerialNumber
+                    MbSerialNumber = (string)returnValue.PropertiesResultList[0, 0];
+                    Log.Info("Successfully get Motherboard SerialNumber");
+                }
+                catch (Exception e)
+                {
+                    Log.Error("Failed to get Motherboard SerialNumber", e);
+                    MbSerialNumber = "N/A";
+                }
             }),
 
             // Get MbStatus
             Task.Run(() =>
             {
                 Log.Info("Get Motherboard Status with WMI");
-                // Query return
-                var returnValue = wmiQueryManager.WmIquery("Win32_BaseBoard", new[] { "Status" });
+                try
+                {
+                    // Query return
+                    var returnValue = wmiQueryManager.WmIquery("Win32_BaseBoard", new[] { "Status" });
 
-                // Set final string of MbStatus
-                MbStatus = (string)returnValue.PropertiesResultList[0, 0] ?? "N/A";
+                    // Set final string of MbStatus
+                    MbStatus = (string)returnValue.PropertiesResultList[0, 0];
+                    Log.Info("Successfully get Motherboard Status");
+                }
+                catch (Exception e)
+                {
+                    Log.Error("Failed to get Motherboard Status", e);
+                    MbStatus = "N/A";
+                }
             }),
 
             // Get MbBusType
             Task.Run(() =>
             {
                 Log.Info("Get Motherboard BusType with WMI");
-                // Query return
-                var returnValue = wmiQueryManager.WmIquery("Win32_MotherboardDevice",
-                    new[] { "PrimaryBusType", "SecondaryBusType" });
+                try
+                {
+                    // Query return
+                    var returnValue = wmiQueryManager.WmIquery("Win32_MotherboardDevice",
+                        new[] { "PrimaryBusType", "SecondaryBusType" });
 
-                // Set final string of MbBusType
-                MbBusType = (string)returnValue.PropertiesResultList[0, 0] + ", " +
-                            (string)returnValue.PropertiesResultList[0, 1] ?? "N/A";
+                    // Set final string of MbBusType
+                    MbBusType = (string)returnValue.PropertiesResultList[0, 0] + ", " +
+                                (string)returnValue.PropertiesResultList[0, 1];
+
+                    Log.Info("Successfully get Motherboard BusType");
+                }
+                catch (Exception e)
+                {
+                    Log.Error("Failed to get Motherboard BusType", e);
+                    MbBusType = "N/A";
+                }
             }),
 
             // Get OnBoardDevices Info
             Task.Run(() =>
             {
                 Log.Info("Get OnBoard Devices Info with WMI");
-                // Query return
-                var returnValue =
-                    wmiQueryManager.WmIquery("Win32_OnBoardDevice", new[] { "Description", "DeviceType" });
-
-                // Add each element of returnValue to OnBoardDevices list
-                for (var i = 0; i < returnValue.NbResult; i++)
+                try
                 {
-                    var deviceType = "N/A";
-                    var description = "N/A";
-                    if ((string)returnValue.PropertiesResultList[i, 0] != "")
-                        description = (string)returnValue.PropertiesResultList[i, 0];
+                    // Query return
+                    var returnValue =
+                        wmiQueryManager.WmIquery("Win32_OnBoardDevice", new[] { "Description", "DeviceType" });
 
-                    var deviceTypeResult = (ushort)returnValue.PropertiesResultList[i, 1];
-
-                    // Set final string of DevicesType
-                    deviceType = deviceTypeResult switch
+                    // Add each element of returnValue to OnBoardDevices list
+                    for (var i = 0; i < returnValue.NbResult; i++)
                     {
-                        1 => "Other",
-                        2 => "Unknown",
-                        3 => "Video",
-                        4 => "SCSI Controller",
-                        5 => "Ethernet",
-                        6 => "Token Ring",
-                        7 => "Sound",
-                        _ => deviceType
-                    };
+                        var deviceType = "N/A";
+                        var description = "N/A";
+                        if ((string)returnValue.PropertiesResultList[i, 0] != "")
+                            description = (string)returnValue.PropertiesResultList[i, 0];
 
-                    var onBoardDevice = new OnBoardDeviceObj(description, deviceType);
+                        var deviceTypeResult = (ushort)returnValue.PropertiesResultList[i, 1];
 
-                    OnBoardDevicesList.Add(onBoardDevice);
+                        // Set final string of DevicesType
+                        deviceType = deviceTypeResult switch
+                        {
+                            1 => "Other",
+                            2 => "Unknown",
+                            3 => "Video",
+                            4 => "SCSI Controller",
+                            5 => "Ethernet",
+                            6 => "Token Ring",
+                            7 => "Sound",
+                            _ => deviceType
+                        };
+
+                        var onBoardDevice = new OnBoardDeviceObj(description, deviceType);
+
+                        OnBoardDevicesList.Add(onBoardDevice);
+                    }
+
+                    Log.Info("Successfully get OnBoard Devices Info");
+                }
+                catch (Exception e)
+                {
+                    Log.Error("Failed to get OnBoard Devices Info", e);
+                    OnBoardDevicesList = new List<OnBoardDeviceObj>();
                 }
             }),
 
@@ -138,83 +195,92 @@ public partial class MotherboardView
             Task.Run(() =>
             {
                 Log.Info("Get Ide Controller Info with WMI");
-
-                // Query return
-                var returnValue = wmiQueryManager.WmIquery("Win32_IDEController",
-                    new[] { "Caption", "Manufacturer", "ProtocolSupported", "Status" });
-
-                // Add each element of returnValue to IdeControllerCaption list
-                for (var i = 0; i < returnValue.NbResult; i++)
+                try
                 {
-                    var caption = (string)returnValue.PropertiesResultList[i, 0] != ""
-                        ? (string)returnValue.PropertiesResultList[i, 0]
-                        : "N/A";
-                    var manufacturer = (string)returnValue.PropertiesResultList[i, 1] != ""
-                        ? (string)returnValue.PropertiesResultList[i, 1]
-                        : "N/A";
-                    var status = (string)returnValue.PropertiesResultList[i, 3] != ""
-                        ? (string)returnValue.PropertiesResultList[i, 3]
-                        : "N/A";
-                    var result = (ushort)returnValue.PropertiesResultList[i, 2];
+                    // Query return
+                    var returnValue = wmiQueryManager.WmIquery("Win32_IDEController",
+                        new[] { "Caption", "Manufacturer", "ProtocolSupported", "Status" });
 
-                    var protocolSupported = result switch
+                    // Add each element of returnValue to IdeControllerCaption list
+                    for (var i = 0; i < returnValue.NbResult; i++)
                     {
-                        1 => "Other",
-                        2 => "Unknown",
-                        3 => "EISA",
-                        4 => "ISA",
-                        5 => "PCI",
-                        6 => "ATA/ATAPI",
-                        7 => "Flexible Diskette",
-                        8 => "1496",
-                        9 => "SCSI Parallel Interface",
-                        10 => "SCSI Fibre Channel Protocol",
-                        11 => "SCSI Serial Bus Protocol",
-                        12 => "SCSI Serial Bus Protocol-2 (1394)",
-                        13 => "SCSI Serial Storage Architecture",
-                        14 => "VESA",
-                        15 => "PCMCIA",
-                        16 => "Universal Serial Bus",
-                        17 => "Parallel Protocol",
-                        18 => "ESCON",
-                        19 => "Diagnostic",
-                        20 => "I2C",
-                        21 => "Power",
-                        22 => "HIPPI",
-                        23 => "MultiBus",
-                        24 => "VME",
-                        25 => "IPI",
-                        26 => "IEEE-488",
-                        27 => "RS232",
-                        28 => "IEEE 802.3 10BASE5",
-                        29 => "IEEE 802.3 10BASE2",
-                        30 => "IEEE 802.3 1BASE5",
-                        31 => "IEEE 802.3 10BROAD36",
-                        32 => "IEEE 802.3 100BASEVG",
-                        33 => "IEEE 802.5 Token-Ring",
-                        34 => "ANSI X3T9.5 FDDI",
-                        35 => "MCA",
-                        36 => "ESDI",
-                        37 => "IDE",
-                        38 => "CMD",
-                        39 => "ST506",
-                        40 => "DSSI",
-                        41 => "QIC2",
-                        42 => "Enhanced ATA/IDE",
-                        43 => "AGP",
-                        44 => "TWIRP (two-way infrared)",
-                        45 => "FIR (fast infrared)",
-                        46 => "SIR (serial infrared)",
-                        47 => "IrBus",
-                        _ => "N/A"
-                    };
+                        var caption = (string)returnValue.PropertiesResultList[i, 0] != ""
+                            ? (string)returnValue.PropertiesResultList[i, 0]
+                            : "N/A";
+                        var manufacturer = (string)returnValue.PropertiesResultList[i, 1] != ""
+                            ? (string)returnValue.PropertiesResultList[i, 1]
+                            : "N/A";
+                        var status = (string)returnValue.PropertiesResultList[i, 3] != ""
+                            ? (string)returnValue.PropertiesResultList[i, 3]
+                            : "N/A";
+                        var result = (ushort)returnValue.PropertiesResultList[i, 2];
 
-                    IdeControllerList.Add(new IdeControllerObj(
-                        caption,
-                        manufacturer,
-                        protocolSupported,
-                        status
-                    ));
+                        var protocolSupported = result switch
+                        {
+                            1 => "Other",
+                            2 => "Unknown",
+                            3 => "EISA",
+                            4 => "ISA",
+                            5 => "PCI",
+                            6 => "ATA/ATAPI",
+                            7 => "Flexible Diskette",
+                            8 => "1496",
+                            9 => "SCSI Parallel Interface",
+                            10 => "SCSI Fibre Channel Protocol",
+                            11 => "SCSI Serial Bus Protocol",
+                            12 => "SCSI Serial Bus Protocol-2 (1394)",
+                            13 => "SCSI Serial Storage Architecture",
+                            14 => "VESA",
+                            15 => "PCMCIA",
+                            16 => "Universal Serial Bus",
+                            17 => "Parallel Protocol",
+                            18 => "ESCON",
+                            19 => "Diagnostic",
+                            20 => "I2C",
+                            21 => "Power",
+                            22 => "HIPPI",
+                            23 => "MultiBus",
+                            24 => "VME",
+                            25 => "IPI",
+                            26 => "IEEE-488",
+                            27 => "RS232",
+                            28 => "IEEE 802.3 10BASE5",
+                            29 => "IEEE 802.3 10BASE2",
+                            30 => "IEEE 802.3 1BASE5",
+                            31 => "IEEE 802.3 10BROAD36",
+                            32 => "IEEE 802.3 100BASEVG",
+                            33 => "IEEE 802.5 Token-Ring",
+                            34 => "ANSI X3T9.5 FDDI",
+                            35 => "MCA",
+                            36 => "ESDI",
+                            37 => "IDE",
+                            38 => "CMD",
+                            39 => "ST506",
+                            40 => "DSSI",
+                            41 => "QIC2",
+                            42 => "Enhanced ATA/IDE",
+                            43 => "AGP",
+                            44 => "TWIRP (two-way infrared)",
+                            45 => "FIR (fast infrared)",
+                            46 => "SIR (serial infrared)",
+                            47 => "IrBus",
+                            _ => "N/A"
+                        };
+
+                        IdeControllerList.Add(new IdeControllerObj(
+                            caption,
+                            manufacturer,
+                            protocolSupported,
+                            status
+                        ));
+                    }
+
+                    Log.Info("Successfully get Ide Controller Info");
+                }
+                catch (Exception e)
+                {
+                    Log.Error("Failed to get Ide Controller Info", e);
+                    IdeControllerList = new List<IdeControllerObj>();
                 }
             }),
 
@@ -222,438 +288,446 @@ public partial class MotherboardView
             Task.Run(() =>
             {
                 Log.Info("Get Interfaces Info with WMI");
-
-                // Query return 
-                // class docs link : https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-portconnector
-                var returnValue = wmiQueryManager.WmIquery("Win32_PortConnector",
-                    new[] { "ExternalReferenceDesignator", "ConnectorType", "PortType" });
-
-                // Add each element of returnValue to InterfacesList list
-                for (var i = 0; i < returnValue.NbResult; i++)
+                try
                 {
-                    var connectorTypeList = new List<string>();
-                    var connectorType = "";
-                    var connectorTypeResult = (ushort[])returnValue.PropertiesResultList[i, 1];
-                    var portTypeResult = (ushort)returnValue.PropertiesResultList[i, 2];
+                    // Query return 
+                    // class docs link : https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-portconnector
+                    var returnValue = wmiQueryManager.WmIquery("Win32_PortConnector",
+                        new[] { "ExternalReferenceDesignator", "ConnectorType", "PortType" });
 
-                    foreach (var type in connectorTypeResult)
-                        // switch the property "ConnectorType" from the WMI class "Win32_PortConnector"
-                        switch (type)
-                        {
-                            case 0:
-                                connectorTypeList.Add("Unknown");
-                                break;
-                            case 1:
-                                connectorTypeList.Add("Other");
-                                break;
-                            case 2:
-                                connectorTypeList.Add("Male");
-                                break;
-                            case 3:
-                                connectorTypeList.Add("Female");
-                                break;
-                            case 4:
-                                connectorTypeList.Add("Shielded ");
-                                break;
-                            case 5:
-                                connectorTypeList.Add("Unshielded");
-                                break;
-                            case 6:
-                                connectorTypeList.Add("SCSI (A) High-Density (50 pins)");
-                                break;
-                            case 7:
-                                connectorTypeList.Add("SCSI (A) Low-Density (50 pins)");
-                                break;
-                            case 8:
-                                connectorTypeList.Add("SCSI (P) High-Density (68 pins)");
-                                break;
-                            case 9:
-                                connectorTypeList.Add("SCSI SCA-I (80 pins)");
-                                break;
-                            case 10:
-                                connectorTypeList.Add("SCSI SCA-II (80 pins)");
-                                break;
-                            case 11:
-                                connectorTypeList.Add("SCSI Fibre Channel (DB-9, Copper)");
-                                break;
-                            case 12:
-                                connectorTypeList.Add("SCSI Fibre Channel (Fibre)");
-                                break;
-                            case 13:
-                                connectorTypeList.Add("SCSI Fibre Channel SCA-II (40 pins)");
-                                break;
-                            case 14:
-                                connectorTypeList.Add("SCSI Fibre Channel SCA-II (20 pins)");
-                                break;
-                            case 15:
-                                connectorTypeList.Add("SCSI Fibre Channel BNC");
-                                break;
-                            case 16:
-                                connectorTypeList.Add("ATA 3-1/2 Inch (40 pins)");
-                                break;
-                            case 17:
-                                connectorTypeList.Add("ATA 2-1/2 Inch (44 pins)");
-                                break;
-                            case 18:
-                                connectorTypeList.Add("ATA-2");
-                                break;
-                            case 19:
-                                connectorTypeList.Add("ATA-3");
-                                break;
-                            case 20:
-                                connectorTypeList.Add("ATA/66");
-                                break;
-                            case 21:
-                                connectorTypeList.Add("DB-9");
-                                break;
-                            case 22:
-                                connectorTypeList.Add("DB-15");
-                                break;
-                            case 23:
-                                connectorTypeList.Add("DB-25");
-                                break;
-                            case 24:
-                                connectorTypeList.Add("DB-36");
-                                break;
-                            case 25:
-                                connectorTypeList.Add("RS-232C");
-                                break;
-                            case 26:
-                                connectorTypeList.Add("RS-422");
-                                break;
-                            case 27:
-                                connectorTypeList.Add("RS-423");
-                                break;
-                            case 28:
-                                connectorTypeList.Add("RS-485");
-                                break;
-                            case 29:
-                                connectorTypeList.Add("RS-449");
-                                break;
-                            case 30:
-                                connectorTypeList.Add("V.35");
-                                break;
-                            case 31:
-                                connectorTypeList.Add("X.21");
-                                break;
-                            case 32:
-                                connectorTypeList.Add("IEEE-488");
-                                break;
-                            case 33:
-                                connectorTypeList.Add("AUI");
-                                break;
-                            case 34:
-                                connectorTypeList.Add("UTP Category 3");
-                                break;
-                            case 35:
-                                connectorTypeList.Add("UTP Category 4");
-                                break;
-                            case 36:
-                                connectorTypeList.Add("UTP Category 5");
-                                break;
-                            case 37:
-                                connectorTypeList.Add("BNC");
-                                break;
-                            case 38:
-                                connectorTypeList.Add("RJ11");
-                                break;
-                            case 39:
-                                connectorTypeList.Add("RJ45");
-                                break;
-                            case 40:
-                                connectorTypeList.Add("Fiber MIC");
-                                break;
-                            case 41:
-                                connectorTypeList.Add("Apple AUI");
-                                break;
-                            case 42:
-                                connectorTypeList.Add("Apple GeoPort");
-                                break;
-                            case 43:
-                                connectorTypeList.Add("PCI");
-                                break;
-                            case 44:
-                                connectorTypeList.Add("ISA");
-                                break;
-                            case 45:
-                                connectorTypeList.Add("EISA");
-                                break;
-                            case 46:
-                                connectorTypeList.Add("VESA");
-                                break;
-                            case 47:
-                                connectorTypeList.Add("PCMCIA");
-                                break;
-                            case 48:
-                                connectorTypeList.Add("PCMCIA Type I");
-                                break;
-                            case 49:
-                                connectorTypeList.Add("PCMCIA Type II");
-                                break;
-                            case 50:
-                                connectorTypeList.Add("PCMCIA Type III");
-                                break;
-                            case 51:
-                                connectorTypeList.Add("Port ZV");
-                                break;
-                            case 52:
-                                connectorTypeList.Add("Card Bus");
-                                break;
-                            case 53:
-                                connectorTypeList.Add("USB");
-                                break;
-                            case 54:
-                                connectorTypeList.Add("IEEE 1394");
-                                break;
-                            case 55:
-                                connectorTypeList.Add("HIPPI");
-                                break;
-                            case 56:
-                                connectorTypeList.Add("HSSDC (6 broches)");
-                                break;
-                            case 57:
-                                connectorTypeList.Add("GBIC");
-                                break;
-                            case 58:
-                                connectorTypeList.Add("DIN");
-                                break;
-                            case 59:
-                                connectorTypeList.Add("Mini-DIN");
-                                break;
-                            case 60:
-                                connectorTypeList.Add("Micro-DIN");
-                                break;
-                            case 61:
-                                connectorTypeList.Add("PS/2");
-                                break;
-                            case 62:
-                                connectorTypeList.Add("Infrared");
-                                break;
-                            case 63:
-                                connectorTypeList.Add("HP-HIL");
-                                break;
-                            case 64:
-                                connectorTypeList.Add("Access Bus");
-                                break;
-                            case 65:
-                                connectorTypeList.Add("Nu Bus");
-                                break;
-                            case 66:
-                                connectorTypeList.Add("Centronics");
-                                break;
-                            case 67:
-                                connectorTypeList.Add("Mini-Centronics");
-                                break;
-                            case 68:
-                                connectorTypeList.Add("Mini-Centronics Type-14");
-                                break;
-                            case 69:
-                                connectorTypeList.Add("Mini-Centronics Type-20");
-                                break;
-                            case 70:
-                                connectorTypeList.Add("Mini-Centronics Type-26");
-                                break;
-                            case 71:
-                                connectorTypeList.Add("Bus Mouse");
-                                break;
-                            case 72:
-                                connectorTypeList.Add("ADB");
-                                break;
-                            case 73:
-                                connectorTypeList.Add("AGP");
-                                break;
-                            case 74:
-                                connectorTypeList.Add("VME Bus");
-                                break;
-                            case 75:
-                                connectorTypeList.Add("VME64");
-                                break;
-                            case 76:
-                                connectorTypeList.Add("Proprietary");
-                                break;
-                            case 77:
-                                connectorTypeList.Add("Proprietary Processor Card Slot");
-                                break;
-                            case 78:
-                                connectorTypeList.Add("Proprietary Memory Card Slot");
-                                break;
-                            case 79:
-                                connectorTypeList.Add("Proprietary I/O Riser Slot");
-                                break;
-                            case 80:
-                                connectorTypeList.Add("PCI-66MHz");
-                                break;
-                            case 81:
-                                connectorTypeList.Add("AGP 2x");
-                                break;
-                            case 82:
-                                connectorTypeList.Add("AGP 4x");
-                                break;
-                            case 83:
-                                connectorTypeList.Add("PC-98");
-                                break;
-                            case 84:
-                                connectorTypeList.Add("PC-98 Hireso");
-                                break;
-                            case 85:
-                                connectorTypeList.Add("PC-H98");
-                                break;
-                            case 86:
-                                connectorTypeList.Add("PC-98 Note");
-                                break;
-                            case 87:
-                                connectorTypeList.Add("PC-98 Full");
-                                break;
-                            case 88:
-                                connectorTypeList.Add("Mini-Jack");
-                                break;
-                            case 89:
-                                connectorTypeList.Add("On Board Floppy");
-                                break;
-                            case 90:
-                                connectorTypeList.Add("9 Pin Dual Inline (pin 10 cut)");
-                                break;
-                            case 91:
-                                connectorTypeList.Add("25 Pin Dual Inline (pin 26 cut)");
-                                break;
-                            case 92:
-                                connectorTypeList.Add("50 Pin Dual Inline");
-                                break;
-                            case 93:
-                                connectorTypeList.Add("68 Pin Dual Inline");
-                                break;
-                            case 94:
-                                connectorTypeList.Add("On Board Sound Input from CD-ROM");
-                                break;
-                            case 95:
-                                connectorTypeList.Add("68 Pin Dual Inline");
-                                break;
-                            case 96:
-                                connectorTypeList.Add("On Board Sound Connector");
-                                break;
-                            case 97:
-                                connectorTypeList.Add("Mini-Jack");
-                                break;
-                            case 98:
-                                connectorTypeList.Add("PCI-X");
-                                break;
-                            case 99:
-                                connectorTypeList.Add("Sbus IEEE 1396-1993 32 Bit");
-                                break;
-                            case 100:
-                                connectorTypeList.Add("Sbus IEEE 1396-1993 64 Bit");
-                                break;
-                            case 101:
-                                connectorTypeList.Add("MCA");
-                                break;
-                            case 102:
-                                connectorTypeList.Add("GIO");
-                                break;
-                            case 103:
-                                connectorTypeList.Add("XIO");
-                                break;
-                            case 104:
-                                connectorTypeList.Add("HIO");
-                                break;
-                            case 105:
-                                connectorTypeList.Add("NGIO");
-                                break;
-                            case 106:
-                                connectorTypeList.Add("PMC");
-                                break;
-                            case 107:
-                                connectorTypeList.Add("MTRJ");
-                                break;
-                            case 108:
-                                connectorTypeList.Add("VF-45");
-                                break;
-                            case 109:
-                                connectorTypeList.Add("Future I/O");
-                                break;
-                            case 110:
-                                connectorTypeList.Add("SC");
-                                break;
-                            case 111:
-                                connectorTypeList.Add("SG");
-                                break;
-                            case 112:
-                                connectorTypeList.Add("Electrical");
-                                break;
-                            case 113:
-                                connectorTypeList.Add("Optical");
-                                break;
-                            case 114:
-                                connectorTypeList.Add("Ribbon");
-                                break;
-                            case 115:
-                                connectorTypeList.Add("GLM");
-                                break;
-                            case 116:
-                                connectorTypeList.Add("1x9");
-                                break;
-                            case 117:
-                                connectorTypeList.Add("Mini SG");
-                                break;
-                            case 118:
-                                connectorTypeList.Add("LC");
-                                break;
-                            case 119:
-                                connectorTypeList.Add("HSSC");
-                                break;
-                            case 120:
-                                connectorTypeList.Add("VHDCI Shielded (68 pins)");
-                                break;
-                            case 121:
-                                connectorTypeList.Add("InfiniBand");
-                                break;
-                        }
-
-                    // Get the connector type string
-                    foreach (var str in connectorTypeList) connectorType += str + " ";
-
-                    var portType = portTypeResult switch
+                    // Add each element of returnValue to InterfacesList list
+                    for (var i = 0; i < returnValue.NbResult; i++)
                     {
-                        0 => "None",
-                        1 => "Parallel Port XT/AT Compatible",
-                        2 => "Parallel Port PS/2",
-                        3 => "Parallel Port ECP",
-                        4 => "Parallel Port EPP",
-                        5 => "Parallel Port ECP/EPP",
-                        6 => "Serial Port XT/AT Compatible",
-                        7 => "Serial Port 16450 Compatible",
-                        8 => "Serial Port 16550 Compatible",
-                        9 => "Serial Port 16650A Compatible",
-                        10 => "SCSI Port",
-                        11 => "MIDI Port",
-                        12 => "Joystick Port",
-                        13 => "Keyboard Port",
-                        14 => "Mouse Port",
-                        15 => "SSA SCSI Port",
-                        16 => "USB",
-                        17 => "FireWire (IEEE 1394)",
-                        18 => "PCMCIA Type II",
-                        19 => "PCMCIA Type II",
-                        20 => "PCMCIA Type III",
-                        21 => "CardBus",
-                        22 => "Access Bus Port",
-                        23 => "SCSI II",
-                        24 => "SCSI Wide",
-                        25 => "PC-98",
-                        26 => "PC-98-Hireso",
-                        27 => "PC-H98",
-                        28 => "Video Port",
-                        29 => "Audio Port",
-                        30 => "Modem Port",
-                        31 => "Network Port",
-                        32 => "8251 Compatible",
-                        33 => "8251 FIFO Compatible",
-                        _ => "N/A"
-                    };
+                        var connectorTypeList = new List<string>();
+                        var connectorTypeResult = (ushort[])returnValue.PropertiesResultList[i, 1];
+                        var portTypeResult = (ushort)returnValue.PropertiesResultList[i, 2];
 
-                    InterfaceList.Add(new InterfaceObj(
-                        (string)returnValue.PropertiesResultList[i, 0],
-                        connectorType,
-                        portType));
+                        foreach (var type in connectorTypeResult)
+                            // switch the property "ConnectorType" from the WMI class "Win32_PortConnector"
+                            switch (type)
+                            {
+                                case 0:
+                                    connectorTypeList.Add("Unknown");
+                                    break;
+                                case 1:
+                                    connectorTypeList.Add("Other");
+                                    break;
+                                case 2:
+                                    connectorTypeList.Add("Male");
+                                    break;
+                                case 3:
+                                    connectorTypeList.Add("Female");
+                                    break;
+                                case 4:
+                                    connectorTypeList.Add("Shielded ");
+                                    break;
+                                case 5:
+                                    connectorTypeList.Add("Unshielded");
+                                    break;
+                                case 6:
+                                    connectorTypeList.Add("SCSI (A) High-Density (50 pins)");
+                                    break;
+                                case 7:
+                                    connectorTypeList.Add("SCSI (A) Low-Density (50 pins)");
+                                    break;
+                                case 8:
+                                    connectorTypeList.Add("SCSI (P) High-Density (68 pins)");
+                                    break;
+                                case 9:
+                                    connectorTypeList.Add("SCSI SCA-I (80 pins)");
+                                    break;
+                                case 10:
+                                    connectorTypeList.Add("SCSI SCA-II (80 pins)");
+                                    break;
+                                case 11:
+                                    connectorTypeList.Add("SCSI Fibre Channel (DB-9, Copper)");
+                                    break;
+                                case 12:
+                                    connectorTypeList.Add("SCSI Fibre Channel (Fibre)");
+                                    break;
+                                case 13:
+                                    connectorTypeList.Add("SCSI Fibre Channel SCA-II (40 pins)");
+                                    break;
+                                case 14:
+                                    connectorTypeList.Add("SCSI Fibre Channel SCA-II (20 pins)");
+                                    break;
+                                case 15:
+                                    connectorTypeList.Add("SCSI Fibre Channel BNC");
+                                    break;
+                                case 16:
+                                    connectorTypeList.Add("ATA 3-1/2 Inch (40 pins)");
+                                    break;
+                                case 17:
+                                    connectorTypeList.Add("ATA 2-1/2 Inch (44 pins)");
+                                    break;
+                                case 18:
+                                    connectorTypeList.Add("ATA-2");
+                                    break;
+                                case 19:
+                                    connectorTypeList.Add("ATA-3");
+                                    break;
+                                case 20:
+                                    connectorTypeList.Add("ATA/66");
+                                    break;
+                                case 21:
+                                    connectorTypeList.Add("DB-9");
+                                    break;
+                                case 22:
+                                    connectorTypeList.Add("DB-15");
+                                    break;
+                                case 23:
+                                    connectorTypeList.Add("DB-25");
+                                    break;
+                                case 24:
+                                    connectorTypeList.Add("DB-36");
+                                    break;
+                                case 25:
+                                    connectorTypeList.Add("RS-232C");
+                                    break;
+                                case 26:
+                                    connectorTypeList.Add("RS-422");
+                                    break;
+                                case 27:
+                                    connectorTypeList.Add("RS-423");
+                                    break;
+                                case 28:
+                                    connectorTypeList.Add("RS-485");
+                                    break;
+                                case 29:
+                                    connectorTypeList.Add("RS-449");
+                                    break;
+                                case 30:
+                                    connectorTypeList.Add("V.35");
+                                    break;
+                                case 31:
+                                    connectorTypeList.Add("X.21");
+                                    break;
+                                case 32:
+                                    connectorTypeList.Add("IEEE-488");
+                                    break;
+                                case 33:
+                                    connectorTypeList.Add("AUI");
+                                    break;
+                                case 34:
+                                    connectorTypeList.Add("UTP Category 3");
+                                    break;
+                                case 35:
+                                    connectorTypeList.Add("UTP Category 4");
+                                    break;
+                                case 36:
+                                    connectorTypeList.Add("UTP Category 5");
+                                    break;
+                                case 37:
+                                    connectorTypeList.Add("BNC");
+                                    break;
+                                case 38:
+                                    connectorTypeList.Add("RJ11");
+                                    break;
+                                case 39:
+                                    connectorTypeList.Add("RJ45");
+                                    break;
+                                case 40:
+                                    connectorTypeList.Add("Fiber MIC");
+                                    break;
+                                case 41:
+                                    connectorTypeList.Add("Apple AUI");
+                                    break;
+                                case 42:
+                                    connectorTypeList.Add("Apple GeoPort");
+                                    break;
+                                case 43:
+                                    connectorTypeList.Add("PCI");
+                                    break;
+                                case 44:
+                                    connectorTypeList.Add("ISA");
+                                    break;
+                                case 45:
+                                    connectorTypeList.Add("EISA");
+                                    break;
+                                case 46:
+                                    connectorTypeList.Add("VESA");
+                                    break;
+                                case 47:
+                                    connectorTypeList.Add("PCMCIA");
+                                    break;
+                                case 48:
+                                    connectorTypeList.Add("PCMCIA Type I");
+                                    break;
+                                case 49:
+                                    connectorTypeList.Add("PCMCIA Type II");
+                                    break;
+                                case 50:
+                                    connectorTypeList.Add("PCMCIA Type III");
+                                    break;
+                                case 51:
+                                    connectorTypeList.Add("Port ZV");
+                                    break;
+                                case 52:
+                                    connectorTypeList.Add("Card Bus");
+                                    break;
+                                case 53:
+                                    connectorTypeList.Add("USB");
+                                    break;
+                                case 54:
+                                    connectorTypeList.Add("IEEE 1394");
+                                    break;
+                                case 55:
+                                    connectorTypeList.Add("HIPPI");
+                                    break;
+                                case 56:
+                                    connectorTypeList.Add("HSSDC (6 broches)");
+                                    break;
+                                case 57:
+                                    connectorTypeList.Add("GBIC");
+                                    break;
+                                case 58:
+                                    connectorTypeList.Add("DIN");
+                                    break;
+                                case 59:
+                                    connectorTypeList.Add("Mini-DIN");
+                                    break;
+                                case 60:
+                                    connectorTypeList.Add("Micro-DIN");
+                                    break;
+                                case 61:
+                                    connectorTypeList.Add("PS/2");
+                                    break;
+                                case 62:
+                                    connectorTypeList.Add("Infrared");
+                                    break;
+                                case 63:
+                                    connectorTypeList.Add("HP-HIL");
+                                    break;
+                                case 64:
+                                    connectorTypeList.Add("Access Bus");
+                                    break;
+                                case 65:
+                                    connectorTypeList.Add("Nu Bus");
+                                    break;
+                                case 66:
+                                    connectorTypeList.Add("Centronics");
+                                    break;
+                                case 67:
+                                    connectorTypeList.Add("Mini-Centronics");
+                                    break;
+                                case 68:
+                                    connectorTypeList.Add("Mini-Centronics Type-14");
+                                    break;
+                                case 69:
+                                    connectorTypeList.Add("Mini-Centronics Type-20");
+                                    break;
+                                case 70:
+                                    connectorTypeList.Add("Mini-Centronics Type-26");
+                                    break;
+                                case 71:
+                                    connectorTypeList.Add("Bus Mouse");
+                                    break;
+                                case 72:
+                                    connectorTypeList.Add("ADB");
+                                    break;
+                                case 73:
+                                    connectorTypeList.Add("AGP");
+                                    break;
+                                case 74:
+                                    connectorTypeList.Add("VME Bus");
+                                    break;
+                                case 75:
+                                    connectorTypeList.Add("VME64");
+                                    break;
+                                case 76:
+                                    connectorTypeList.Add("Proprietary");
+                                    break;
+                                case 77:
+                                    connectorTypeList.Add("Proprietary Processor Card Slot");
+                                    break;
+                                case 78:
+                                    connectorTypeList.Add("Proprietary Memory Card Slot");
+                                    break;
+                                case 79:
+                                    connectorTypeList.Add("Proprietary I/O Riser Slot");
+                                    break;
+                                case 80:
+                                    connectorTypeList.Add("PCI-66MHz");
+                                    break;
+                                case 81:
+                                    connectorTypeList.Add("AGP 2x");
+                                    break;
+                                case 82:
+                                    connectorTypeList.Add("AGP 4x");
+                                    break;
+                                case 83:
+                                    connectorTypeList.Add("PC-98");
+                                    break;
+                                case 84:
+                                    connectorTypeList.Add("PC-98 Hireso");
+                                    break;
+                                case 85:
+                                    connectorTypeList.Add("PC-H98");
+                                    break;
+                                case 86:
+                                    connectorTypeList.Add("PC-98 Note");
+                                    break;
+                                case 87:
+                                    connectorTypeList.Add("PC-98 Full");
+                                    break;
+                                case 88:
+                                    connectorTypeList.Add("Mini-Jack");
+                                    break;
+                                case 89:
+                                    connectorTypeList.Add("On Board Floppy");
+                                    break;
+                                case 90:
+                                    connectorTypeList.Add("9 Pin Dual Inline (pin 10 cut)");
+                                    break;
+                                case 91:
+                                    connectorTypeList.Add("25 Pin Dual Inline (pin 26 cut)");
+                                    break;
+                                case 92:
+                                    connectorTypeList.Add("50 Pin Dual Inline");
+                                    break;
+                                case 93:
+                                    connectorTypeList.Add("68 Pin Dual Inline");
+                                    break;
+                                case 94:
+                                    connectorTypeList.Add("On Board Sound Input from CD-ROM");
+                                    break;
+                                case 95:
+                                    connectorTypeList.Add("68 Pin Dual Inline");
+                                    break;
+                                case 96:
+                                    connectorTypeList.Add("On Board Sound Connector");
+                                    break;
+                                case 97:
+                                    connectorTypeList.Add("Mini-Jack");
+                                    break;
+                                case 98:
+                                    connectorTypeList.Add("PCI-X");
+                                    break;
+                                case 99:
+                                    connectorTypeList.Add("Sbus IEEE 1396-1993 32 Bit");
+                                    break;
+                                case 100:
+                                    connectorTypeList.Add("Sbus IEEE 1396-1993 64 Bit");
+                                    break;
+                                case 101:
+                                    connectorTypeList.Add("MCA");
+                                    break;
+                                case 102:
+                                    connectorTypeList.Add("GIO");
+                                    break;
+                                case 103:
+                                    connectorTypeList.Add("XIO");
+                                    break;
+                                case 104:
+                                    connectorTypeList.Add("HIO");
+                                    break;
+                                case 105:
+                                    connectorTypeList.Add("NGIO");
+                                    break;
+                                case 106:
+                                    connectorTypeList.Add("PMC");
+                                    break;
+                                case 107:
+                                    connectorTypeList.Add("MTRJ");
+                                    break;
+                                case 108:
+                                    connectorTypeList.Add("VF-45");
+                                    break;
+                                case 109:
+                                    connectorTypeList.Add("Future I/O");
+                                    break;
+                                case 110:
+                                    connectorTypeList.Add("SC");
+                                    break;
+                                case 111:
+                                    connectorTypeList.Add("SG");
+                                    break;
+                                case 112:
+                                    connectorTypeList.Add("Electrical");
+                                    break;
+                                case 113:
+                                    connectorTypeList.Add("Optical");
+                                    break;
+                                case 114:
+                                    connectorTypeList.Add("Ribbon");
+                                    break;
+                                case 115:
+                                    connectorTypeList.Add("GLM");
+                                    break;
+                                case 116:
+                                    connectorTypeList.Add("1x9");
+                                    break;
+                                case 117:
+                                    connectorTypeList.Add("Mini SG");
+                                    break;
+                                case 118:
+                                    connectorTypeList.Add("LC");
+                                    break;
+                                case 119:
+                                    connectorTypeList.Add("HSSC");
+                                    break;
+                                case 120:
+                                    connectorTypeList.Add("VHDCI Shielded (68 pins)");
+                                    break;
+                                case 121:
+                                    connectorTypeList.Add("InfiniBand");
+                                    break;
+                            }
+
+                        // Get the connector type string
+                        var connectorType = connectorTypeList.Aggregate("", (current, str) => current + str + " ");
+
+                        var portType = portTypeResult switch
+                        {
+                            0 => "None",
+                            1 => "Parallel Port XT/AT Compatible",
+                            2 => "Parallel Port PS/2",
+                            3 => "Parallel Port ECP",
+                            4 => "Parallel Port EPP",
+                            5 => "Parallel Port ECP/EPP",
+                            6 => "Serial Port XT/AT Compatible",
+                            7 => "Serial Port 16450 Compatible",
+                            8 => "Serial Port 16550 Compatible",
+                            9 => "Serial Port 16650A Compatible",
+                            10 => "SCSI Port",
+                            11 => "MIDI Port",
+                            12 => "Joystick Port",
+                            13 => "Keyboard Port",
+                            14 => "Mouse Port",
+                            15 => "SSA SCSI Port",
+                            16 => "USB",
+                            17 => "FireWire (IEEE 1394)",
+                            18 => "PCMCIA Type II",
+                            19 => "PCMCIA Type II",
+                            20 => "PCMCIA Type III",
+                            21 => "CardBus",
+                            22 => "Access Bus Port",
+                            23 => "SCSI II",
+                            24 => "SCSI Wide",
+                            25 => "PC-98",
+                            26 => "PC-98-Hireso",
+                            27 => "PC-H98",
+                            28 => "Video Port",
+                            29 => "Audio Port",
+                            30 => "Modem Port",
+                            31 => "Network Port",
+                            32 => "8251 Compatible",
+                            33 => "8251 FIFO Compatible",
+                            _ => "N/A"
+                        };
+
+                        InterfaceList.Add(new InterfaceObj(
+                            (string)returnValue.PropertiesResultList[i, 0],
+                            connectorType,
+                            portType));
+                    }
+
+                    Log.Info("Successfully get Interface Info");
+                }
+                catch (Exception e)
+                {
+                    Log.Error("Failed to get Interfaces Info", e);
+                    InterfaceList = new List<InterfaceObj>();
                 }
             }),
 
@@ -661,351 +735,358 @@ public partial class MotherboardView
             Task.Run(() =>
             {
                 Log.Info("Get System Slot Info");
-
-                // Query return
-                // class docs link : https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-systemslot
-                var returnValue = wmiQueryManager.WmIquery("Win32_SystemSlot",
-                    new[] { "SlotDesignation", "ConnectorType", "CurrentUsage" });
-
-                for (var i = 0; i < returnValue.NbResult; i++)
+                try
                 {
-                    var slotDesignation = (string)returnValue.PropertiesResultList[i, 0];
-                    var connectorTypeList = new List<string?>();
-                    string? connectorType = null;
-                    string? currentUsage = null;
+                    // Query return
+                    // class docs link : https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-systemslot
+                    var returnValue = wmiQueryManager.WmIquery("Win32_SystemSlot",
+                        new[] { "SlotDesignation", "ConnectorType", "CurrentUsage" });
 
-                    var connectorTypeResult = (ushort[])returnValue.PropertiesResultList[i, 1];
-                    var currentUsageResult = (ushort)returnValue.PropertiesResultList[i, 2];
-
-                    // Get Connector Type
-                    foreach (var type in connectorTypeResult)
-                        switch (type)
-                        {
-                            case 0:
-                                connectorTypeList.Add("Unknown");
-                                break;
-                            case 1:
-                                connectorTypeList.Add("Other");
-                                break;
-                            case 2:
-                                connectorTypeList.Add("Male");
-                                break;
-                            case 3:
-                                connectorTypeList.Add("Female");
-                                break;
-                            case 4:
-                                connectorTypeList.Add("Shielded ");
-                                break;
-                            case 5:
-                                connectorTypeList.Add("Unshielded");
-                                break;
-                            case 6:
-                                connectorTypeList.Add("SCSI (A) High-Density (50 pins)");
-                                break;
-                            case 7:
-                                connectorTypeList.Add("SCSI (A) Low-Density (50 pins)");
-                                break;
-                            case 8:
-                                connectorTypeList.Add("SCSI (P) High-Density (68 pins)");
-                                break;
-                            case 9:
-                                connectorTypeList.Add("SCSI SCA-I (80 pins)");
-                                break;
-                            case 10:
-                                connectorTypeList.Add("SCSI SCA-II (80 pins)");
-                                break;
-                            case 11:
-                                connectorTypeList.Add("SCSI Fibre Channel (DB-9, Copper)");
-                                break;
-                            case 12:
-                                connectorTypeList.Add("SCSI Fibre Channel (Fibre)");
-                                break;
-                            case 13:
-                                connectorTypeList.Add("SCSI Fibre Channel SCA-II (40 pins)");
-                                break;
-                            case 14:
-                                connectorTypeList.Add("SCSI Fibre Channel SCA-II (20 pins)");
-                                break;
-                            case 15:
-                                connectorTypeList.Add("SCSI Fibre Channel BNC");
-                                break;
-                            case 16:
-                                connectorTypeList.Add("ATA 3-1/2 Inch (40 pins)");
-                                break;
-                            case 17:
-                                connectorTypeList.Add("ATA 2-1/2 Inch (44 pins)");
-                                break;
-                            case 18:
-                                connectorTypeList.Add("ATA-2");
-                                break;
-                            case 19:
-                                connectorTypeList.Add("ATA-3");
-                                break;
-                            case 20:
-                                connectorTypeList.Add("ATA/66");
-                                break;
-                            case 21:
-                                connectorTypeList.Add("DB-9");
-                                break;
-                            case 22:
-                                connectorTypeList.Add("DB-15");
-                                break;
-                            case 23:
-                                connectorTypeList.Add("DB-25");
-                                break;
-                            case 24:
-                                connectorTypeList.Add("DB-36");
-                                break;
-                            case 25:
-                                connectorTypeList.Add("RS-232C");
-                                break;
-                            case 26:
-                                connectorTypeList.Add("RS-422");
-                                break;
-                            case 27:
-                                connectorTypeList.Add("RS-423");
-                                break;
-                            case 28:
-                                connectorTypeList.Add("RS-485");
-                                break;
-                            case 29:
-                                connectorTypeList.Add("RS-449");
-                                break;
-                            case 30:
-                                connectorTypeList.Add("V.35");
-                                break;
-                            case 31:
-                                connectorTypeList.Add("X.21");
-                                break;
-                            case 32:
-                                connectorTypeList.Add("IEEE-488");
-                                break;
-                            case 33:
-                                connectorTypeList.Add("AUI");
-                                break;
-                            case 34:
-                                connectorTypeList.Add("UTP Category 3");
-                                break;
-                            case 35:
-                                connectorTypeList.Add("UTP Category 4");
-                                break;
-                            case 36:
-                                connectorTypeList.Add("UTP Category 5");
-                                break;
-                            case 37:
-                                connectorTypeList.Add("BNC");
-                                break;
-                            case 38:
-                                connectorTypeList.Add("RJ11");
-                                break;
-                            case 39:
-                                connectorTypeList.Add("RJ45");
-                                break;
-                            case 40:
-                                connectorTypeList.Add("Fiber MIC");
-                                break;
-                            case 41:
-                                connectorTypeList.Add("Apple AUI");
-                                break;
-                            case 42:
-                                connectorTypeList.Add("Apple GeoPort");
-                                break;
-                            case 43:
-                                connectorTypeList.Add("PCI");
-                                break;
-                            case 44:
-                                connectorTypeList.Add("ISA");
-                                break;
-                            case 45:
-                                connectorTypeList.Add("EISA");
-                                break;
-                            case 46:
-                                connectorTypeList.Add("VESA");
-                                break;
-                            case 47:
-                                connectorTypeList.Add("PCMCIA");
-                                break;
-                            case 48:
-                                connectorTypeList.Add("PCMCIA Type I");
-                                break;
-                            case 49:
-                                connectorTypeList.Add("PCMCIA Type II");
-                                break;
-                            case 50:
-                                connectorTypeList.Add("PCMCIA Type III");
-                                break;
-                            case 51:
-                                connectorTypeList.Add("Port ZV");
-                                break;
-                            case 52:
-                                connectorTypeList.Add("Card Bus");
-                                break;
-                            case 53:
-                                connectorTypeList.Add("USB");
-                                break;
-                            case 54:
-                                connectorTypeList.Add("IEEE 1394");
-                                break;
-                            case 55:
-                                connectorTypeList.Add("HIPPI");
-                                break;
-                            case 56:
-                                connectorTypeList.Add("HSSDC (6 broches)");
-                                break;
-                            case 57:
-                                connectorTypeList.Add("GBIC");
-                                break;
-                            case 58:
-                                connectorTypeList.Add("DIN");
-                                break;
-                            case 59:
-                                connectorTypeList.Add("Mini-DIN");
-                                break;
-                            case 60:
-                                connectorTypeList.Add("Micro-DIN");
-                                break;
-                            case 61:
-                                connectorTypeList.Add("PS/2");
-                                break;
-                            case 62:
-                                connectorTypeList.Add("Infrared");
-                                break;
-                            case 63:
-                                connectorTypeList.Add("HP-HIL");
-                                break;
-                            case 64:
-                                connectorTypeList.Add("Access Bus");
-                                break;
-                            case 65:
-                                connectorTypeList.Add("Nu Bus");
-                                break;
-                            case 66:
-                                connectorTypeList.Add("Centronics");
-                                break;
-                            case 67:
-                                connectorTypeList.Add("Mini-Centronics");
-                                break;
-                            case 68:
-                                connectorTypeList.Add("Mini-Centronics Type-14");
-                                break;
-                            case 69:
-                                connectorTypeList.Add("Mini-Centronics Type-20");
-                                break;
-                            case 70:
-                                connectorTypeList.Add("Mini-Centronics Type-26");
-                                break;
-                            case 71:
-                                connectorTypeList.Add("Bus Mouse");
-                                break;
-                            case 72:
-                                connectorTypeList.Add("ADB");
-                                break;
-                            case 73:
-                                connectorTypeList.Add("AGP");
-                                break;
-                            case 74:
-                                connectorTypeList.Add("VME Bus");
-                                break;
-                            case 75:
-                                connectorTypeList.Add("VME64");
-                                break;
-                            case 76:
-                                connectorTypeList.Add("Proprietary");
-                                break;
-                            case 77:
-                                connectorTypeList.Add("Proprietary Processor Card Slot");
-                                break;
-                            case 78:
-                                connectorTypeList.Add("Proprietary Memory Card Slot");
-                                break;
-                            case 79:
-                                connectorTypeList.Add("Proprietary I/O Riser Slot");
-                                break;
-                            case 80:
-                                connectorTypeList.Add("PCI-66MHz");
-                                break;
-                            case 81:
-                                connectorTypeList.Add("AGP 2x");
-                                break;
-                            case 82:
-                                connectorTypeList.Add("AGP 4x");
-                                break;
-                            case 83:
-                                connectorTypeList.Add("PC-98");
-                                break;
-                            case 84:
-                                connectorTypeList.Add("PC-98 Hireso");
-                                break;
-                            case 85:
-                                connectorTypeList.Add("PC-H98");
-                                break;
-                            case 86:
-                                connectorTypeList.Add("PC-98 Note");
-                                break;
-                            case 87:
-                                connectorTypeList.Add("PC-98 Full");
-                                break;
-                            case 88:
-                                connectorTypeList.Add("PCI-X");
-                                break;
-                            case 89:
-                                connectorTypeList.Add("Sbus IEEE 1396-1993 32 bit");
-                                break;
-                            case 90:
-                                connectorTypeList.Add("Sbus IEEE 1396-1993 64 bit");
-                                break;
-                            case 91:
-                                connectorTypeList.Add("MCA");
-                                break;
-                            case 92:
-                                connectorTypeList.Add("GIO");
-                                break;
-                            case 93:
-                                connectorTypeList.Add("XIO");
-                                break;
-                            case 94:
-                                connectorTypeList.Add("HIO");
-                                break;
-                            case 95:
-                                connectorTypeList.Add("NGIO");
-                                break;
-                            case 96:
-                                connectorTypeList.Add("PMC");
-                                break;
-                            case 97:
-                                connectorTypeList.Add("Future I/O");
-                                break;
-                            case 98:
-                                connectorTypeList.Add("InfiniBand");
-                                break;
-                            case 99:
-                                connectorTypeList.Add("AGP 8X");
-                                break;
-                            case 100:
-                                connectorTypeList.Add("PCI-E");
-                                break;
-                        }
-
-                    // Set final string of Connector Type
-                    if (connectorTypeList.Count > 1)
-                        foreach (var type in connectorTypeList)
-                            connectorType += type + ", ";
-                    else
-                        connectorType = connectorTypeList[0];
-
-                    // Get Current Usage
-                    currentUsage = currentUsageResult switch
+                    for (var i = 0; i < returnValue.NbResult; i++)
                     {
-                        0 => "Reserved",
-                        1 => "Other",
-                        2 => "Unknown",
-                        3 => "Available",
-                        4 => "In Use",
-                        _ => currentUsage
-                    };
+                        var slotDesignation = (string)returnValue.PropertiesResultList[i, 0];
+                        var connectorTypeList = new List<string?>();
+                        string? connectorType = null;
 
-                    // Add each slot to the list
-                    SystemSlot.Add(slotDesignation + " - " + connectorType + "  (" + currentUsage + ")");
+                        var connectorTypeResult = (ushort[])returnValue.PropertiesResultList[i, 1];
+                        var currentUsageResult = (ushort)returnValue.PropertiesResultList[i, 2];
+
+                        // Get Connector Type
+                        foreach (var type in connectorTypeResult)
+                            switch (type)
+                            {
+                                case 0:
+                                    connectorTypeList.Add("Unknown");
+                                    break;
+                                case 1:
+                                    connectorTypeList.Add("Other");
+                                    break;
+                                case 2:
+                                    connectorTypeList.Add("Male");
+                                    break;
+                                case 3:
+                                    connectorTypeList.Add("Female");
+                                    break;
+                                case 4:
+                                    connectorTypeList.Add("Shielded ");
+                                    break;
+                                case 5:
+                                    connectorTypeList.Add("Unshielded");
+                                    break;
+                                case 6:
+                                    connectorTypeList.Add("SCSI (A) High-Density (50 pins)");
+                                    break;
+                                case 7:
+                                    connectorTypeList.Add("SCSI (A) Low-Density (50 pins)");
+                                    break;
+                                case 8:
+                                    connectorTypeList.Add("SCSI (P) High-Density (68 pins)");
+                                    break;
+                                case 9:
+                                    connectorTypeList.Add("SCSI SCA-I (80 pins)");
+                                    break;
+                                case 10:
+                                    connectorTypeList.Add("SCSI SCA-II (80 pins)");
+                                    break;
+                                case 11:
+                                    connectorTypeList.Add("SCSI Fibre Channel (DB-9, Copper)");
+                                    break;
+                                case 12:
+                                    connectorTypeList.Add("SCSI Fibre Channel (Fibre)");
+                                    break;
+                                case 13:
+                                    connectorTypeList.Add("SCSI Fibre Channel SCA-II (40 pins)");
+                                    break;
+                                case 14:
+                                    connectorTypeList.Add("SCSI Fibre Channel SCA-II (20 pins)");
+                                    break;
+                                case 15:
+                                    connectorTypeList.Add("SCSI Fibre Channel BNC");
+                                    break;
+                                case 16:
+                                    connectorTypeList.Add("ATA 3-1/2 Inch (40 pins)");
+                                    break;
+                                case 17:
+                                    connectorTypeList.Add("ATA 2-1/2 Inch (44 pins)");
+                                    break;
+                                case 18:
+                                    connectorTypeList.Add("ATA-2");
+                                    break;
+                                case 19:
+                                    connectorTypeList.Add("ATA-3");
+                                    break;
+                                case 20:
+                                    connectorTypeList.Add("ATA/66");
+                                    break;
+                                case 21:
+                                    connectorTypeList.Add("DB-9");
+                                    break;
+                                case 22:
+                                    connectorTypeList.Add("DB-15");
+                                    break;
+                                case 23:
+                                    connectorTypeList.Add("DB-25");
+                                    break;
+                                case 24:
+                                    connectorTypeList.Add("DB-36");
+                                    break;
+                                case 25:
+                                    connectorTypeList.Add("RS-232C");
+                                    break;
+                                case 26:
+                                    connectorTypeList.Add("RS-422");
+                                    break;
+                                case 27:
+                                    connectorTypeList.Add("RS-423");
+                                    break;
+                                case 28:
+                                    connectorTypeList.Add("RS-485");
+                                    break;
+                                case 29:
+                                    connectorTypeList.Add("RS-449");
+                                    break;
+                                case 30:
+                                    connectorTypeList.Add("V.35");
+                                    break;
+                                case 31:
+                                    connectorTypeList.Add("X.21");
+                                    break;
+                                case 32:
+                                    connectorTypeList.Add("IEEE-488");
+                                    break;
+                                case 33:
+                                    connectorTypeList.Add("AUI");
+                                    break;
+                                case 34:
+                                    connectorTypeList.Add("UTP Category 3");
+                                    break;
+                                case 35:
+                                    connectorTypeList.Add("UTP Category 4");
+                                    break;
+                                case 36:
+                                    connectorTypeList.Add("UTP Category 5");
+                                    break;
+                                case 37:
+                                    connectorTypeList.Add("BNC");
+                                    break;
+                                case 38:
+                                    connectorTypeList.Add("RJ11");
+                                    break;
+                                case 39:
+                                    connectorTypeList.Add("RJ45");
+                                    break;
+                                case 40:
+                                    connectorTypeList.Add("Fiber MIC");
+                                    break;
+                                case 41:
+                                    connectorTypeList.Add("Apple AUI");
+                                    break;
+                                case 42:
+                                    connectorTypeList.Add("Apple GeoPort");
+                                    break;
+                                case 43:
+                                    connectorTypeList.Add("PCI");
+                                    break;
+                                case 44:
+                                    connectorTypeList.Add("ISA");
+                                    break;
+                                case 45:
+                                    connectorTypeList.Add("EISA");
+                                    break;
+                                case 46:
+                                    connectorTypeList.Add("VESA");
+                                    break;
+                                case 47:
+                                    connectorTypeList.Add("PCMCIA");
+                                    break;
+                                case 48:
+                                    connectorTypeList.Add("PCMCIA Type I");
+                                    break;
+                                case 49:
+                                    connectorTypeList.Add("PCMCIA Type II");
+                                    break;
+                                case 50:
+                                    connectorTypeList.Add("PCMCIA Type III");
+                                    break;
+                                case 51:
+                                    connectorTypeList.Add("Port ZV");
+                                    break;
+                                case 52:
+                                    connectorTypeList.Add("Card Bus");
+                                    break;
+                                case 53:
+                                    connectorTypeList.Add("USB");
+                                    break;
+                                case 54:
+                                    connectorTypeList.Add("IEEE 1394");
+                                    break;
+                                case 55:
+                                    connectorTypeList.Add("HIPPI");
+                                    break;
+                                case 56:
+                                    connectorTypeList.Add("HSSDC (6 broches)");
+                                    break;
+                                case 57:
+                                    connectorTypeList.Add("GBIC");
+                                    break;
+                                case 58:
+                                    connectorTypeList.Add("DIN");
+                                    break;
+                                case 59:
+                                    connectorTypeList.Add("Mini-DIN");
+                                    break;
+                                case 60:
+                                    connectorTypeList.Add("Micro-DIN");
+                                    break;
+                                case 61:
+                                    connectorTypeList.Add("PS/2");
+                                    break;
+                                case 62:
+                                    connectorTypeList.Add("Infrared");
+                                    break;
+                                case 63:
+                                    connectorTypeList.Add("HP-HIL");
+                                    break;
+                                case 64:
+                                    connectorTypeList.Add("Access Bus");
+                                    break;
+                                case 65:
+                                    connectorTypeList.Add("Nu Bus");
+                                    break;
+                                case 66:
+                                    connectorTypeList.Add("Centronics");
+                                    break;
+                                case 67:
+                                    connectorTypeList.Add("Mini-Centronics");
+                                    break;
+                                case 68:
+                                    connectorTypeList.Add("Mini-Centronics Type-14");
+                                    break;
+                                case 69:
+                                    connectorTypeList.Add("Mini-Centronics Type-20");
+                                    break;
+                                case 70:
+                                    connectorTypeList.Add("Mini-Centronics Type-26");
+                                    break;
+                                case 71:
+                                    connectorTypeList.Add("Bus Mouse");
+                                    break;
+                                case 72:
+                                    connectorTypeList.Add("ADB");
+                                    break;
+                                case 73:
+                                    connectorTypeList.Add("AGP");
+                                    break;
+                                case 74:
+                                    connectorTypeList.Add("VME Bus");
+                                    break;
+                                case 75:
+                                    connectorTypeList.Add("VME64");
+                                    break;
+                                case 76:
+                                    connectorTypeList.Add("Proprietary");
+                                    break;
+                                case 77:
+                                    connectorTypeList.Add("Proprietary Processor Card Slot");
+                                    break;
+                                case 78:
+                                    connectorTypeList.Add("Proprietary Memory Card Slot");
+                                    break;
+                                case 79:
+                                    connectorTypeList.Add("Proprietary I/O Riser Slot");
+                                    break;
+                                case 80:
+                                    connectorTypeList.Add("PCI-66MHz");
+                                    break;
+                                case 81:
+                                    connectorTypeList.Add("AGP 2x");
+                                    break;
+                                case 82:
+                                    connectorTypeList.Add("AGP 4x");
+                                    break;
+                                case 83:
+                                    connectorTypeList.Add("PC-98");
+                                    break;
+                                case 84:
+                                    connectorTypeList.Add("PC-98 Hireso");
+                                    break;
+                                case 85:
+                                    connectorTypeList.Add("PC-H98");
+                                    break;
+                                case 86:
+                                    connectorTypeList.Add("PC-98 Note");
+                                    break;
+                                case 87:
+                                    connectorTypeList.Add("PC-98 Full");
+                                    break;
+                                case 88:
+                                    connectorTypeList.Add("PCI-X");
+                                    break;
+                                case 89:
+                                    connectorTypeList.Add("Sbus IEEE 1396-1993 32 bit");
+                                    break;
+                                case 90:
+                                    connectorTypeList.Add("Sbus IEEE 1396-1993 64 bit");
+                                    break;
+                                case 91:
+                                    connectorTypeList.Add("MCA");
+                                    break;
+                                case 92:
+                                    connectorTypeList.Add("GIO");
+                                    break;
+                                case 93:
+                                    connectorTypeList.Add("XIO");
+                                    break;
+                                case 94:
+                                    connectorTypeList.Add("HIO");
+                                    break;
+                                case 95:
+                                    connectorTypeList.Add("NGIO");
+                                    break;
+                                case 96:
+                                    connectorTypeList.Add("PMC");
+                                    break;
+                                case 97:
+                                    connectorTypeList.Add("Future I/O");
+                                    break;
+                                case 98:
+                                    connectorTypeList.Add("InfiniBand");
+                                    break;
+                                case 99:
+                                    connectorTypeList.Add("AGP 8X");
+                                    break;
+                                case 100:
+                                    connectorTypeList.Add("PCI-E");
+                                    break;
+                            }
+
+                        // Set final string of Connector Type
+                        connectorType = connectorTypeList.Count > 1
+                            ? connectorTypeList.Aggregate
+                                (connectorType, (current, type) => current + type + ", ")
+                            : connectorTypeList[0];
+
+                        // Get Current Usage
+                        var currentUsage = currentUsageResult switch
+                        {
+                            0 => "Reserved",
+                            1 => "Other",
+                            2 => "Unknown",
+                            3 => "Available",
+                            4 => "In Use",
+                            _ => "N/A"
+                        };
+
+                        // Add each slot to the list
+                        SystemSlot.Add(slotDesignation + " - " + connectorType + "  (" + currentUsage + ")");
+                    }
+
+                    Log.Info("Successfully get system slots");
+                }
+                catch (Exception e)
+                {
+                    Log.Error("Failed to get System Slot Info", e);
+                    SystemSlot = new List<string> { "N/A" };
                 }
             }),
 
@@ -1013,42 +1094,47 @@ public partial class MotherboardView
             Task.Run(() =>
             {
                 Log.Info("Get Bus Info");
-
-                // Query return
-                var returnValue = wmiQueryManager.WmIquery("Win32_Bus", new[] { "DeviceID", "BusType", "BusNum" });
-
-                for (var i = 0; i < returnValue.NbResult; i++)
+                try
                 {
-                    string busType;
+                    // Query return
+                    var returnValue = wmiQueryManager.WmIquery("Win32_Bus", new[] { "DeviceID", "BusType", "BusNum" });
 
-                    var busTypeResult = (uint)returnValue.PropertiesResultList[i, 1];
-
-                    busType = busTypeResult switch
+                    for (var i = 0; i < returnValue.NbResult; i++)
                     {
-                        0 => "Internal",
-                        1 => "Isa",
-                        2 => "Eisa",
-                        3 => "Micro Channel",
-                        4 => "Turbo Channel",
-                        5 => "PCI Bus",
-                        6 => "VME Bus",
-                        7 => "NuBus",
-                        8 => "PCMCIA Bus",
-                        9 => "CBus",
-                        10 => "MPI Bus",
-                        11 => "MPSA Bus",
-                        12 => "Internal Processor",
-                        13 => "Internal Power Bus",
-                        14 => "PNP ISA Bus",
-                        15 => "PNP Bus",
-                        16 => "Maximum Interface Type",
-                        _ => "N/A"
-                    };
+                        var busTypeResult = (uint)returnValue.PropertiesResultList[i, 1];
 
-                    BusDeviceList.Add(new BusObj(
-                        (string)returnValue.PropertiesResultList[i, 0],
-                        busType,
-                        returnValue.PropertiesResultList[i, 2].ToString()));
+                        var busType = busTypeResult switch
+                        {
+                            0 => "Internal",
+                            1 => "Isa",
+                            2 => "Eisa",
+                            3 => "Micro Channel",
+                            4 => "Turbo Channel",
+                            5 => "PCI Bus",
+                            6 => "VME Bus",
+                            7 => "NuBus",
+                            8 => "PCMCIA Bus",
+                            9 => "CBus",
+                            10 => "MPI Bus",
+                            11 => "MPSA Bus",
+                            12 => "Internal Processor",
+                            13 => "Internal Power Bus",
+                            14 => "PNP ISA Bus",
+                            15 => "PNP Bus",
+                            16 => "Maximum Interface Type",
+                            _ => "N/A"
+                        };
+
+                        BusDeviceList.Add(new BusObj(
+                            (string)returnValue.PropertiesResultList[i, 0],
+                            busType,
+                            returnValue.PropertiesResultList[i, 2].ToString()));
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Error("Failed to get Bus Info", e);
+                    BusDeviceList = new List<BusObj>();
                 }
             }),
 
@@ -1056,75 +1142,82 @@ public partial class MotherboardView
             Task.Run(() =>
             {
                 Log.Info("Get Usb Controller Info");
-
-                // Query return
-                var returnValue = wmiQueryManager.WmIquery("Win32_USBController",
-                    new[] { "Name", "Manufacturer", "Description", "ProtocolSupported", "Status" });
-
-                for (var i = 0; i < returnValue.NbResult; i++)
+                try
                 {
-                    var protocolSupported = "N/A";
+                    // Query return
+                    var returnValue = wmiQueryManager.WmIquery("Win32_USBController",
+                        new[] { "Name", "Manufacturer", "Description", "ProtocolSupported", "Status" });
 
-                    var protocolSupportedResult = (ushort)returnValue.PropertiesResultList[i, 3];
-
-                    protocolSupported = protocolSupportedResult switch
+                    for (var i = 0; i < returnValue.NbResult; i++)
                     {
-                        1 => "Other",
-                        2 => "Unknown",
-                        3 => "EISA",
-                        4 => "ISA",
-                        5 => "PCI",
-                        6 => "ATA/ATAPI",
-                        7 => "Flexible Diskette",
-                        8 => "1496",
-                        9 => "SCSI Parallel Interface",
-                        10 => "SCSI Fibre Channel Protocol",
-                        11 => "SCSI Serial Bus Protocol",
-                        12 => "SCSI Serial Bus Protocol-2 (1394)",
-                        13 => "SCSI Serial Storage Architecture",
-                        14 => "VESA",
-                        15 => "PCMCIA",
-                        16 => "Universal Serial Bus",
-                        17 => "Parallel Protocol",
-                        18 => "ESCON",
-                        19 => "Diagnostic",
-                        20 => "I2C",
-                        21 => "Power",
-                        22 => "HIPPI",
-                        23 => "Multi Bus",
-                        24 => "VME",
-                        25 => "IPI",
-                        26 => "IEEE-488",
-                        27 => "RS-232",
-                        28 => "IEEE 802.3 10BASE5",
-                        29 => "IEEE 802.3 10BASE2",
-                        30 => "IEEE 802.3 1BASE5",
-                        31 => "IEEE 802.3 10BROAD36",
-                        32 => "IEEE 802.3 100BASEVG",
-                        33 => "IEEE 802.5 Token Ring",
-                        34 => "ANSI X3T9.5 FDDI",
-                        35 => "MCA",
-                        36 => "ESDI",
-                        37 => "IDE",
-                        38 => "CMD",
-                        39 => "ST506",
-                        40 => "DSSI",
-                        41 => "QIC2",
-                        42 => "Enhanced ATA/IDE",
-                        43 => "AGP",
-                        44 => "TWIRP (two-way infrared)",
-                        45 => "FIR (fast infrared)",
-                        46 => "SIR (serial infrared)",
-                        47 => "IrBus",
-                        _ => protocolSupported
-                    };
+                        var protocolSupportedResult = (ushort)returnValue.PropertiesResultList[i, 3];
 
-                    UsbControllerList.Add(new UsbControllerObj(
-                        (string)returnValue.PropertiesResultList[i, 0],
-                        (string)returnValue.PropertiesResultList[i, 1],
-                        (string)returnValue.PropertiesResultList[i, 2],
-                        protocolSupported,
-                        (string)returnValue.PropertiesResultList[i, 4]));
+                        var protocolSupported = protocolSupportedResult switch
+                        {
+                            1 => "Other",
+                            2 => "Unknown",
+                            3 => "EISA",
+                            4 => "ISA",
+                            5 => "PCI",
+                            6 => "ATA/ATAPI",
+                            7 => "Flexible Diskette",
+                            8 => "1496",
+                            9 => "SCSI Parallel Interface",
+                            10 => "SCSI Fibre Channel Protocol",
+                            11 => "SCSI Serial Bus Protocol",
+                            12 => "SCSI Serial Bus Protocol-2 (1394)",
+                            13 => "SCSI Serial Storage Architecture",
+                            14 => "VESA",
+                            15 => "PCMCIA",
+                            16 => "Universal Serial Bus",
+                            17 => "Parallel Protocol",
+                            18 => "ESCON",
+                            19 => "Diagnostic",
+                            20 => "I2C",
+                            21 => "Power",
+                            22 => "HIPPI",
+                            23 => "Multi Bus",
+                            24 => "VME",
+                            25 => "IPI",
+                            26 => "IEEE-488",
+                            27 => "RS-232",
+                            28 => "IEEE 802.3 10BASE5",
+                            29 => "IEEE 802.3 10BASE2",
+                            30 => "IEEE 802.3 1BASE5",
+                            31 => "IEEE 802.3 10BROAD36",
+                            32 => "IEEE 802.3 100BASEVG",
+                            33 => "IEEE 802.5 Token Ring",
+                            34 => "ANSI X3T9.5 FDDI",
+                            35 => "MCA",
+                            36 => "ESDI",
+                            37 => "IDE",
+                            38 => "CMD",
+                            39 => "ST506",
+                            40 => "DSSI",
+                            41 => "QIC2",
+                            42 => "Enhanced ATA/IDE",
+                            43 => "AGP",
+                            44 => "TWIRP (two-way infrared)",
+                            45 => "FIR (fast infrared)",
+                            46 => "SIR (serial infrared)",
+                            47 => "IrBus",
+                            _ => "N/A"
+                        };
+
+                        UsbControllerList.Add(new UsbControllerObj(
+                            (string)returnValue.PropertiesResultList[i, 0],
+                            (string)returnValue.PropertiesResultList[i, 1],
+                            (string)returnValue.PropertiesResultList[i, 2],
+                            protocolSupported,
+                            (string)returnValue.PropertiesResultList[i, 4]));
+                    }
+
+                    Log.Info("Successfully get Usb Controller Info");
+                }
+                catch (Exception e)
+                {
+                    Log.Error("Failed to get Usb Controller Info", e);
+                    UsbControllerList = new List<UsbControllerObj>();
                 }
             })
         };
@@ -1355,40 +1448,39 @@ public partial class MotherboardView
             try
             {
                 // Get list of nodes
-                var onBoardDeviceString = "";
-                foreach (var onBoardDeviceObj in OnBoardDevicesList)
-                    onBoardDeviceString += $"<li><h3>{onBoardDeviceObj.Description}</h3><ul><li><h3>" +
-                                           $"{onBoardDeviceObj.DeviceType}</h3></li></ul></li>";
+                var onBoardDeviceString = OnBoardDevicesList.Aggregate("",
+                    (current, onBoardDeviceObj) =>
+                        current + $"<li><h3>{onBoardDeviceObj.Description}</h3><ul><li><h3>" +
+                        $"{onBoardDeviceObj.DeviceType}</h3></li></ul></li>");
 
-                var ideControllerString = "";
-                foreach (var ideControllerObj in IdeControllerList)
-                    ideControllerString +=
-                        $"<li><h3>{ideControllerObj.Caption}</h3><ul><li><h3>Manufacturer : " +
-                        $"{ideControllerObj.Manufacturer}</h3></li><li><h3>Protocol Supported : " +
-                        $"{ideControllerObj.ProtocolSupported}</h3></li><li><h3>Status : " +
-                        $"{ideControllerObj.Status}</h3></li></ul></li>";
+                var ideControllerString = IdeControllerList.Aggregate("",
+                    (current, ideControllerObj) => current +
+                                                   $"<li><h3>{ideControllerObj.Caption}</h3><ul><li><h3>Manufacturer : " +
+                                                   $"{ideControllerObj.Manufacturer}</h3></li><li><h3>Protocol Supported : " +
+                                                   $"{ideControllerObj.ProtocolSupported}</h3></li><li><h3>Status : " +
+                                                   $"{ideControllerObj.Status}</h3></li></ul></li>");
 
-                var interfaceString = "";
-                foreach (var interfaceObj in InterfaceList)
-                    interfaceString += $"<li><h3>{interfaceObj.ExternalReferenceDesignator}</h3><ul><li><h3>" +
-                                       $"Connector Type : {interfaceObj.ConnectorType}</h3></li><li><h3>Port Type" +
-                                       $" : {interfaceObj.PortType}</h3></li></ul></li>";
+                var interfaceString = InterfaceList.Aggregate("",
+                    (current, interfaceObj) => current +
+                                               $"<li><h3>{interfaceObj.ExternalReferenceDesignator}</h3><ul><li><h3>" +
+                                               $"Connector Type : {interfaceObj.ConnectorType}</h3></li><li><h3>Port Type" +
+                                               $" : {interfaceObj.PortType}</h3></li></ul></li>");
 
-                var systemSlotString = "";
-                foreach (var systemSlot in SystemSlot) systemSlotString += $"<li><h3>{systemSlot}</h3></li>";
+                var systemSlotString = SystemSlot.Aggregate("", (current, systemSlot) => current
+                    + $"<li><h3>{systemSlot}</h3></li>");
 
-                var busString = "";
-                foreach (var busObj in BusDeviceList)
-                    busString += $"<li><h3>{busObj.DeviceId}</h3><ul><li><h3>Bus Type : {busObj.BusType}" +
-                                 $"</h3></li><li><h3>Bus Num : {busObj.BusNumber}</h3></li></ul></li>";
+                var busString = BusDeviceList.Aggregate("",
+                    (current, busObj) =>
+                        current + $"<li><h3>{busObj.DeviceId}</h3><ul><li><h3>Bus Type : {busObj.BusType}" +
+                        $"</h3></li><li><h3>Bus Num : {busObj.BusNumber}</h3></li></ul></li>");
 
-                var usbControllerString = "";
-                foreach (var usbControllerObj in UsbControllerList)
-                    usbControllerString += $"<li><h3>{usbControllerObj.Name}</h3><ul><li><h3>Manufacturer :" +
-                                           $" {usbControllerObj.Manufacturer}</h3></li><li><h3>Description :" +
-                                           $" {usbControllerObj.Description}</h3></li><li><h3>Protocol Supported " +
-                                           $": {usbControllerObj.ProtocolSupported}</h3></li><li><h3>Status : " +
-                                           $"{usbControllerObj.Status}</h3></li></ul></li>";
+                var usbControllerString = UsbControllerList.Aggregate("",
+                    (current, usbControllerObj) => current +
+                                                   $"<li><h3>{usbControllerObj.Name}</h3><ul><li><h3>Manufacturer :" +
+                                                   $" {usbControllerObj.Manufacturer}</h3></li><li><h3>Description :" +
+                                                   $" {usbControllerObj.Description}</h3></li><li><h3>Protocol Supported " +
+                                                   $": {usbControllerObj.ProtocolSupported}</h3></li><li><h3>Status : " +
+                                                   $"{usbControllerObj.Status}</h3></li></ul></li>");
 
                 // html template
                 var htmlString = "<!DOCTYPE html><head> <title>Data Export - Windows Admin Center</title></head>" +
@@ -1454,12 +1546,12 @@ public partial class MotherboardView
     private string MbSerialNumber { get; set; } = "";
     private string MbStatus { get; set; } = "";
     private string MbBusType { get; set; } = "";
-    private List<OnBoardDeviceObj> OnBoardDevicesList { get; }
-    private List<IdeControllerObj> IdeControllerList { get; }
-    private List<InterfaceObj> InterfaceList { get; }
-    private List<string> SystemSlot { get; }
-    private List<BusObj> BusDeviceList { get; }
-    private List<UsbControllerObj> UsbControllerList { get; }
+    private List<OnBoardDeviceObj> OnBoardDevicesList { get; set; }
+    private List<IdeControllerObj> IdeControllerList { get; set; }
+    private List<InterfaceObj> InterfaceList { get; set; }
+    private List<string> SystemSlot { get; set; }
+    private List<BusObj> BusDeviceList { get; set; }
+    private List<UsbControllerObj> UsbControllerList { get; set; }
 
     #endregion
 }

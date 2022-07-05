@@ -1,8 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System Information", "System Information\System Information.csproj", "{659A6F86-5F01-4C57-B1C7-038121AD78CE}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System Information", "System Information\System Information.csproj", "{659A6F86-5F01-4C57-B1C7-038121AD78CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows Admin Center", "Windows Admin Center\Windows Admin Center.csproj", "{563C8EE1-5470-4CC7-8DA2-3E065C1F8E8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Windows Admin Center", "Windows Admin Center\Windows Admin Center.csproj", "{563C8EE1-5470-4CC7-8DA2-3E065C1F8E8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +21,11 @@ Global
 		{563C8EE1-5470-4CC7-8DA2-3E065C1F8E8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{563C8EE1-5470-4CC7-8DA2-3E065C1F8E8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{563C8EE1-5470-4CC7-8DA2-3E065C1F8E8D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EED5454A-3AC0-4906-9C2E-07E799C9A6BD}
 	EndGlobalSection
 EndGlobal
