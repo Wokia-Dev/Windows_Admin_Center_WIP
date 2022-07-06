@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace System_Information.Core.WmiObjects
+﻿namespace System_Information.Core.WmiObjects
 {
     public class InterfaceObj
     {

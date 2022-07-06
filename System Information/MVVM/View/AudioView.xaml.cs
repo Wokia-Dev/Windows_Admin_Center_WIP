@@ -5,7 +5,7 @@ namespace System_Information.MVVM.View
     /// <summary>
     /// Logique d'interaction pour AudioView.xaml
     /// </summary>
-    public partial class AudioView : UserControl
+    public partial class AudioView
     {
         public AudioView()
         {
