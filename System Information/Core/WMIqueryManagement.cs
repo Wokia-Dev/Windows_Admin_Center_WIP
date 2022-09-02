@@ -28,7 +28,7 @@ namespace System_Information.Core
             var propertiesResultList = new object[searcher.Get().Count, properties.Length];
             foreach (var queryObj in searcher.Get())
             {
-                int index = 0;
+                var index = 0;
                 foreach (var property in properties)
                 {
                     propertiesResultList[nbResult, index] = (queryObj[property]);

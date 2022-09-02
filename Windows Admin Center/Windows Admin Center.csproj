@@ -10,14 +10,6 @@
         <StartupObject>Windows_Admin_Center.App</StartupObject>
     </PropertyGroup>
 
-
-
-    <ItemGroup>
-      <PackageReference Include="Syncfusion.Licensing" Version="20.2.0.36" />
-      <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="20.2.0.36" />
-      <PackageReference Include="Syncfusion.Themes.FluentLight.WPF" Version="20.2.0.36" />
-    </ItemGroup>
-
     <ItemGroup>
       <Folder Include="MVVM\Model" />
     </ItemGroup>
@@ -43,6 +35,13 @@
       <Resource Include="Resources\Theme\Images\OptimizationIcon.png" />
       <Resource Include="Resources\Theme\Images\OtherIcon.png" />
       <Resource Include="Resources\Theme\Images\SecurityIcon.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Syncfusion.Licensing" Version="20.2.0.36" />
+      <PackageReference Include="Syncfusion.SfTreeView.WPF" Version="20.2.0.36" />
+      <PackageReference Include="Syncfusion.Themes.FluentLight.WPF" Version="20.2.0.36" />
+      <PackageReference Include="Syncfusion.Themes.MaterialLight.WPF" Version="20.2.0.36" />
     </ItemGroup>
 
 </Project>
