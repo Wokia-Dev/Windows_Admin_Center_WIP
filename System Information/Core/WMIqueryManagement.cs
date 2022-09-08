@@ -47,7 +47,7 @@ namespace System_Information.Core
         public int NbResult { get; set; }
         public object[,] PropertiesResultList { get; set; }
 
-        public WmIqueryReturn( int nbResult, object[,] propertiesResultList)
+        public WmIqueryReturn(int nbResult, object[,] propertiesResultList)
         {
             NbResult = nbResult;
             PropertiesResultList = propertiesResultList;
