@@ -37,9 +37,9 @@ namespace System_Information.MVVM.View
                 Log.Info("Get Gpu info with WMI");
                 try
                 {
-                        // Query return
-                        var returnValueNb = wmiQueryManager.WmIquery("Win32_VideoController",
-                        new[] { "Caption" });
+                    // Query return
+                    var returnValueNb = wmiQueryManager.WmIquery("Win32_VideoController",
+                    new[] { "Caption" });
                     var nbGpu = returnValueNb.NbResult;
 
                     var wmiTasks = new List<Task>
@@ -562,8 +562,8 @@ namespace System_Information.MVVM.View
                     };
                     Task.WaitAll(wmiTasks.ToArray());
 
-                        // Add all result to GpuList
-                        for (var i = 0; i < nbGpu; i++)
+                    // Add all result to GpuList
+                    for (var i = 0; i < nbGpu; i++)
                     {
                         GpuList.Add(new GpuObj(
                             caption: CaptionList?[i],
