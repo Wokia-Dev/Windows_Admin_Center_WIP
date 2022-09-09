@@ -1230,73 +1230,99 @@ public partial class MotherboardView
 
 
         // Add Manufacturer to mainNode
-        var manufacturerNode = new TreeViewNode();
-        manufacturerNode.Content = $"Manufacturer : {MbManufacturer}";
+        var manufacturerNode = new TreeViewNode
+        {
+            Content = $"Manufacturer : {MbManufacturer}"
+        };
 
         // Add Product to mainNode
-        var productNode = new TreeViewNode();
-        productNode.Content = $"Product : {MbProductName}";
+        var productNode = new TreeViewNode
+        {
+            Content = $"Product : {MbProductName}"
+        };
 
         // Add Serial Number to mainNode
-        var serialNumberNode = new TreeViewNode();
-        serialNumberNode.Content = $"Serial Number : {MbSerialNumber}";
+        var serialNumberNode = new TreeViewNode
+        {
+            Content = $"Serial Number : {MbSerialNumber}"
+        };
 
         // Add Status to mainNode
-        var statusNode = new TreeViewNode();
-        statusNode.Content = $"Status : {MbStatus}";
+        var statusNode = new TreeViewNode
+        {
+            Content = $"Status : {MbStatus}"
+        };
 
         // Add Bus Type to mainNode
-        var busTypeNode = new TreeViewNode();
-        busTypeNode.Content = $"Bus Type : {MbBusType}";
+        var busTypeNode = new TreeViewNode
+        {
+            Content = $"Bus Type : {MbBusType}"
+        };
 
         // Add Onboard Device to parent node
         var onBoardDeviceNodeList = new List<TreeViewNode>();
         foreach (var onBoardDeviceObj in OnBoardDevicesList)
         {
-            var onBoardDeviceNode = new TreeViewNode();
-            onBoardDeviceNode.Content = onBoardDeviceObj.Description;
-            onBoardDeviceNode.IsExpanded = true;
+            var onBoardDeviceNode = new TreeViewNode
+            {
+                Content = onBoardDeviceObj.Description,
+                IsExpanded = true
+            };
 
-            var onBoardDeviceChildNode = new TreeViewNode();
-            onBoardDeviceChildNode.Content = $"Type : {onBoardDeviceObj.DeviceType}";
+            var onBoardDeviceChildNode = new TreeViewNode
+            {
+                Content = $"Type : {onBoardDeviceObj.DeviceType}"
+            };
             onBoardDeviceNode.ChildNodes.Add(onBoardDeviceChildNode);
 
             onBoardDeviceNodeList.Add(onBoardDeviceNode);
         }
 
         // Add On Board Devices Node to mainNode
-        var onBoardDevicesNode = new TreeViewNode();
-        onBoardDevicesNode.Content = OnBoardDevicesList.Count > 0 ? "On Board Devices" : "On Board Devices (None)";
-        onBoardDevicesNode.IsExpanded = true;
+        var onBoardDevicesNode = new TreeViewNode
+        {
+            Content = OnBoardDevicesList.Count > 0 ? "On Board Devices" : "On Board Devices (None)",
+            IsExpanded = true
+        };
         foreach (var onBoardDevice in onBoardDeviceNodeList) onBoardDevicesNode.ChildNodes.Add(onBoardDevice);
 
         // Add IDE Controller to parent node
         var ideControllerNodeList = new List<TreeViewNode>();
         foreach (var ideControllerObj in IdeControllerList)
         {
-            var ideControllerNode = new TreeViewNode();
-            ideControllerNode.Content = ideControllerObj.Caption;
-            ideControllerNode.IsExpanded = true;
+            var ideControllerNode = new TreeViewNode
+            {
+                Content = ideControllerObj.Caption,
+                IsExpanded = true
+            };
 
-            var ideControllerManufacturerNode = new TreeViewNode();
-            ideControllerManufacturerNode.Content = $"Manufacturer : {ideControllerObj.Manufacturer}";
+            var ideControllerManufacturerNode = new TreeViewNode
+            {
+                Content = $"Manufacturer : {ideControllerObj.Manufacturer}"
+            };
             ideControllerNode.ChildNodes.Add(ideControllerManufacturerNode);
 
-            var ideControllerProtocolNode = new TreeViewNode();
-            ideControllerProtocolNode.Content = $"Protocol Supported : {ideControllerObj.ProtocolSupported}";
+            var ideControllerProtocolNode = new TreeViewNode
+            {
+                Content = $"Protocol Supported : {ideControllerObj.ProtocolSupported}"
+            };
             ideControllerNode.ChildNodes.Add(ideControllerProtocolNode);
 
-            var ideControllerStatusNode = new TreeViewNode();
-            ideControllerStatusNode.Content = $"Status : {ideControllerObj.Status}";
+            var ideControllerStatusNode = new TreeViewNode
+            {
+                Content = $"Status : {ideControllerObj.Status}"
+            };
             ideControllerNode.ChildNodes.Add(ideControllerStatusNode);
 
             ideControllerNodeList.Add(ideControllerNode);
         }
 
         // Add IDE Controller Node to mainNode
-        var ideControllersNode = new TreeViewNode();
-        ideControllersNode.Content = IdeControllerList.Count > 0 ? "IDE Controller" : "IDE Controller (None)";
-        ideControllersNode.IsExpanded = true;
+        var ideControllersNode = new TreeViewNode
+        {
+            Content = IdeControllerList.Count > 0 ? "IDE Controller" : "IDE Controller (None)",
+            IsExpanded = true
+        };
         foreach (var ideControllerDevice in ideControllerNodeList)
             ideControllersNode.ChildNodes.Add(ideControllerDevice);
 
@@ -1304,104 +1330,129 @@ public partial class MotherboardView
         var interfaceNodeList = new List<TreeViewNode>();
         foreach (var interfaceObj in InterfaceList)
         {
-            var interfaceNode = new TreeViewNode();
-            interfaceNode.Content = interfaceObj.ExternalReferenceDesignator;
+            var interfaceNode = new TreeViewNode
+            {
+                Content = interfaceObj.ExternalReferenceDesignator
+            };
 
-            var interfaceConnectorTypeNode = new TreeViewNode();
-            interfaceConnectorTypeNode.Content = $"Connector Type : {interfaceObj.ConnectorType}";
+            var interfaceConnectorTypeNode = new TreeViewNode
+            {
+                Content = $"Connector Type : {interfaceObj.ConnectorType}"
+            };
             interfaceNode.ChildNodes.Add(interfaceConnectorTypeNode);
 
-            var interfacePortTypeNode = new TreeViewNode();
-            interfacePortTypeNode.Content = $"Port Type : {interfaceObj.PortType}";
+            var interfacePortTypeNode = new TreeViewNode
+            {
+                Content = $"Port Type : {interfaceObj.PortType}"
+            };
             interfaceNode.ChildNodes.Add(interfacePortTypeNode);
 
             interfaceNodeList.Add(interfaceNode);
         }
 
         // Add Interfaces Node to mainNode
-        var interfacesNode = new TreeViewNode();
-        interfacesNode.Content = InterfaceList.Count > 0 ? "Interfaces" : "Interfaces (None)";
-        interfacesNode.IsExpanded = true;
+        var interfacesNode = new TreeViewNode
+        {
+            Content = InterfaceList.Count > 0 ? "Interfaces" : "Interfaces (None)",
+            IsExpanded = true
+        };
         foreach (var interfaceDevice in interfaceNodeList) interfacesNode.ChildNodes.Add(interfaceDevice);
 
         // Add System slot to parent node
-        var systemSlotNodeList = new List<TreeViewNode>();
-        foreach (var systemSlot in SystemSlot)
-        {
-            var systemSlotNode = new TreeViewNode();
-            systemSlotNode.Content = systemSlot;
-
-            systemSlotNodeList.Add(systemSlotNode);
-        }
+        var systemSlotNodeList = SystemSlot.Select(systemSlot => new TreeViewNode { Content = systemSlot }).ToList();
 
         // Add System Slot to mainNode
-        var systemSlotsNode = new TreeViewNode();
-        systemSlotsNode.Content = SystemSlot.Count > 0 ? "System Slots" : "System Slots (None)";
-        systemSlotsNode.IsExpanded = true;
+        var systemSlotsNode = new TreeViewNode
+        {
+            Content = SystemSlot.Count > 0 ? "System Slots" : "System Slots (None)",
+            IsExpanded = true
+        };
         foreach (var systemSlotDevice in systemSlotNodeList) systemSlotsNode.ChildNodes.Add(systemSlotDevice);
 
         // Add Bus Device to parent node
         var busDeviceNodeList = new List<TreeViewNode>();
         foreach (var busDeviceObj in BusDeviceList)
         {
-            var busDeviceNode = new TreeViewNode();
-            busDeviceNode.Content = busDeviceObj.DeviceId;
+            var busDeviceNode = new TreeViewNode
+            {
+                Content = busDeviceObj.DeviceId
+            };
 
-            var busDeviceTypeNode = new TreeViewNode();
-            busDeviceTypeNode.Content = $"Bus Type : {busDeviceObj.BusType}";
+            var busDeviceTypeNode = new TreeViewNode
+            {
+                Content = $"Bus Type : {busDeviceObj.BusType}"
+            };
             busDeviceNode.ChildNodes.Add(busDeviceTypeNode);
 
-            var busDeviceNumNode = new TreeViewNode();
-            busDeviceNumNode.Content = $"Bus Number : {busDeviceObj.BusNumber}";
+            var busDeviceNumNode = new TreeViewNode
+            {
+                Content = $"Bus Number : {busDeviceObj.BusNumber}"
+            };
             busDeviceNode.ChildNodes.Add(busDeviceNumNode);
 
             busDeviceNodeList.Add(busDeviceNode);
         }
 
         // Add Bus to mainNode
-        var busNode = new TreeViewNode();
-        busNode.Content = BusDeviceList.Count > 0 ? "Bus" : "Bus (None)";
-        busNode.IsExpanded = true;
+        var busNode = new TreeViewNode
+        {
+            Content = BusDeviceList.Count > 0 ? "Bus" : "Bus (None)",
+            IsExpanded = true
+        };
         foreach (var busDevice in busDeviceNodeList) busNode.ChildNodes.Add(busDevice);
 
         // Add USB Controller to parent node
         var usbControllerNodeList = new List<TreeViewNode>();
         foreach (var usbControllerObj in UsbControllerList)
         {
-            var usbNode = new TreeViewNode();
-            usbNode.Content = usbControllerObj.Name;
-            usbNode.IsExpanded = true;
+            var usbNode = new TreeViewNode
+            {
+                Content = usbControllerObj.Name,
+                IsExpanded = true
+            };
 
-            var usbManufacturerNode = new TreeViewNode();
-            usbManufacturerNode.Content = $"Manufacturer : {usbControllerObj.Manufacturer}";
+            var usbManufacturerNode = new TreeViewNode
+            {
+                Content = $"Manufacturer : {usbControllerObj.Manufacturer}"
+            };
             usbNode.ChildNodes.Add(usbManufacturerNode);
 
-            var usbDescriptionNode = new TreeViewNode();
-            usbDescriptionNode.Content = $"Description : {usbControllerObj.Description}";
+            var usbDescriptionNode = new TreeViewNode
+            {
+                Content = $"Description : {usbControllerObj.Description}"
+            };
             usbNode.ChildNodes.Add(usbDescriptionNode);
 
-            var usbProtocolNode = new TreeViewNode();
-            usbProtocolNode.Content = $"Protocol : {usbControllerObj.ProtocolSupported}";
+            var usbProtocolNode = new TreeViewNode
+            {
+                Content = $"Protocol : {usbControllerObj.ProtocolSupported}"
+            };
             usbNode.ChildNodes.Add(usbProtocolNode);
 
-            var usbStatusNode = new TreeViewNode();
-            usbStatusNode.Content = $"Status : {usbControllerObj.Status}";
+            var usbStatusNode = new TreeViewNode
+            {
+                Content = $"Status : {usbControllerObj.Status}"
+            };
             usbNode.ChildNodes.Add(usbStatusNode);
 
             usbControllerNodeList.Add(usbNode);
         }
 
         // Add USB Controller to mainNode
-        var usbControllerNode = new TreeViewNode();
-        usbControllerNode.Content = UsbControllerList.Count > 0 ? "USB Controller" : "USB Controller (None)";
-        usbControllerNode.IsExpanded = true;
+        var usbControllerNode = new TreeViewNode
+        {
+            Content = UsbControllerList.Count > 0 ? "USB Controller" : "USB Controller (None)",
+            IsExpanded = true
+        };
         foreach (var usbControllerDevice in usbControllerNodeList)
             usbControllerNode.ChildNodes.Add(usbControllerDevice);
 
         // Main Node for Motherboard
-        var mainNode = new TreeViewNode();
-        mainNode.Content = MbProductName;
-        mainNode.IsExpanded = true;
+        var mainNode = new TreeViewNode
+        {
+            Content = MbProductName,
+            IsExpanded = true
+        };
         mainNode.ChildNodes.Add(manufacturerNode);
         mainNode.ChildNodes.Add(productNode);
         mainNode.ChildNodes.Add(serialNumberNode);
@@ -1513,12 +1564,13 @@ public partial class MotherboardView
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     File.WriteAllText(saveFileDialog.FileName, htmlString);
-                    var process = new Process();
-                    process.StartInfo = new ProcessStartInfo(saveFileDialog.FileName)
+                    var process = new Process
                     {
-                        UseShellExecute = true
-                    };
-                    process.Start();
+                        StartInfo = new ProcessStartInfo(saveFileDialog.FileName)
+                        {
+                            UseShellExecute = true
+                        }
+                    }.Start();
                     Log.Info("html data file exported : " + saveFileDialog.FileName);
                 }
 

@@ -794,81 +794,119 @@ public partial class CpuView
 
 
         // Add Manufacturer to main node
-        var manufacturerNode = new TreeViewNode();
-        manufacturerNode.Content = "Manufacturer : " + ProcessorManufacturer;
+        var manufacturerNode = new TreeViewNode
+        {
+            Content = "Manufacturer : " + ProcessorManufacturer
+        };
 
         // Add Family to main node
-        var familyNode = new TreeViewNode();
-        familyNode.Content = "Family : " + ProcessorFamily;
+        var familyNode = new TreeViewNode
+        {
+            Content = "Family : " + ProcessorFamily
+        };
 
         // Add Architecture to main node
-        var architectureNode = new TreeViewNode();
-        architectureNode.Content = "Architecture : " + ProcessorArchitecture;
+        var architectureNode = new TreeViewNode
+        {
+            Content = "Architecture : " + ProcessorArchitecture
+        };
 
         // Add Description to main node
-        var descriptionNode = new TreeViewNode();
-        descriptionNode.Content = "Description : " + ProcessorDescription;
+        var descriptionNode = new TreeViewNode
+        {
+            Content = "Description : " + ProcessorDescription
+        };
 
         // Add Socket Designation to main node
-        var socketDesignationNode = new TreeViewNode();
-        socketDesignationNode.Content = "Socket Designation : " + SocketDesignation;
+        var socketDesignationNode = new TreeViewNode
+        {
+            Content = "Socket Designation : " + SocketDesignation
+        };
 
         // Add Virtualization to main node
-        var virtualizationNode = new TreeViewNode();
-        virtualizationNode.Content = "Virtualization : " + Virtualization;
+        var virtualizationNode = new TreeViewNode
+        {
+            Content = "Virtualization : " + Virtualization
+        };
 
         // Add AddressWidth to main node
-        var addressWidthNode = new TreeViewNode();
-        addressWidthNode.Content = "Address Width : " + AddressWidth;
+        var addressWidthNode = new TreeViewNode
+        {
+            Content = "Address Width : " + AddressWidth
+        };
 
         // Add DataWidth to main node
-        var dataWidthNode = new TreeViewNode();
-        dataWidthNode.Content = "Data Width : " + DataWidth;
+        var dataWidthNode = new TreeViewNode
+        {
+            Content = "Data Width : " + DataWidth
+        };
 
         // Add PowerManagement to main node
-        var powerManagementNode = new TreeViewNode();
-        powerManagementNode.Content = "Power Management Supported : " + PowerManagementSupported;
+        var powerManagementNode = new TreeViewNode
+        {
+            Content = "Power Management Supported : " + PowerManagementSupported
+        };
 
         // Add Version to main node
-        var versionNode = new TreeViewNode();
-        versionNode.Content = "Version : " + Version;
+        var versionNode = new TreeViewNode
+        {
+            Content = "Version : " + Version
+        };
 
         // Add ProcessorId to main node
-        var processorIdNode = new TreeViewNode();
-        processorIdNode.Content = "Processor Id : " + ProcessorId;
+        var processorIdNode = new TreeViewNode
+        {
+            Content = "Processor Id : " + ProcessorId
+        };
 
         // Add Status to main node
-        var statusNode = new TreeViewNode();
-        statusNode.Content = "Status : " + Status;
+        var statusNode = new TreeViewNode
+        {
+            Content = "Status : " + Status
+        };
 
         // Add 64-bit Capable to characteristics node
-        var bit64Node = new TreeViewNode();
-        bit64Node.Content = "64-bit Capable : " + X64BitCapable;
+        var bit64Node = new TreeViewNode
+        {
+            Content = "64-bit Capable : " + X64BitCapable
+        };
 
         // Add Multi Core to characteristics node
-        var multiCoreNode = new TreeViewNode();
-        multiCoreNode.Content = "Multi Core : " + MultiCore;
+        var multiCoreNode = new TreeViewNode
+        {
+            Content = "Multi Core : " + MultiCore
+        };
 
         // Add HardwareThread to characteristics node
-        var hardwareThreadNode = new TreeViewNode();
-        hardwareThreadNode.Content = "Hardware Thread : " + HardwareThread;
+        var hardwareThreadNode = new TreeViewNode
+        {
+            Content = "Hardware Thread : " + HardwareThread
+        };
 
         // Add ExecuteProtection to characteristics node
-        var executeProtectionNode = new TreeViewNode();
-        executeProtectionNode.Content = "Execute Protection : " + ExecuteProtection;
+        var executeProtectionNode = new TreeViewNode
+        {
+            Content = "Execute Protection : " + ExecuteProtection
+        };
 
         // Add Enhanced Virtualization to characteristics node
-        var enhancedVirtualizationNode = new TreeViewNode();
-        enhancedVirtualizationNode.Content = "Enhanced Virtualization : " + EnhancedVirtualization;
+        var enhancedVirtualizationNode = new TreeViewNode
+        {
+            Content = "Enhanced Virtualization : " + EnhancedVirtualization
+        };
 
         // Add Power/Performance Control to characteristics node
-        var powerPerformanceControlNode = new TreeViewNode();
-        powerPerformanceControlNode.Content = "Power/Performance Control : " + PowerPerformanceControl;
+        var powerPerformanceControlNode = new TreeViewNode
+        {
+            Content = "Power/Performance Control : " + PowerPerformanceControl
+        };
 
         // Add Characteristics to main node
-        var characteristicsNode = new TreeViewNode();
-        characteristicsNode.Content = "Characteristics";
-        characteristicsNode.IsExpanded = true;
+        var characteristicsNode = new TreeViewNode
+        {
+            Content = "Characteristics",
+            IsExpanded = true
+        };
         characteristicsNode.ChildNodes.Add(bit64Node);
         characteristicsNode.ChildNodes.Add(multiCoreNode);
         characteristicsNode.ChildNodes.Add(hardwareThreadNode);
@@ -918,9 +956,11 @@ public partial class CpuView
 
 
         // Add Metrics to main node
-        var metricsNode = new TreeViewNode();
-        metricsNode.Content = "Metrics";
-        metricsNode.IsExpanded = true;
+        var metricsNode = new TreeViewNode
+        {
+            Content = "Metrics",
+            IsExpanded = true
+        };
         metricsNode.ChildNodes.Add(CurrentClockSpeedNode);
         metricsNode.ChildNodes.Add(MaxClockSpeedNode);
         metricsNode.ChildNodes.Add(ExternalClockSpeedNode);
@@ -933,9 +973,11 @@ public partial class CpuView
         metricsNode.ChildNodes.Add(L3CacheSizeNode);
 
         // Main node for CPU
-        var mainNode = new TreeViewNode();
-        mainNode.Content = ProcessorName;
-        mainNode.IsExpanded = true;
+        var mainNode = new TreeViewNode
+        {
+            Content = ProcessorName,
+            IsExpanded = true
+        };
         mainNode.ChildNodes.Add(manufacturerNode);
         mainNode.ChildNodes.Add(familyNode);
         mainNode.ChildNodes.Add(architectureNode);
@@ -1272,12 +1314,13 @@ public partial class CpuView
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     File.WriteAllText(saveFileDialog.FileName, htmlString);
-                    var process = new Process();
-                    process.StartInfo = new ProcessStartInfo(saveFileDialog.FileName)
+                    var process = new Process
                     {
-                        UseShellExecute = true
-                    };
-                    process.Start();
+                        StartInfo = new ProcessStartInfo(saveFileDialog.FileName)
+                        {
+                            UseShellExecute = true
+                        }
+                    }.Start();
                     Log.Info("html data file exported : " + saveFileDialog.FileName);
                 }
 

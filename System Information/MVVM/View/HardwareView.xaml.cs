@@ -331,7 +331,7 @@ public partial class HardwareView
                         for (var i = 0; i < returnValue.NbResult; i++)
                         {
                             // format return value to string
-                            var capacity = "N/A";
+                            string capacity;
                             var bytes = (ulong)returnValue.PropertiesResultList[i, 0];
                             if (bytes > 1000000000)
                                 capacity =
@@ -716,137 +716,119 @@ public partial class HardwareView
         var basicHardwareNodeList = new List<TreeViewNode>();
 
         // first parent child > child
-        var mouseNodeList = new List<TreeViewNode>();
-        foreach (var mouse in MouseList)
-        {
-            var node = new TreeViewNode();
-            node.Content = mouse;
-            mouseNodeList.Add(node);
-        }
+        var mouseNodeList = MouseList.Select(mouse => new TreeViewNode { Content = mouse }).ToList();
 
         // first parent child
-        var mouseNode = new TreeViewNode();
-        mouseNode.Content = $"Mouse {MouseNb}";
-        mouseNode.IsExpanded = true;
+        var mouseNode = new TreeViewNode
+        {
+            Content = $"Mouse {MouseNb}",
+            IsExpanded = true
+        };
         foreach (var node in mouseNodeList) mouseNode.ChildNodes.Add(node);
         basicHardwareNodeList.Add(mouseNode);
 
         // first parent child > child
-        var keyboardNodeList = new List<TreeViewNode>();
-        foreach (var keyboard in KeyboardList)
-        {
-            var node = new TreeViewNode();
-            node.Content = keyboard;
-            keyboardNodeList.Add(node);
-        }
+        var keyboardNodeList = KeyboardList.Select(keyboard => new TreeViewNode { Content = keyboard }).ToList();
 
         // first parent child
-        var keyboardNode = new TreeViewNode();
-        keyboardNode.Content = $"Keyboard {KeyboardNb}";
-        keyboardNode.IsExpanded = true;
+        var keyboardNode = new TreeViewNode
+        {
+            Content = $"Keyboard {KeyboardNb}",
+            IsExpanded = true
+        };
         foreach (var node in keyboardNodeList) keyboardNode.ChildNodes.Add(node);
         basicHardwareNodeList.Add(keyboardNode);
 
         // first parent child > child 
-        var networkAdapterNodeList = new List<TreeViewNode>();
-        foreach (var networkAdapter in NetworkAdapterList)
-        {
-            var node = new TreeViewNode();
-            node.Content = networkAdapter;
-            networkAdapterNodeList.Add(node);
-        }
+        var networkAdapterNodeList = NetworkAdapterList.Select(networkAdapter => new TreeViewNode { Content = networkAdapter }).ToList();
 
         // first parent child
-        var networkAdapterNode = new TreeViewNode();
-        networkAdapterNode.Content = $"Network Adapter {NetworkAdapterNb}";
-        networkAdapterNode.IsExpanded = true;
+        var networkAdapterNode = new TreeViewNode
+        {
+            Content = $"Network Adapter {NetworkAdapterNb}",
+            IsExpanded = true
+        };
         foreach (var node in networkAdapterNodeList) networkAdapterNode.ChildNodes.Add(node);
         basicHardwareNodeList.Add(networkAdapterNode);
 
         // first parent child > child
-        var audioDeviceNodeList = new List<TreeViewNode>();
-        foreach (var audioDevice in AudioDeviceList)
-        {
-            var node = new TreeViewNode();
-            node.Content = audioDevice;
-            audioDeviceNodeList.Add(node);
-        }
+        var audioDeviceNodeList = AudioDeviceList.Select(audioDevice => new TreeViewNode { Content = audioDevice }).ToList();
 
         // first parent child
-        var audioDeviceNode = new TreeViewNode();
-        audioDeviceNode.Content = $"Audio Device {AudioDeviceNb}";
-        audioDeviceNode.IsExpanded = true;
+        var audioDeviceNode = new TreeViewNode
+        {
+            Content = $"Audio Device {AudioDeviceNb}",
+            IsExpanded = true
+        };
         foreach (var node in audioDeviceNodeList) audioDeviceNode.ChildNodes.Add(node);
         basicHardwareNodeList.Add(audioDeviceNode);
 
         // first parent child > child
-        var gpuNodeList = new List<TreeViewNode>();
-        foreach (var gpu in GpuList)
-        {
-            var node = new TreeViewNode();
-            node.Content = gpu;
-            gpuNodeList.Add(node);
-        }
+        var gpuNodeList = GpuList.Select(gpu => new TreeViewNode { Content = gpu }).ToList();
 
         // first parent child
-        var gpuNode = new TreeViewNode();
-        gpuNode.Content = $"GPU {GpuNb}";
-        gpuNode.IsExpanded = true;
+        var gpuNode = new TreeViewNode
+        {
+            Content = $"GPU {GpuNb}",
+            IsExpanded = true
+        };
         foreach (var node in gpuNodeList) gpuNode.ChildNodes.Add(node);
         basicHardwareNodeList.Add(gpuNode);
 
         // first parent child > child
-        var diskDriveNodeList = new List<TreeViewNode>();
-        foreach (var disk in DiskList)
-        {
-            var node = new TreeViewNode();
-            node.Content = disk;
-            diskDriveNodeList.Add(node);
-        }
+        var diskDriveNodeList = DiskList.Select(disk => new TreeViewNode { Content = disk }).ToList();
 
         // first parent child
-        var diskDriveNode = new TreeViewNode();
-        diskDriveNode.Content = $"Disk Drive {DiskNb}";
-        diskDriveNode.IsExpanded = true;
+        var diskDriveNode = new TreeViewNode
+        {
+            Content = $"Disk Drive {DiskNb}",
+            IsExpanded = true
+        };
         foreach (var node in diskDriveNodeList) diskDriveNode.ChildNodes.Add(node);
         basicHardwareNodeList.Add(diskDriveNode);
 
         // first parent child > child
-        var memoryNodeList = new List<TreeViewNode>();
-        foreach (var memory in MemoryList)
-        {
-            var node = new TreeViewNode();
-            node.Content = memory;
-            memoryNodeList.Add(node);
-        }
+        var memoryNodeList = MemoryList.Select(memory => new TreeViewNode { Content = memory }).ToList();
 
         // first parent child
-        var memoryNode = new TreeViewNode();
-        memoryNode.Content = $"Memory {MemoryNb}";
-        memoryNode.IsExpanded = true;
+        var memoryNode = new TreeViewNode
+        {
+            Content = $"Memory {MemoryNb}",
+            IsExpanded = true
+        };
         foreach (var node in memoryNodeList) memoryNode.ChildNodes.Add(node);
         basicHardwareNodeList.Add(memoryNode);
 
         // first parent child > child
-        var chassisTypeNode = new TreeViewNode();
-        chassisTypeNode.Content = $"Chassis Types : {ChassisTypes}";
+        var chassisTypeNode = new TreeViewNode
+        {
+            Content = $"Chassis Types : {ChassisTypes}"
+        };
 
         // first parent child > child
-        var modelCmNode = new TreeViewNode();
-        modelCmNode.Content = $"Model : {MotherBoardModel}";
+        var modelCmNode = new TreeViewNode
+        {
+            Content = $"Model : {MotherBoardModel}"
+        };
 
         // first parent child > child
-        var biosNameNode = new TreeViewNode();
-        biosNameNode.Content = $"BIOS : {BiosName}";
+        var biosNameNode = new TreeViewNode
+        {
+            Content = $"BIOS : {BiosName}"
+        };
 
         // first parent child > child
-        var uuidNode = new TreeViewNode();
-        uuidNode.Content = $"UUID : {Uuid}";
+        var uuidNode = new TreeViewNode
+        {
+            Content = $"UUID : {Uuid}"
+        };
 
         // first parent child
-        var motherboardNode = new TreeViewNode();
-        motherboardNode.Content = "Motherboard";
-        motherboardNode.IsExpanded = true;
+        var motherboardNode = new TreeViewNode
+        {
+            Content = "Motherboard",
+            IsExpanded = true
+        };
         motherboardNode.ChildNodes.Add(chassisTypeNode);
         motherboardNode.ChildNodes.Add(modelCmNode);
         motherboardNode.ChildNodes.Add(biosNameNode);
@@ -854,21 +836,29 @@ public partial class HardwareView
         basicHardwareNodeList.Add(motherboardNode);
 
         // first parent child > child
-        var cpuNameNode = new TreeViewNode();
-        cpuNameNode.Content = $"Name : {CpuName}";
+        var cpuNameNode = new TreeViewNode
+        {
+            Content = $"Name : {CpuName}"
+        };
 
         // first parent child > child
-        var cpuManufacturerNode = new TreeViewNode();
-        cpuManufacturerNode.Content = $"Manufacturer : {CpuManufacturer}";
+        var cpuManufacturerNode = new TreeViewNode
+        {
+            Content = $"Manufacturer : {CpuManufacturer}"
+        };
 
         // first parent child > child
-        var cpuArchitectureNode = new TreeViewNode();
-        cpuArchitectureNode.Content = $"Architecture : {CpuArchitecture}";
+        var cpuArchitectureNode = new TreeViewNode
+        {
+            Content = $"Architecture : {CpuArchitecture}"
+        };
 
         // first parent child
-        var cpuNode = new TreeViewNode();
-        cpuNode.Content = "CPU";
-        cpuNode.IsExpanded = true;
+        var cpuNode = new TreeViewNode
+        {
+            Content = "CPU",
+            IsExpanded = true
+        };
         cpuNode.ChildNodes.Add(cpuNameNode);
         cpuNode.ChildNodes.Add(cpuManufacturerNode);
         cpuNode.ChildNodes.Add(cpuArchitectureNode);
@@ -876,37 +866,51 @@ public partial class HardwareView
 
 
         // first parent Node
-        var basicHardwareNode = new TreeViewNode();
-        basicHardwareNode.Content = "Basic Hardware Information";
-        basicHardwareNode.IsExpanded = true;
+        var basicHardwareNode = new TreeViewNode
+        {
+            Content = "Basic Hardware Information",
+            IsExpanded = true
+        };
         basicHardwareNodeList.Reverse();
         foreach (var treeViewNode in basicHardwareNodeList) basicHardwareNode.ChildNodes.Add(treeViewNode);
 
 
         // second parent child
-        var cpuScoreNode = new TreeViewNode();
-        cpuScoreNode.Content = $"CPU Score : {CpuScore}";
+        var cpuScoreNode = new TreeViewNode
+        {
+            Content = $"CPU Score : {CpuScore}"
+        };
 
         // second parent child
-        var graphicsScoreNode = new TreeViewNode();
-        graphicsScoreNode.Content = $"Graphics Score : {GraphicsScore}";
+        var graphicsScoreNode = new TreeViewNode
+        {
+            Content = $"Graphics Score : {GraphicsScore}"
+        };
 
         // second parent child
-        var graphics3dScoreNode = new TreeViewNode();
-        graphics3dScoreNode.Content = $"3D Graphics Score : {Graphics3dScore}";
+        var graphics3dScoreNode = new TreeViewNode
+        {
+            Content = $"3D Graphics Score : {Graphics3dScore}"
+        };
 
         // second parent child
-        var primaryDiskScoreNode = new TreeViewNode();
-        primaryDiskScoreNode.Content = $"Primary Disk Score : {PrimaryDiskScore}";
+        var primaryDiskScoreNode = new TreeViewNode
+        {
+            Content = $"Primary Disk Score : {PrimaryDiskScore}"
+        };
 
         // second parent child
-        var memoryScoreNode = new TreeViewNode();
-        memoryScoreNode.Content = $"Memory Score : {MemoryScore}";
+        var memoryScoreNode = new TreeViewNode
+        {
+            Content = $"Memory Score : {MemoryScore}"
+        };
 
         // second parent Node
-        var windowsPerfNode = new TreeViewNode();
-        windowsPerfNode.Content = "Windows Performance score";
-        windowsPerfNode.IsExpanded = true;
+        var windowsPerfNode = new TreeViewNode
+        {
+            Content = "Windows Performance score",
+            IsExpanded = true
+        };
         windowsPerfNode.ChildNodes.Add(cpuScoreNode);
         windowsPerfNode.ChildNodes.Add(graphicsScoreNode);
         windowsPerfNode.ChildNodes.Add(graphics3dScoreNode);
@@ -998,12 +1002,13 @@ public partial class HardwareView
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     File.WriteAllText(saveFileDialog.FileName, htmlString);
-                    var process = new Process();
-                    process.StartInfo = new ProcessStartInfo(saveFileDialog.FileName)
+                    new Process
                     {
-                        UseShellExecute = true
-                    };
-                    process.Start();
+                        StartInfo = new ProcessStartInfo(saveFileDialog.FileName)
+                        {
+                            UseShellExecute = true
+                        }
+                    }.Start();
                     Log.Info("html data file exported : " + saveFileDialog.FileName);
                 }
 

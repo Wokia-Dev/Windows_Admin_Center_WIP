@@ -232,36 +232,52 @@ public partial class SoftwareView
 
 
         // add Computer System Node to TreeView
-        var computerSystemNode = new TreeViewNode();
-        computerSystemNode.Content = $"Computer System : {ComputerSystem}";
+        var computerSystemNode = new TreeViewNode
+        {
+            Content = $"Computer System : {ComputerSystem}"
+        };
 
         // add System Type Node to TreeView
-        var systemTypeNode = new TreeViewNode();
-        systemTypeNode.Content = $"System Type : {SystemType}";
+        var systemTypeNode = new TreeViewNode
+        {
+            Content = $"System Type : {SystemType}"
+        };
 
         // add System Name Node to TreeView
-        var systemNameNode = new TreeViewNode();
-        systemNameNode.Content = $"System Name : {SystemName}";
+        var systemNameNode = new TreeViewNode
+        {
+            Content = $"System Name : {SystemName}"
+        };
 
         // add Current User Node to TreeView
-        var currentUserNode = new TreeViewNode();
-        currentUserNode.Content = $"Current User : {CurrentUser}";
+        var currentUserNode = new TreeViewNode
+        {
+            Content = $"Current User : {CurrentUser}"
+        };
 
         // add OS Name Node to TreeView
-        var osNameNode = new TreeViewNode();
-        osNameNode.Content = $"OS Name : {OsName}";
+        var osNameNode = new TreeViewNode
+        {
+            Content = $"OS Name : {OsName}"
+        };
 
         // add OS Version Node to TreeView
-        var osVersionNode = new TreeViewNode();
-        osVersionNode.Content = $"OS Version : {OsVersion}";
+        var osVersionNode = new TreeViewNode
+        {
+            Content = $"OS Version : {OsVersion}"
+        };
 
         // add OS Install Date Node to TreeView
-        var osInstallDateNode = new TreeViewNode();
-        osInstallDateNode.Content = $"OS Install Date : {OsInstallDate}";
+        var osInstallDateNode = new TreeViewNode
+        {
+            Content = $"OS Install Date : {OsInstallDate}"
+        };
 
         // add Time Zone Node to TreeView
-        var timeZoneNode = new TreeViewNode();
-        timeZoneNode.Content = $"Time Zone : {TimeZone}";
+        var timeZoneNode = new TreeViewNode
+        {
+            Content = $"Time Zone : {TimeZone}"
+        };
 
 
         // Main TreeView Node Collection
@@ -332,12 +348,13 @@ public partial class SoftwareView
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     File.WriteAllText(saveFileDialog.FileName, htmlTemplate);
-                    var process = new Process();
-                    process.StartInfo = new ProcessStartInfo(saveFileDialog.FileName)
+                    var process = new Process
                     {
-                        UseShellExecute = true
-                    };
-                    process.Start();
+                        StartInfo = new ProcessStartInfo(saveFileDialog.FileName)
+                        {
+                            UseShellExecute = true
+                        }
+                    }.Start();
                     Log.Info("html data exported : " + saveFileDialog.FileName);
                 }
 

@@ -419,60 +419,83 @@ public partial class BiosView
         Task.WaitAll(wmiTasks.ToArray());
 
         // Add Manufacturer to main Node
-        var manufacturerNode = new TreeViewNode();
-        manufacturerNode.Content = $"Manufacturer : {BiosManufacturer}";
+        var manufacturerNode = new TreeViewNode
+        {
+            Content = $"Manufacturer : {BiosManufacturer}"
+        };
 
         // Add Name to main Node
-        var nameNode = new TreeViewNode();
-        nameNode.Content = $"Name : {BiosName}";
+        var nameNode = new TreeViewNode
+        {
+            Content = $"Name : {BiosName}"
+        };
 
         // Add PrimaryBIOS to main Node
-        var primaryBiosNode = new TreeViewNode();
-        primaryBiosNode.Content = $"Primary BIOS : {BiosPrimaryBios}";
+        var primaryBiosNode = new TreeViewNode
+        {
+            Content = $"Primary BIOS : {BiosPrimaryBios}"
+        };
 
         // Add ReleaseDate to main Node
-        var releaseDateNode = new TreeViewNode();
-        releaseDateNode.Content = $"Release Date : {BiosReleaseDate}";
+        var releaseDateNode = new TreeViewNode
+        {
+            Content = $"Release Date : {BiosReleaseDate}"
+        };
 
         // Add CurrentLanguage to main Node
-        var currentLanguageNode = new TreeViewNode();
-        currentLanguageNode.Content = $"Current Language : {BiosCurrentLanguage}";
+        var currentLanguageNode = new TreeViewNode
+        {
+            Content = $"Current Language : {BiosCurrentLanguage}"
+        };
 
         // Add SerialNumber to main Node
-        var serialNumberNode = new TreeViewNode();
-        serialNumberNode.Content = $"Serial Number : {BiosSerialNumber}";
+        var serialNumberNode = new TreeViewNode
+        {
+            Content = $"Serial Number : {BiosSerialNumber}"
+        };
 
         // Add Version to main Node
         var versionNode = new TreeViewNode();
         versionNode.Content = $"Version : {BiosVersion}";
 
         // Add Mode to main Node
-        var modeNode = new TreeViewNode();
-        modeNode.Content = $"Mode : {BiosMode}";
+        var modeNode = new TreeViewNode
+        {
+            Content = $"Mode : {BiosMode}"
+        };
 
         // Add SoftwareElementState to main Node
-        var softwareElementStateNode = new TreeViewNode();
-        softwareElementStateNode.Content = $"Software Element State : {BiosSoftwareElementState}";
+        var softwareElementStateNode = new TreeViewNode
+        {
+            Content = $"Software Element State : {BiosSoftwareElementState}"
+        };
 
         // Add Status to main Node
-        var statusNode = new TreeViewNode();
-        statusNode.Content = $"Status : {BiosStatus}";
+        var statusNode = new TreeViewNode
+        {
+            Content = $"Status : {BiosStatus}"
+        };
 
         // Add Characteristics to main Node
-        var characteristicsNode = new TreeViewNode();
-        characteristicsNode.Content = "Characteristics";
-        characteristicsNode.IsExpanded = true;
-        foreach (var characteristic in BiosCharacteristics)
+        var characteristicsNode = new TreeViewNode
         {
-            var characteristicNode = new TreeViewNode();
-            characteristicNode.Content = characteristic;
+            Content = "Characteristics",
+            IsExpanded = true
+        };
+        foreach (var characteristicNode in BiosCharacteristics.Select(characteristic => new TreeViewNode
+                 {
+                     Content = characteristic
+                 }))
+        {
             characteristicsNode.ChildNodes.Add(characteristicNode);
         }
 
         // Main Node for Bios
-        var mainNode = new TreeViewNode();
-        mainNode.Content = BiosName;
-        mainNode.IsExpanded = true;
+        var mainNode = new TreeViewNode
+        {
+            Content = BiosName,
+            IsExpanded = true
+        };
         mainNode.ChildNodes.Add(manufacturerNode);
         mainNode.ChildNodes.Add(nameNode);
         mainNode.ChildNodes.Add(primaryBiosNode);
@@ -553,12 +576,13 @@ public partial class BiosView
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     File.WriteAllText(saveFileDialog.FileName, htmlString);
-                    var process = new Process();
-                    process.StartInfo = new ProcessStartInfo(saveFileDialog.FileName)
+                    var process = new Process
                     {
-                        UseShellExecute = true
-                    };
-                    process.Start();
+                        StartInfo = new ProcessStartInfo(saveFileDialog.FileName)
+                        {
+                            UseShellExecute = true
+                        }
+                    }.Start();
                     Log.Info("html data file exported : " + saveFileDialog.FileName);
                 }
 
