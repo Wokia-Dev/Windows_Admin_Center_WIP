@@ -1,6 +1,5 @@
-﻿namespace System_Information.MVVM.ViewModel
+﻿namespace System_Information.MVVM.ViewModel;
+
+public class HardwareViewModel
 {
-    public class HardwareViewModel
-    {
-    }
 }

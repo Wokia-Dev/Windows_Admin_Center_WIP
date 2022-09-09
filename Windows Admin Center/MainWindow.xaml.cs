@@ -14,42 +14,41 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Syncfusion.SfSkinManager;
 
-namespace Windows_Admin_Center
+namespace Windows_Admin_Center;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public MainWindow()
     {
-        public MainWindow()
+        InitializeComponent();
+        SfSkinManager.SetTheme(this, new Theme("FluentLight"));
+    }
+
+    private void CloseBtn_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        Application.Current.Shutdown();
+    }
+
+
+    private void MinimizeBtn_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        this.WindowState = WindowState.Minimized;
+    }
+
+
+    private void MainWindow_OnActivated(object sender, EventArgs e)
+    {
+
+    }
+
+    private void MenuPanel_OnMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ChangedButton == MouseButton.Left)
         {
-            InitializeComponent();
-            SfSkinManager.SetTheme(this, new Theme("FluentLight"));
-        }
-
-        private void CloseBtn_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-
-
-        private void MinimizeBtn_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
-
-
-        private void MainWindow_OnActivated(object sender, EventArgs e)
-        {
-
-        }
-
-        private void MenuPanel_OnMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                this.DragMove();
-            }
+            this.DragMove();
         }
     }
 }

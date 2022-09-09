@@ -1,15 +1,14 @@
 ﻿using System.Windows.Controls;
 
-namespace System_Information.MVVM.View
+namespace System_Information.MVVM.View;
+
+/// <summary>
+/// Logique d'interaction pour DriveView.xaml
+/// </summary>
+public partial class DriveView
 {
-    /// <summary>
-    /// Logique d'interaction pour DriveView.xaml
-    /// </summary>
-    public partial class DriveView
+    public DriveView()
     {
-        public DriveView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

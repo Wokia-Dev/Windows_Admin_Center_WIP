@@ -1,15 +1,14 @@
 ﻿using System.Windows.Controls;
 
-namespace System_Information.MVVM.View
+namespace System_Information.MVVM.View;
+
+/// <summary>
+/// Logique d'interaction pour EnvironmentView.xaml
+/// </summary>
+public partial class EnvironmentView
 {
-    /// <summary>
-    /// Logique d'interaction pour EnvironmentView.xaml
-    /// </summary>
-    public partial class EnvironmentView
+    public EnvironmentView()
     {
-        public EnvironmentView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

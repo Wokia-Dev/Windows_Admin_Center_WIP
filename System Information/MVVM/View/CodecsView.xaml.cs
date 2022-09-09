@@ -1,15 +1,14 @@
 ﻿using System.Windows.Controls;
 
-namespace System_Information.MVVM.View
+namespace System_Information.MVVM.View;
+
+/// <summary>
+/// Logique d'interaction pour CodecsView.xaml
+/// </summary>
+public partial class CodecsView
 {
-    /// <summary>
-    /// Logique d'interaction pour CodecsView.xaml
-    /// </summary>
-    public partial class CodecsView
+    public CodecsView()
     {
-        public CodecsView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

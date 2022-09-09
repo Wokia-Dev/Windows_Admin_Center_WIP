@@ -1,15 +1,14 @@
 ﻿using System.Windows.Controls;
 
-namespace System_Information.MVVM.View
+namespace System_Information.MVVM.View;
+
+/// <summary>
+/// Logique d'interaction pour NetworkView.xaml
+/// </summary>
+public partial class NetworkView
 {
-    /// <summary>
-    /// Logique d'interaction pour NetworkView.xaml
-    /// </summary>
-    public partial class NetworkView
+    public NetworkView()
     {
-        public NetworkView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

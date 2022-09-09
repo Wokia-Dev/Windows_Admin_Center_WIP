@@ -1,6 +1,5 @@
-﻿namespace Windows_Admin_Center.MVVM.ViewModel
+﻿namespace Windows_Admin_Center.MVVM.ViewModel;
+
+internal class CustomizationViewModel
 {
-    internal class CustomizationViewModel
-    {
-    }
 }
