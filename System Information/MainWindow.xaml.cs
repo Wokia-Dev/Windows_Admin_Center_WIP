@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
@@ -78,6 +78,8 @@ namespace System_Information
                 case 0x0024:
                     WmGetMinMaxInfo(lParam);
                     break;
+                default:
+                    return IntPtr.Zero;
             }
 
             return IntPtr.Zero;

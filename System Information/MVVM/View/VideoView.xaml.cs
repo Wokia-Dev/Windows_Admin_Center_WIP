@@ -638,6 +638,9 @@ namespace System_Information.MVVM.View
                     textBlock.Text = "Collapse All";
                     MainTreeView.ExpandAll();
                     break;
+                default:
+                    Log.Error("Error Expand/Collapse All");
+                    break;
             }
         }
         private void ExportData_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

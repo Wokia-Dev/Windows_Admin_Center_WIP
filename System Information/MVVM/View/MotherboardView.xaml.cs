@@ -669,6 +669,9 @@ public partial class MotherboardView
                                 case 121:
                                     connectorTypeList.Add("InfiniBand");
                                     break;
+                                default:
+                                    Log.Warn("Unknown connector type");
+                                    break;
                             }
 
                         // Get the connector type string
@@ -1055,6 +1058,9 @@ public partial class MotherboardView
                                 case 100:
                                     connectorTypeList.Add("PCI-E");
                                     break;
+                                default:
+                                    Log.Warn("Unknown connector type");
+                                    break;
                             }
 
                         // Set final string of Connector Type
@@ -1432,6 +1438,9 @@ public partial class MotherboardView
             case "Expand All":
                 textBlock.Text = "Collapse All";
                 MainTreeView.ExpandAll();
+                break;
+            default:
+                Log.Error("Error Expand/Collapse All");
                 break;
         }
     }

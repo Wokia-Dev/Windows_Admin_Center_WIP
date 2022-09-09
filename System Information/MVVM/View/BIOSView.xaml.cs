@@ -402,6 +402,9 @@ public partial class BiosView
                             case 39:
                                 BiosCharacteristics.Add("Smart Battery supported");
                                 break;
+                            default:
+                                Log.Warn("Unknown Bios Characteristic");
+                                break;
                         }
 
                     Log.Info("Successful get Bios Characteristics with WMI");
@@ -507,6 +510,9 @@ public partial class BiosView
             case "Expand All":
                 textBlock.Text = "Collapse All";
                 MainTreeView.ExpandAll();
+                break;
+            default:
+                Log.Error("Error Expand/Collapse All");
                 break;
         }
     }

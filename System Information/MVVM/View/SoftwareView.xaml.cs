@@ -296,6 +296,9 @@ public partial class SoftwareView
                 textBlock.Text = "Collapse All";
                 MainTreeView.ExpandAll();
                 break;
+            default:
+                Log.Error("Error Expand/Collapse All");
+                break;
         }
     }
 

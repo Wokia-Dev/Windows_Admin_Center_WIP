@@ -143,6 +143,9 @@ public partial class HardwareView
                             case 32:
                                 chassisTypesString.Add("Detachable");
                                 break;
+                            default:
+                                Log.Warn("Unknown Chassis Type");
+                                break;
                         }
 
                     // Set final string value of chassis Types
@@ -935,6 +938,9 @@ public partial class HardwareView
             case "Expand All":
                 textBlock.Text = "Collapse All";
                 MainTreeView.ExpandAll();
+                break;
+            default:
+                Log.Error("Error Expand/Collapse All");
                 break;
         }
     }
