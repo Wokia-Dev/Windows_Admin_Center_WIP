@@ -26,7 +26,7 @@ namespace Windows_Admin_Center
             InitializeComponent();
             SfSkinManager.SetTheme(this, new Theme("FluentLight"));
         }
-        
+
         private void CloseBtn_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Application.Current.Shutdown();

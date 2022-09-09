@@ -24,31 +24,31 @@ namespace System_Information.MVVM.View
         {
             InitializeComponent();
             SfSkinManager.SetTheme(this, new Theme("MaterialLight"));
-            
+
             var wmiQueryManager = new WmIqueryManagement();
 
             // Set list to new list
             GpuList = new List<GpuObj>();
-            
-           
-                // Gpu Caption and Nb of GPU
-                Task.Run(() =>
-                {
-                    Log.Info("Get Gpu info with WMI");
-                    try
-                    {
-                        // Query return
-                        var returnValueNb = wmiQueryManager.WmIquery("Win32_VideoController",
-                            new[] { "Caption" });
-                        var nbGpu = returnValueNb.NbResult;
 
-                        var wmiTasks = new List<Task>
-                        {
+
+            // Gpu Caption and Nb of GPU
+            Task.Run(() =>
+            {
+                Log.Info("Get Gpu info with WMI");
+                try
+                {
+                    // Query return
+                    var returnValueNb = wmiQueryManager.WmIquery("Win32_VideoController",
+                    new[] { "Caption" });
+                    var nbGpu = returnValueNb.NbResult;
+
+                    var wmiTasks = new List<Task>
+                    {
                             Task.Run(() =>
                             {
                                 CaptionList = new List<string>();
                                 for (var i = 0; i < nbGpu; i++) CaptionList?.Add("N/A");
-                                
+
                                 try
                                 {
                                     // Query return
@@ -68,7 +68,7 @@ namespace System_Information.MVVM.View
                                     Log.Error("Failed to get Gpu Caption", e);
                                 }
                             }),
-                            
+
                             Task.Run(() =>
                             {
                                 CompanyList = new List<string>();
@@ -93,7 +93,7 @@ namespace System_Information.MVVM.View
                                     Log.Error("Failed to get Gpu Company", e);
                                 }
                             }),
-                            
+
                             Task.Run(() =>
                             {
                                 NameList = new List<string>();
@@ -118,7 +118,7 @@ namespace System_Information.MVVM.View
                                     Log.Error("Failed to get Gpu Name", e);
                                 }
                             }),
-                            
+
                             Task.Run(() =>
                             {
                                 VideoProcessorList = new List<string>();
@@ -144,12 +144,12 @@ namespace System_Information.MVVM.View
                                     Log.Error("Failed to get Gpu Video Processor", e);
                                 }
                             }),
-                            
+
                             Task.Run(() =>
                             {
                                 VideoModeDescriptionList = new List<string>();
                                 for (var i = 0; i < nbGpu; i++) VideoModeDescriptionList?.Add("N/A");
-                                
+
                                 try
                                 {
                                     
@@ -169,9 +169,9 @@ namespace System_Information.MVVM.View
                                 {
                                     Log.Error("Failed to get Gpu Video Mode Description", e);
                                 }
-                                
+
                             }),
-                            
+
                             Task.Run(() =>
                             {
                                 MemorySizeList = new List<string>();
@@ -197,12 +197,12 @@ namespace System_Information.MVVM.View
                                     Log.Error("Failed to get Gpu Memory Size", e);
                                 }
                             }),
-                            
+
                             Task.Run(() =>
                             {
                                 VideoArchitectureList = new List<string>();
                                 for (var i = 0; i < nbGpu; i++) VideoArchitectureList?.Add("N/A");
-                                
+
                                 try
                                 {
                                     // Query return
@@ -229,7 +229,7 @@ namespace System_Information.MVVM.View
                                                 12 => "Linear Frame Buffer",
                                                 160 => "PC-98",
                                                 _ => "N/A"
-                                                
+
                                             };
                                     }
                                     Log.Info("Successful get Gpu Video Architecture");
@@ -239,7 +239,7 @@ namespace System_Information.MVVM.View
                                     Log.Error("Failed to get Gpu Video Architecture", e);
                                 }
                             }),
-                            
+
                             Task.Run(() =>
                             {
                                 VideoMemoryTypeList = new List<string>();
@@ -273,19 +273,19 @@ namespace System_Information.MVVM.View
                                                 _ => "N/A"
                                             };
                                     }
-                                    
+
                                 }
                                 catch (Exception e)
                                 {
                                     Log.Error("Failed to get Gpu Video Memory Type", e);
                                 }
                             }),
-                            
+
                             Task.Run(() =>
                             {
                                 CurrentResolutionList = new List<string>();
                                 for (var i = 0; i < nbGpu; i++) CurrentResolutionList?.Add("N/A");
-                                
+
                                 try
                                 {
                                     // Query return
@@ -305,7 +305,7 @@ namespace System_Information.MVVM.View
                                     Log.Error("Failed to get Gpu Current Resolution", e);
                                 }
                             }),
-                            
+
                             Task.Run(() =>
                             {
                                 BitsPerPixelList = new List<string>();
@@ -330,12 +330,12 @@ namespace System_Information.MVVM.View
                                     Log.Error("Failed to get Gpu Bits Per Pixel", e);
                                 }
                             }),
-                            
+
                             Task.Run(() =>
                             {
                                 CurrentNumberOfColorsList = new List<string>();
                                 for (var i = 0; i < nbGpu; i++) CurrentNumberOfColorsList?.Add("N/A");
-                                
+
                                 try
                                 {
                                     // Query return
@@ -355,7 +355,7 @@ namespace System_Information.MVVM.View
                                     Log.Error("Failed to get Gpu Current Number Of Colors", e);
                                 }
                             }),
-                            
+
                             Task.Run(() =>
                             {
                                 AdapterDacTypeList = new List<string>();
@@ -380,7 +380,7 @@ namespace System_Information.MVVM.View
                                     Log.Error("Failed to get Gpu Adapter Dac Type", e);
                                 }
                             }),
-                            
+
                             Task.Run(() =>
                             {
                                 InfFileNameList = new List<string>();
@@ -405,12 +405,12 @@ namespace System_Information.MVVM.View
                                     Log.Error("Failed to get Gpu Inf File Name", e);
                                 }
                             }),
-                            
+
                             Task.Run(() =>
                             {
                                 InfSectionList = new List<string>();
                                 for (var i = 0; i < nbGpu; i++) InfSectionList?.Add("N/A");
-                                
+
                                 try
                                 {
                                     // Query return
@@ -430,12 +430,12 @@ namespace System_Information.MVVM.View
                                     Log.Error("Failed to get Gpu Inf Section", e);
                                 }
                             }),
-                            
+
                             Task.Run(() =>
                             {
                                 MinMaxFreshRateList = new List<string>();
                                 for (var i = 0; i < nbGpu; i++) MinMaxFreshRateList?.Add("N/A");
-                                
+
                                 try
                                 {
                                     // Query return
@@ -455,12 +455,12 @@ namespace System_Information.MVVM.View
                                     Log.Error("Failed to get Gpu Min Max Fresh Rate", e);
                                 }
                             }),
-                            
+
                             Task.Run(() =>
                             {
                                 PnpDeviceIdList = new List<string>();
                                 for (var i = 0; i < nbGpu; i++) PnpDeviceIdList?.Add("N/A");
-                                
+
                                 try
                                 {
                                     // Query return
@@ -480,12 +480,12 @@ namespace System_Information.MVVM.View
                                     Log.Error("Failed to get Gpu Pnp Device Id", e);
                                 }
                             }),
-                            
+
                             Task.Run(() =>
                             {
                                 DriverDateList = new List<string>();
                                 for (var i = 0; i < nbGpu; i++) DriverDateList?.Add("N/A");
-                                
+
                                 try
                                 {
                                     // Query return
@@ -508,12 +508,12 @@ namespace System_Information.MVVM.View
                                     Log.Error("Failed to get Gpu Driver Date", e);
                                 }
                             }),
-                            
+
                             Task.Run(() =>
                             {
                                 DriverVersionList = new List<string>();
                                 for (var i = 0; i < nbGpu; i++) DriverVersionList?.Add("N/A");
-                                
+
                                 try
                                 {
                                     // Query return
@@ -533,12 +533,12 @@ namespace System_Information.MVVM.View
                                     Log.Error("Failed to get Gpu Driver Version", e);
                                 }
                             }),
-                            
+
                             Task.Run(() =>
                             {
                                 InstalledDisplayDriversList = new List<string>();
                                 for (var i = 0; i < nbGpu; i++) InstalledDisplayDriversList?.Add("N/A");
-                                
+
                                 try
                                 {
                                     // Query return
@@ -559,68 +559,68 @@ namespace System_Information.MVVM.View
                                     Log.Error("Failed to get Gpu Installed Display Drivers", e);
                                 }
                             })
-                        };
-                        Task.WaitAll(wmiTasks.ToArray());
-                        
-                        // Add all result to GpuList
-                        for (var i = 0; i < nbGpu; i++)
-                        {
-                            GpuList.Add(new GpuObj(
-                                caption: CaptionList?[i],
-                                companyName: CompanyList?[i],
-                                name: NameList?[i],
-                                videoProcessor: VideoProcessorList?[i],
-                                videoModeDescription: VideoModeDescriptionList?[i],
-                                memorySize: MemorySizeList?[i],
-                                videoArchitecture: VideoArchitectureList?[i],
-                                videoMemoryType: VideoMemoryTypeList?[i],
-                                currentResolution: CurrentResolutionList?[i],
-                                bitsPerPixel: BitsPerPixelList?[i],
-                                currentNumberOfColors: CurrentNumberOfColorsList?[i],
-                                adapterDacType: AdapterDacTypeList?[i],
-                                infFileName: InfFileNameList?[i],
-                                infSection: InfSectionList?[i],
-                                minMaxRefreshRate: MinMaxFreshRateList?[i],
-                                pnpDeviceId: PnpDeviceIdList?[i],
-                                driverDate: DriverDateList?[i],
-                                driverVersion: DriverVersionList?[i],
-                                installedDisplayDrivers: InstalledDisplayDriversList?[i]));
-                        }
-                    }
-                    catch (Exception e)
+                    };
+                    Task.WaitAll(wmiTasks.ToArray());
+
+                    // Add all result to GpuList
+                    for (var i = 0; i < nbGpu; i++)
                     {
-                        Log.Error("Error get Gpu info with WMI", e);
+                        GpuList.Add(new GpuObj(
+                            caption: CaptionList?[i],
+                            companyName: CompanyList?[i],
+                            name: NameList?[i],
+                            videoProcessor: VideoProcessorList?[i],
+                            videoModeDescription: VideoModeDescriptionList?[i],
+                            memorySize: MemorySizeList?[i],
+                            videoArchitecture: VideoArchitectureList?[i],
+                            videoMemoryType: VideoMemoryTypeList?[i],
+                            currentResolution: CurrentResolutionList?[i],
+                            bitsPerPixel: BitsPerPixelList?[i],
+                            currentNumberOfColors: CurrentNumberOfColorsList?[i],
+                            adapterDacType: AdapterDacTypeList?[i],
+                            infFileName: InfFileNameList?[i],
+                            infSection: InfSectionList?[i],
+                            minMaxRefreshRate: MinMaxFreshRateList?[i],
+                            pnpDeviceId: PnpDeviceIdList?[i],
+                            driverDate: DriverDateList?[i],
+                            driverVersion: DriverVersionList?[i],
+                            installedDisplayDrivers: InstalledDisplayDriversList?[i]));
                     }
-                }).Wait();
-                
-                //////////////// TEMP
-                // Trace WriteLine all GpuList
-                foreach (var gpu in GpuList)
-                {
-                    Debug.WriteLine("Caption : " + gpu.Caption);
-                    Debug.WriteLine("Company : " + gpu.CompanyName);
-                    Debug.WriteLine("Name : " + gpu.Name);
-                    Debug.WriteLine("VideoProcessor : " + gpu.VideoProcessor);
-                    Debug.WriteLine("VideoModeDescription : " + gpu.VideoModeDescription);
-                    Debug.WriteLine("MemorySize : " + gpu.MemorySize);
-                    Debug.WriteLine("VideoArchitecture : " + gpu.VideoArchitecture);
-                    Debug.WriteLine("VideoMemoryType : " + gpu.VideoMemoryType);
-                    Debug.WriteLine("CurrentResolution : " + gpu.CurrentResolution);
-                    Debug.WriteLine("BitsPerPixel : " + gpu.BitsPerPixel);
-                    Debug.WriteLine("CurrentNumberOfColors : " + gpu.CurrentNumberOfColors);
-                    Debug.WriteLine("AdapterDacType : " + gpu.AdapterDacType);
-                    Debug.WriteLine("InfFileName : " + gpu.InfFileName);
-                    Debug.WriteLine("InfSection : " + gpu.InfSection);
-                    Debug.WriteLine("MinMaxRefreshRate : " + gpu.MinMaxRefreshRate);
-                    Debug.WriteLine("PnpDeviceId : " + gpu.PnpDeviceId);
-                    Debug.WriteLine("DriverDate : " + gpu.DriverDate);
-                    Debug.WriteLine("DriverVersion : " + gpu.DriverVersion);
-                    Debug.WriteLine("InstalledDisplayDrivers : " + gpu.InstalledDisplayDrivers);
                 }
-                /////////////// 
+                catch (Exception e)
+                {
+                    Log.Error("Error get Gpu info with WMI", e);
+                }
+            }).Wait();
+
+            //////////////// TEMP
+            // Trace WriteLine all GpuList
+            foreach (var gpu in GpuList)
+            {
+                Debug.WriteLine("Caption : " + gpu.Caption);
+                Debug.WriteLine("Company : " + gpu.CompanyName);
+                Debug.WriteLine("Name : " + gpu.Name);
+                Debug.WriteLine("VideoProcessor : " + gpu.VideoProcessor);
+                Debug.WriteLine("VideoModeDescription : " + gpu.VideoModeDescription);
+                Debug.WriteLine("MemorySize : " + gpu.MemorySize);
+                Debug.WriteLine("VideoArchitecture : " + gpu.VideoArchitecture);
+                Debug.WriteLine("VideoMemoryType : " + gpu.VideoMemoryType);
+                Debug.WriteLine("CurrentResolution : " + gpu.CurrentResolution);
+                Debug.WriteLine("BitsPerPixel : " + gpu.BitsPerPixel);
+                Debug.WriteLine("CurrentNumberOfColors : " + gpu.CurrentNumberOfColors);
+                Debug.WriteLine("AdapterDacType : " + gpu.AdapterDacType);
+                Debug.WriteLine("InfFileName : " + gpu.InfFileName);
+                Debug.WriteLine("InfSection : " + gpu.InfSection);
+                Debug.WriteLine("MinMaxRefreshRate : " + gpu.MinMaxRefreshRate);
+                Debug.WriteLine("PnpDeviceId : " + gpu.PnpDeviceId);
+                Debug.WriteLine("DriverDate : " + gpu.DriverDate);
+                Debug.WriteLine("DriverVersion : " + gpu.DriverVersion);
+                Debug.WriteLine("InstalledDisplayDrivers : " + gpu.InstalledDisplayDrivers);
+            }
+            /////////////// 
 
         }
-        
+
         private void ExpandAll_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             // Get Current Value of text block
@@ -657,7 +657,7 @@ namespace System_Information.MVVM.View
         #region Values
 
         private List<GpuObj> GpuList { get; set; }
-        
+
         private List<string> CaptionList { get; set; }
         private List<string> CompanyList { get; set; }
         private List<string> NameList { get; set; }

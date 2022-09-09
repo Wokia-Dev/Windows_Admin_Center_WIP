@@ -16,7 +16,7 @@ namespace System_Information
     public partial class MainWindow
     {
         private bool _mRestoreIfMove;
-        
+
         public MainWindow()
         {
             InitializeComponent();
@@ -24,7 +24,7 @@ namespace System_Information
 
             DataContext = new HardwareViewModel();
         }
-        
+
         private void MinimizeBtn_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             WindowState = WindowState.Minimized;
@@ -231,7 +231,7 @@ namespace System_Information
         [StructLayout(LayoutKind.Sequential)]
         public struct Rect
         {
-            public readonly int  Left, Top, Right, Bottom;
+            public readonly int Left, Top, Right, Bottom;
 
             public Rect(int left, int top, int right, int bottom)
             {
