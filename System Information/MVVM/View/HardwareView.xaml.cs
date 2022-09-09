@@ -331,7 +331,7 @@ public partial class HardwareView
                         for (var i = 0; i < returnValue.NbResult; i++)
                         {
                             // format return value to string
-                            string capacity;
+                            string capacity = "N/A";
                             var bytes = (ulong)returnValue.PropertiesResultList[i, 0];
                             if (bytes > 1000000000)
                                 capacity =
