@@ -455,8 +455,10 @@ public partial class BiosView
         };
 
         // Add Version to main Node
-        var versionNode = new TreeViewNode();
-        versionNode.Content = $"Version : {BiosVersion}";
+        var versionNode = new TreeViewNode
+        {
+            Content = $"Version : {BiosVersion}"
+        };
 
         // Add Mode to main Node
         var modeNode = new TreeViewNode
