@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -326,7 +326,7 @@ public partial class SoftwareView
                     FileName = "System Information(Software)_ " + DateTime.Now.ToString("yyyy-MM-dd"),
                     InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                 };
-                if (saveFileDialog.ShowDialog() == true)
+                if (saveFileDialog.ShowDialog())
                 {
                     File.WriteAllText(saveFileDialog.FileName, htmlTemplate);
                     var process = new Process();

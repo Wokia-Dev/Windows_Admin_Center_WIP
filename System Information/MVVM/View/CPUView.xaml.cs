@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -1266,7 +1266,7 @@ public partial class CpuView
                     Title = "Save HTML File",
                     FileName = "System Information(CPU)_" + DateTime.Now.ToString("yyyy-MM-dd") + ".html"
                 };
-                if (saveFileDialog.ShowDialog() == true)
+                if (saveFileDialog.ShowDialog())
                 {
                     File.WriteAllText(saveFileDialog.FileName, htmlString);
                     var process = new Process();
