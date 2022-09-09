@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -544,7 +544,7 @@ public partial class BiosView
                     FileName = "System Information(BIOS)_" + DateTime.Now.ToString("yyyy-MM-dd"),
                     InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                 };
-                if (saveFileDialog.ShowDialog() == true)
+                if (saveFileDialog.ShowDialog())
                 {
                     File.WriteAllText(saveFileDialog.FileName, htmlString);
                     var process = new Process();

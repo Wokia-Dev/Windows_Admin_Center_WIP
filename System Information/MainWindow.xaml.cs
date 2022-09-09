@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
@@ -89,7 +89,7 @@ namespace System_Information
 
             var lPrimaryScreen = MonitorFromPoint(new Point(0, 0), MonitorOptions.MonitorDefaulttoprimary);
             var lPrimaryScreenInfo = new Monitorinfo();
-            if (GetMonitorInfo(lPrimaryScreen, lPrimaryScreenInfo) == false)
+            if (!GetMonitorInfo(lPrimaryScreen, lPrimaryScreenInfo))
             {
                 return;
             }
