@@ -544,7 +544,7 @@ public partial class BiosView
                     FileName = "System Information(BIOS)_" + DateTime.Now.ToString("yyyy-MM-dd"),
                     InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                 };
-                if (saveFileDialog.ShowDialog())
+                if (saveFileDialog.ShowDialog() == true)
                 {
                     File.WriteAllText(saveFileDialog.FileName, htmlString);
                     var process = new Process();

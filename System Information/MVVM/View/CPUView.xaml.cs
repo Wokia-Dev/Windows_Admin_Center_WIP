@@ -1266,7 +1266,7 @@ public partial class CpuView
                     Title = "Save HTML File",
                     FileName = "System Information(CPU)_" + DateTime.Now.ToString("yyyy-MM-dd") + ".html"
                 };
-                if (saveFileDialog.ShowDialog())
+                if (saveFileDialog.ShowDialog() == true)
                 {
                     File.WriteAllText(saveFileDialog.FileName, htmlString);
                     var process = new Process();

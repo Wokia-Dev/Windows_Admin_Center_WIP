@@ -326,7 +326,7 @@ public partial class SoftwareView
                     FileName = "System Information(Software)_ " + DateTime.Now.ToString("yyyy-MM-dd"),
                     InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                 };
-                if (saveFileDialog.ShowDialog())
+                if (saveFileDialog.ShowDialog() == true)
                 {
                     File.WriteAllText(saveFileDialog.FileName, htmlTemplate);
                     var process = new Process();

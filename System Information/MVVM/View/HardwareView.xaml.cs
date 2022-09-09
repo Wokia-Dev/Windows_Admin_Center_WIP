@@ -989,7 +989,7 @@ public partial class HardwareView
                     FileName = "System Information(Hardware)_" + DateTime.Now.ToString("yyyy-MM-dd"),
                     InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                 };
-                if (saveFileDialog.ShowDialog())
+                if (saveFileDialog.ShowDialog() == true)
                 {
                     File.WriteAllText(saveFileDialog.FileName, htmlString);
                     var process = new Process();
