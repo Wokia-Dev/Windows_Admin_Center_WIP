@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -159,7 +159,7 @@ public partial class MotherboardView
                     {
                         var deviceType = "N/A";
                         var description = "N/A";
-                        if ((string)returnValue.PropertiesResultList[i, 0] != "")
+                        if (!string.IsNullOrEmpty((string)returnValue.PropertiesResultList[i, 0]))
                             description = (string)returnValue.PropertiesResultList[i, 0];
 
                         var deviceTypeResult = (ushort)returnValue.PropertiesResultList[i, 1];
@@ -204,14 +204,11 @@ public partial class MotherboardView
                     // Add each element of returnValue to IdeControllerCaption list
                     for (var i = 0; i < returnValue.NbResult; i++)
                     {
-                        var caption = (string)returnValue.PropertiesResultList[i, 0] != ""
-                            ? (string)returnValue.PropertiesResultList[i, 0]
+                        var caption = !string.IsNullOrEmpty((string)returnValue.PropertiesResultList[i, 0])                            ? (string)returnValue.PropertiesResultList[i, 0]
                             : "N/A";
-                        var manufacturer = (string)returnValue.PropertiesResultList[i, 1] != ""
-                            ? (string)returnValue.PropertiesResultList[i, 1]
+                        var manufacturer = !string.IsNullOrEmpty((string)returnValue.PropertiesResultList[i, 1])                            ? (string)returnValue.PropertiesResultList[i, 1]
                             : "N/A";
-                        var status = (string)returnValue.PropertiesResultList[i, 3] != ""
-                            ? (string)returnValue.PropertiesResultList[i, 3]
+                        var status = !string.IsNullOrEmpty((string)returnValue.PropertiesResultList[i, 3])                            ? (string)returnValue.PropertiesResultList[i, 3]
                             : "N/A";
                         var result = (ushort)returnValue.PropertiesResultList[i, 2];
 
