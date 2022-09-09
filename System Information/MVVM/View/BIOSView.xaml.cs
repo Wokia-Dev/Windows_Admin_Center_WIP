@@ -485,9 +485,9 @@ public partial class BiosView
             IsExpanded = true
         };
         foreach (var characteristicNode in BiosCharacteristics.Select(characteristic => new TreeViewNode
-                 {
-                     Content = characteristic
-                 }))
+        {
+            Content = characteristic
+        }))
         {
             characteristicsNode.ChildNodes.Add(characteristicNode);
         }
