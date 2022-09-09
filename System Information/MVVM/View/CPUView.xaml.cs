@@ -973,16 +973,16 @@ public partial class CpuView
             _canUpdateMetrics = false;
             Log.Info("Updating CPU Metrics (" + DateTime.Now.ToString("HH:mm:ss") + ")...");
 
-            string currentClockSpeedString;
-            string maxClockSpeedString;
-            string externalClockSpeedString;
-            string currentVoltageString;
-            string numberOfCoresString;
-            string numberOfLogicalProcessorsString;
-            string numberOfThreadsString;
-            string loadPercentageString;
-            string l2CacheSizeString;
-            string l3CacheSizeString;
+            var currentClockSpeedString = "N/A";
+            var maxClockSpeedString = "N/A";
+            var externalClockSpeedString = "N/A";
+            var currentVoltageString = "N/A";
+            var numberOfCoresString = "N/A";
+            var numberOfLogicalProcessorsString = "N/A";
+            var numberOfThreadsString = "N/A";
+            var loadPercentageString = "N/A";
+            var l2CacheSizeString = "N/A";
+            var l3CacheSizeString = "N/A";
 
             Task.Run(() =>
             {
