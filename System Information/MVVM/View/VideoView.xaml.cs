@@ -29,7 +29,7 @@ public partial class VideoView
         SfSkinManager.SetTheme(this, new Theme("MaterialLight"));
 
         var wmiQueryManager = new WmIqueryManagement();
-        
+
         // Set all list to new list
         CaptionList = new List<string>();
         CompanyList = new List<string>();
@@ -583,12 +583,12 @@ public partial class VideoView
                             Log.Error("Failed to get Gpu Installed Display Drivers", e);
                         }
                     }),
-                    
+
                     Task.Run(() =>
                     {
                         StatusList = new List<string>();
                         for (var i = 0; i < nbGpu; i++) StatusList?.Add("N/A");
-                        
+
                         try
                         {
                             // Query return
@@ -608,7 +608,7 @@ public partial class VideoView
                             Log.Error("Failed to get Gpu Status", e);
                         }
                     }),
-                    
+
                     Task.Run(() =>
                     {
                         AvailabilityList = new List<string>();
@@ -658,7 +658,7 @@ public partial class VideoView
                             Log.Error("Failed to get Gpu Availability", e);
                         }
                     })
-                    
+
                 };
                 Task.WaitAll(wmiTasks.ToArray());
 
@@ -695,25 +695,25 @@ public partial class VideoView
             }
         }).Wait();
 
-        
-        
+
+
         // Main Node for Video
         var mainNode = new TreeViewNode
         {
             Content = "GPU X" + GpuList.Count,
             IsExpanded = true
         };
-        
+
         foreach (var gpuObj in GpuList)
         {
-            
+
             // Gpu Driver Installed Node
             var gpuDriverInstalledNode = new TreeViewNode
             {
                 Content = "Installed Display Drivers",
                 IsExpanded = true
             };
-            
+
             // Create Node for each installed display driver and add to parent node
             var drivers = gpuObj.InstalledDisplayDrivers?.Split(',');
             if (drivers != null)
@@ -725,19 +725,19 @@ public partial class VideoView
                     };
                     gpuDriverInstalledNode.ChildNodes.Add(driverNode);
                 }
-            
+
             // Gpu Driver Date Node
             var gpuDriverDateNode = new TreeViewNode
             {
                 Content = "Driver Date: " + gpuObj.DriverDate,
             };
-            
+
             // Gpu Driver Version Node
             var gpuDriverVersionNode = new TreeViewNode
             {
                 Content = "Driver Version: " + gpuObj.DriverVersion,
             };
-            
+
             // Gpu Driver Node
             var gpuDriverNode = new TreeViewNode
             {
@@ -747,10 +747,10 @@ public partial class VideoView
             gpuDriverNode.ChildNodes.Add(gpuDriverDateNode);
             gpuDriverNode.ChildNodes.Add(gpuDriverVersionNode);
             gpuDriverNode.ChildNodes.Add(gpuDriverInstalledNode);
-            
+
             // Gpu child node collection
             var gpuNodeChildCollection = new TreeViewNodeCollection();
-            
+
             // Add all properties to gpu child collection
             gpuNodeChildCollection.Add(new TreeViewNode
             {
@@ -836,16 +836,16 @@ public partial class VideoView
             // add gpuTreeViewNode to mainNode
             mainNode.ChildNodes.Add(gpuTreeViewNode);
         }
-        
+
         // Main TreeView Nodes Collection
         var treeViewNodes = new TreeViewNodeCollection();
         treeViewNodes.Add(mainNode);
-        
+
         // Main TreeView
         MainTreeView.Nodes = treeViewNodes;
 
-        
-        
+
+
     }
 
     private void ExpandAll_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -879,14 +879,14 @@ public partial class VideoView
             try
             {
                 var gpuString = "";
-                
+
                 foreach (var gpuObj in GpuList)
                 {
                     var installedDriversString = "";
                     var drivers = gpuObj.InstalledDisplayDrivers?.Split(',');
-                    if (drivers != null) installedDriversString = drivers.Aggregate(installedDriversString, 
+                    if (drivers != null) installedDriversString = drivers.Aggregate(installedDriversString,
                         (current, driver) => current + $"<li><h5>{driver}</h5></li>");
-                    
+
                     gpuString += $"<li><h3>{gpuObj.Caption}</h3><ul><li><h4>Company : {gpuObj.CompanyName}</h4></li>" +
                                  $"<li><h4>Name : {gpuObj.Name}</h4></li><li><h4>Video Processor :" +
                                  $" {gpuObj.VideoProcessor}</h4></li><li><h4>Video Mode Description : " +
@@ -905,14 +905,14 @@ public partial class VideoView
                                  $"</li></ul></li><li><h4>Status : {gpuObj.Status}</h4></li><li><h4>Availability : " +
                                  $"{gpuObj.Availability}</h4></li></ul></li>";
                 }
-                
-                
+
+
                 var htmlString = "<!DOCTYPE html><head><title>Data Export - Windows Admin Center</title></head>" +
                                  "<body style=\"font-family: monospace, sans-serif;\"><h1 style=\"text-align: center;" +
                                  " margin: 50px 0;\"> Windows Admin Center - System Information (Video) </h1><ul><li>" +
                                  $"<h2>GPU</h2><ul>{gpuString}</ul></li></ul></body></html>";
-                
-                
+
+
                 // Create a file and ask user to save it
                 var saveFileDialog = new SaveFileDialog
                 {

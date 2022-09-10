@@ -31,7 +31,7 @@ public partial class MotherboardView
 
         var wmiQueryManager = new WmIqueryManagement();
 
-                // Set all list to new list
+        // Set all list to new list
         OnBoardDevicesList = new List<OnBoardDeviceObj>();
         IdeControllerList = new List<IdeControllerObj>();
         InterfaceList = new List<InterfaceObj>();
