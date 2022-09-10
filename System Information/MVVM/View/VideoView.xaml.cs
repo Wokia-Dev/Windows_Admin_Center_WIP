@@ -823,9 +823,11 @@ public partial class VideoView
             });
 
             // Add all child on gpuTreeViewNode
-            var gpuTreeViewNode = new TreeViewNode();
-            gpuTreeViewNode.Content = "GPU X" + gpuObj.Caption;
-            gpuTreeViewNode.IsExpanded = true;
+            var gpuTreeViewNode = new TreeViewNode
+            {
+                Content = "GPU X" + gpuObj.Caption,
+                IsExpanded = true
+            };
 
             foreach (var child in gpuNodeChildCollection)
             {
