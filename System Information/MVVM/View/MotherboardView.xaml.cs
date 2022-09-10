@@ -31,7 +31,7 @@ public partial class MotherboardView
 
         var wmiQueryManager = new WmIqueryManagement();
 
-        // Set all list to new list
+                // Set all list to new list
         OnBoardDevicesList = new List<OnBoardDeviceObj>();
         IdeControllerList = new List<IdeControllerObj>();
         InterfaceList = new List<InterfaceObj>();
@@ -1564,7 +1564,7 @@ public partial class MotherboardView
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     File.WriteAllText(saveFileDialog.FileName, htmlString);
-                    var process = new Process
+                    new Process
                     {
                         StartInfo = new ProcessStartInfo(saveFileDialog.FileName)
                         {

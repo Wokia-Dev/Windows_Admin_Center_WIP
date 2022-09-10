@@ -578,7 +578,7 @@ public partial class BiosView
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     File.WriteAllText(saveFileDialog.FileName, htmlString);
-                    var process = new Process
+                    new Process
                     {
                         StartInfo = new ProcessStartInfo(saveFileDialog.FileName)
                         {
